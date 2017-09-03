@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Task;
 
 class TaskController extends Controller
 {
@@ -14,6 +15,8 @@ class TaskController extends Controller
     public function index()
     {
         //
+        $tasks = Task::all()->toArray();
+        return view('task.index',compact('tasks'));
     }
 
     /**
@@ -35,7 +38,13 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Store tasks
+        $task = new Task([
+            'title'=>$request->get('title'),
+            'description'=>$request->get('description')
+          ]);
+        $task->save();
+        return redirect('/tasks');
     }
 
     /**

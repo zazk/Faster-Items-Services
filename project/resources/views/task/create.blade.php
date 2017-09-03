@@ -1,7 +1,7 @@
 @extends('master')
 @section('content')
 <div class="container">
-  <form method="post" action="{{url('task')}}">
+  <form method="post" action="{{url('tasks')}}">
     {{csrf_field()}}
     <div class="form-group row">
       <label for="lgFormGroupInput" class="col-sm-2 col-form-label col-form-label-lg">Title</label>
@@ -12,7 +12,7 @@
     <div class="form-group row">
       <label for="smFormGroupInput" class="col-sm-2 col-form-label col-form-label-sm">Post</label>
       <div class="col-sm-10">
-        <textarea class="form-control" name="post" rows="8" cols="80"></textarea>
+        <textarea class="form-control" name="description" rows="8" cols="80"></textarea>
       </div>
     </div>
     <div class="form-group row">
