@@ -8,13 +8,25 @@ import axios from 'axios';
 Vue.use(VueAxios,axios);
 
 import App from './App.vue';
-import Example from './components/Example.vue';
+import CreateItem from './components/CreateItem.vue';
+import EditItem from './components/EditItem.vue';
+import DisplayItem from './components/DisplayItem.vue';
 
 const routes = [
   {
-      name: 'Example',
-      path: '/',
-      component: Example
+    name: 'DisplayItem',
+    path: '/',
+    component: DisplayItem 
+  },
+  {
+    name:'CreateItem',
+    path: '/items/create',
+    component: CreateItem
+  },
+  {
+    name:'EditItem',
+    path:'/edit/:id',
+    component:EditItem
   }
 ];
 

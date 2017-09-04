@@ -41,7 +41,7 @@ class ItemController extends Controller
         $item = new Item([
           'name' =>$request->get('name'),
           'price'=>$request->get('price')
-          ])
+          ]);
         $item->save();
         return response()->json('Succefully added');
     }
@@ -55,8 +55,6 @@ class ItemController extends Controller
     public function show($id)
     {
         //
-        $item = Item::find($id);
-        return response()->jron($item);
     }
 
     /**
@@ -68,6 +66,8 @@ class ItemController extends Controller
     public function edit($id)
     {
         //
+        $item = Item::find($id);
+        return response()->json($item);
     }
 
     /**

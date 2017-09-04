@@ -15,3 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::resource('tasks','TaskController');
+Route::resource('items','ItemController');
