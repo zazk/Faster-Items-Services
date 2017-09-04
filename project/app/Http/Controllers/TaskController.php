@@ -67,6 +67,9 @@ class TaskController extends Controller
     public function edit($id)
     {
         //
+
+        $task = Task::find($id);
+        return view('task.edit',compact('task','id'));
     }
 
     /**
@@ -79,6 +82,12 @@ class TaskController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $task = Task::find($id);
+        $task->title = $request->get('title');
+        $task->description = $request->get('description');
+        $task->save();
+        return redirect('/tasks');
+
     }
 
     /**
@@ -90,5 +99,8 @@ class TaskController extends Controller
     public function destroy($id)
     {
         //
+        $task = Task::find($id);
+        $task->delete();
+        return redirect('/tasks');
     }
 }
