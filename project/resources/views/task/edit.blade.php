@@ -3,6 +3,7 @@
 @extends('master')
 @section('content')
 <div class="container">
+  <h1>Edit Task: {{$task-title}}</h1>
   <form method="post" action="{{action('TaskController@update', $id)}}">
     <div class="form-group row">
       {{csrf_field()}}

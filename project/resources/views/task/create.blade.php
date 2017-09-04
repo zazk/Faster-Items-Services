@@ -1,6 +1,7 @@
 @extends('master')
 @section('content')
 <div class="container">
+  <h1>Create Task</h1>
   <form method="post" action="{{url('tasks')}}">
     {{csrf_field()}}
     <div class="form-group row">
