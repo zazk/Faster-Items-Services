@@ -15,4 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::resource('tasks','TaskController');
+
+Route::get('items/all', 'ItemController@all');
 Route::resource('items','ItemController');

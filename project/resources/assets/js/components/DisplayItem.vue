@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Items</h1>
+    <h1>Itemss</h1>
     <div class="row">
       <div class="col-md-10">
 
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+
 export default {
   data(){
     return {
@@ -44,6 +45,7 @@ export default {
   },
 
   created:function () {
+
     this.fetchItems();
   },
 

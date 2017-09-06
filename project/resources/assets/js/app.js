@@ -15,8 +15,8 @@ import DisplayItem from './components/DisplayItem.vue';
 const routes = [
   {
     name: 'DisplayItem',
-    path: '/',
-    component: DisplayItem 
+    path: '/items/all',
+    component: DisplayItem
   },
   {
     name:'CreateItem',
@@ -30,6 +30,7 @@ const routes = [
   }
 ];
 
-
+console.log("Addd Story",DisplayItem);
 const router = new VueRouter({mode:'history',routes:routes});
 new Vue(Vue.util.extend({ router },App)).$mount('#app');
+console.log("End Story");

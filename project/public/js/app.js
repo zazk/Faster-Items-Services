@@ -879,7 +879,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
 
 var routes = [{
   name: 'DisplayItem',
-  path: '/',
+  path: '/items/all',
   component: __WEBPACK_IMPORTED_MODULE_7__components_DisplayItem_vue__["a" /* default */]
 }, {
   name: 'CreateItem',
@@ -891,8 +891,10 @@ var routes = [{
   component: __WEBPACK_IMPORTED_MODULE_6__components_EditItem_vue__["a" /* default */]
 }];
 
+console.log("Addd Story", __WEBPACK_IMPORTED_MODULE_7__components_DisplayItem_vue__["a" /* default */]);
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({ mode: 'history', routes: routes });
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a(__WEBPACK_IMPORTED_MODULE_0_vue___default.a.util.extend({ router: router }, __WEBPACK_IMPORTED_MODULE_4__App_vue__["a" /* default */])).$mount('#app');
+console.log("End Story");
 
 /***/ }),
 /* 10 */
@@ -15588,6 +15590,7 @@ if (false) {(function () {
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["a"] = ({
   data: function data() {
     return {
@@ -15597,6 +15600,7 @@ if (false) {(function () {
 
 
   created: function created() {
+
     this.fetchItems();
   },
 
@@ -15623,7 +15627,7 @@ if (false) {(function () {
 
 "use strict";
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('h1', [_vm._v("Items")]), _vm._v(" "), _c('div', {
+  return _c('div', [_c('h1', [_vm._v("Itemss")]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-10"
