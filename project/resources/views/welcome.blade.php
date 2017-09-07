@@ -9,9 +9,11 @@
     </head>
     <body>
       <div class="" id="app">
+        @{{ message }}
 
       </div>
 
-    <script src="{{asset('js/app.js')}}"></script>
+
+      <script src="{{asset('js/pages/welcome.js')}}"></script> 
     </body>
 </html>
