@@ -1,1 +1,6 @@
 import Vue from 'vue';
+
+import Welcome from '../components/Welcome.vue';
+
+
+new Vue(Welcome).$mount('#app');
