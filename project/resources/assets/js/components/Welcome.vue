@@ -16,36 +16,42 @@
           <tr>
             <th>Nombre</th>
             <th>Hora</th>
+            <th>Fecha</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="book in bookings">
-            <td><a v-bind:href="book.fecha">{{book.nombre}}</a></td>
+            <td><span v-on:click="editBook(book)">{{book.nombre}}</span></td>
             <td>{{book.hora}}</td>
+            <td>{{book.fecha}}</td>
+            <td><span class="glyphicon glyphicon-trash" aria-hidden="true" v-on:click="removeBook(book)"></span></td>
           </tr>
         </tbody>
       </table>
+      <span class="btn btn-xs btn-primary" v-on:click="clearForm()"> Add Booking</span>
     </div>
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Add New Books</h3>
+        <h3 class="panel-title">Add New Book</h3>
       </div>
       <div class="panel-body">
          <form id="form" class="form-inline" v-on:submit.prevent="addBook">
           <div class="form-group">
-            <label for="bookTitle">Title:</label>
-            <input type="text" id="bookTitle" class="form-control" v-model="newBook.title">
+            <label for="bookTitle">Nombre:</label>
+            <input type="text" id="bookTitle" class="form-control" v-model="newBook.nombre">
           </div>
           <div class="form-group">
-            <label for="bookAuthor">Author:</label>
-            <input type="text" id="bookAuthor" class="form-control" v-model="newBook.author">
+            <label for="bookAuthor">Fecha:</label>
+            <input type="date" id="bookAuthor" class="form-control" v-model="newBook.fecha">
           </div>
           <div class="form-group">
-            <label for="bookUrl">Url:</label>
-            <input type="text" id="bookUrl" class="form-control" v-model="newBook.url">
+            <label for="bookUrl">Hora:</label>
+            <input type="time" id="bookUrl" class="form-control" v-model="newBook.hora">
           </div>
-          <input type="submit" class="btn btn-primary" value="Add Book">
+          <input type="submit" v-show="!edit" class="btn btn-primary" value="Add Booking">
+          <input type="submit" v-show="edit" class="btn btn-primary" value="Edit Booking">
+
         </form>
       </div>
     </div>
@@ -56,7 +62,9 @@
 
 <script>
 
-  import Firebase from 'firebase'
+  import Firebase from 'firebase';
+  import toastr from 'toastr';
+
   let config = {
       apiKey: "AIzaSyAfigVQQr7AJ62FSsfDkwrwK55JwT--3l4",
       authDomain: "faster-items.firebaseapp.com",
@@ -80,14 +88,55 @@ export default {
     return{
         message:'Hi hell Vue, What kind o magic is this!',
         items:[],
+        edit:false,
         newBook: {
             nombre: '',
             fecha: '',
             hora: '00:00'
-        }
+        },
+        booking:null
     }
   },
   methods:{
+    addBook: function (book) {
+      if(this.edit == true){
+        console.log(this.newBook);
+        let key = this.newBook['.key'];
+        delete this.newBook['.key'];
+        bookingsRef.child(key).set(this.newBook);
+      }else{
+        bookingsRef.push(this.newBook,function(error){
+          if(!error){
+            toastr.success("Booking added Successfuly!");
+          }
+        });
+      }
+      this.newBook.nombre = '';
+      this.newBook.fecha = '';
+      this.newBook.hora = '00:00';
+      this.edit = false;
+    },
+    clearForm (){
+      this.newBook = {
+        nombre :'',
+        fecha:'',
+        hora:''
+      };
+      this.edit = false;
+    },
+    editBook:function(book){
+      console.log("edit book:", book);
+      this.edit = true;
+      this.newBook = book;
+    },
+    removeBook:function(book){
+      bookingsRef.child(book['.key']).remove(function(error){
+        if (!error) {
+          // removed!
+          toastr.success('Booking removed Successfuly')
+        }
+      });
+    },
     add(){
       console.log("!ddd")
       this.items.push({value:""});
