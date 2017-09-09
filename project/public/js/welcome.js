@@ -25451,8 +25451,9 @@ var bookingsRef = db.ref('bookings');
       if (this.edit == true) {
         console.log(this.newBook);
         var key = this.newBook['.key'];
-        delete this.newBook['.key'];
-        bookingsRef.child(key).set(this.newBook);
+        bookingsRef.child(key).child('nombre').set(this.newBook.nombre);
+        bookingsRef.child(key).child('fecha').set(this.newBook.fecha);
+        bookingsRef.child(key).child('hora').set(this.newBook.hora);
       } else {
         bookingsRef.push(this.newBook, function (error) {
           if (!error) {
