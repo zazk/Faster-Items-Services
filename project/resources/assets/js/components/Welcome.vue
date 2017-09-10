@@ -2,14 +2,6 @@
   <div class="container">
     Dashboard Message: <strong>{{ message }}</strong>
 
-    <input type="text" name="" class="form-control"
-      v-model="message" @keyup="add" >
-    <div class="row" v-for="item in items" >
-      <div class="">
-        {{message}}{{item.value}}
-      </div>
-    </div>
-
     <div class="panel-body">
       <table class="table table-striped">
         <thead>
@@ -87,7 +79,6 @@ export default {
   data(){
     return{
         message:'Hi hell Vue, What kind o magic is this!',
-        items:[],
         edit:false,
         newBook: {
             nombre: '',
@@ -100,11 +91,9 @@ export default {
   methods:{
     addBook: function (book) {
       if(this.edit == true){
-        console.log(this.newBook);
-        let key = this.newBook['.key'];
-        bookingsRef.child(key).child('nombre').set(this.newBook.nombre);
-        bookingsRef.child(key).child('fecha').set(this.newBook.fecha);
-        bookingsRef.child(key).child('hora').set(this.newBook.hora);
+        let item = {...this.newBook};
+        delete item['.key'];
+        bookingsRef.child(this.newBook['.key']).set(item);
       }else{
         bookingsRef.push(this.newBook,function(error){
           if(!error){
@@ -134,10 +123,6 @@ export default {
           toastr.success('Booking removed Successfuly')
         }
       });
-    },
-    add(){
-      console.log("!ddd")
-      this.items.push({value:""});
     }
   }
 }

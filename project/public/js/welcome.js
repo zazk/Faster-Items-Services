@@ -60,2973 +60,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 134);
+/******/ 	return __webpack_require__(__webpack_require__.s = 52);
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.assertionError = exports.assert = undefined;
-
-var _constants = __webpack_require__(25);
-
-/**
- * Throws an error if the provided assertion is falsy
- * @param {*} assertion The assertion to be tested for falsiness
- * @param {!string} message The message to display if the check fails
- */
-var assert = exports.assert = function assert(assertion, message) {
-    if (!assertion) {
-        throw assertionError(message);
-    }
-};
-/**
- * Returns an Error object suitable for throwing.
- * @param {string} message
- * @return {!Error}
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var assertionError = exports.assertionError = function assertionError(message) {
-    return new Error('Firebase Database (' + _constants.CONSTANTS.SDK_VERSION + ') INTERNAL ASSERT FAILED: ' + message);
-};
-//# sourceMappingURL=assert.js.map
-
-
-/***/ }),
+/* 0 */,
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.setTimeoutNonBlocking = exports.exportPropGetter = exports.beingCrawled = exports.callUserCallback = exports.exceptionGuard = exports.tryParseInt = exports.INTEGER_REGEXP_ = exports.errorForServerCode = exports.isWindowsStoreApp = exports.isChromeExtensionContentScript = exports.doubleToIEEE754String = exports.bindCallback = exports.each = exports.splitStringBySize = exports.ObjectToUniqueKey = exports.requireKey = exports.stringCompare = exports.nameCompare = exports.MAX_NAME = exports.MIN_NAME = exports.executeWhenDOMReady = exports.isInvalidJSONNumber = exports.warnAboutUnsupportedMethod = exports.warnIfPageIsSecure = exports.warn = exports.fatal = exports.error = exports.logWrapper = exports.log = exports.enableLogging = exports.logger = exports.sha1 = exports.base64Decode = exports.base64Encode = exports.LUIDGenerator = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
-                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                              * limitations under the License.
-                                                                                                                                                                                                                                                                              */
-
-
-exports.setBufferImpl = setBufferImpl;
-
-var _assert = __webpack_require__(0);
-
-var _obj = __webpack_require__(2);
-
-var _crypt = __webpack_require__(147);
-
-var _Sha = __webpack_require__(148);
-
-var _utf = __webpack_require__(38);
-
-var _json = __webpack_require__(9);
-
-var _storage = __webpack_require__(26);
-
-var _environment = __webpack_require__(19);
-
-/**
- * Returns a locally-unique ID (generated by just incrementing up from 0 each time its called).
- * @type {function(): number} Generated ID.
- */
-var LUIDGenerator = exports.LUIDGenerator = function () {
-    var id = 1;
-    return function () {
-        return id++;
-    };
-}();
-/**
- * URL-safe base64 encoding
- * @param {!string} str
- * @return {!string}
- */
-var base64Encode = exports.base64Encode = function base64Encode(str) {
-    var utf8Bytes = (0, _utf.stringToByteArray)(str);
-    return _crypt.base64.encodeByteArray(utf8Bytes, /*useWebSafe=*/true);
-};
-var BufferImpl;
-function setBufferImpl(impl) {
-    BufferImpl = impl;
-}
-/**
- * URL-safe base64 decoding
- *
- * NOTE: DO NOT use the global atob() function - it does NOT support the
- * base64Url variant encoding.
- *
- * @param {string} str To be decoded
- * @return {?string} Decoded result, if possible
- */
-var base64Decode = exports.base64Decode = function base64Decode(str) {
-    try {
-        if (BufferImpl) {
-            return new BufferImpl(str, 'base64').toString('utf8');
-        } else {
-            return _crypt.base64.decodeString(str, /*useWebSafe=*/true);
-        }
-    } catch (e) {
-        log('base64Decode failed: ', e);
-    }
-    return null;
-};
-/**
- * Sha1 hash of the input string
- * @param {!string} str The string to hash
- * @return {!string} The resulting hash
- */
-var sha1 = exports.sha1 = function sha1(str) {
-    var utf8Bytes = (0, _utf.stringToByteArray)(str);
-    var sha1 = new _Sha.Sha1();
-    sha1.update(utf8Bytes);
-    var sha1Bytes = sha1.digest();
-    return _crypt.base64.encodeByteArray(sha1Bytes);
-};
-/**
- * @param {...*} var_args
- * @return {string}
- * @private
- */
-var buildLogMessage_ = function buildLogMessage_() {
-    var var_args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        var_args[_i] = arguments[_i];
-    }
-    var message = '';
-    for (var i = 0; i < var_args.length; i++) {
-        if (Array.isArray(var_args[i]) || var_args[i] && _typeof(var_args[i]) === 'object' && typeof var_args[i].length === 'number') {
-            message += buildLogMessage_.apply(null, var_args[i]);
-        } else if (_typeof(var_args[i]) === 'object') {
-            message += (0, _json.stringify)(var_args[i]);
-        } else {
-            message += var_args[i];
-        }
-        message += ' ';
-    }
-    return message;
-};
-/**
- * Use this for all debug messages in Firebase.
- * @type {?function(string)}
- */
-var logger = exports.logger = null;
-/**
- * Flag to check for log availability on first log message
- * @type {boolean}
- * @private
- */
-var firstLog_ = true;
-/**
- * The implementation of Firebase.enableLogging (defined here to break dependencies)
- * @param {boolean|?function(string)} logger_ A flag to turn on logging, or a custom logger
- * @param {boolean=} persistent Whether or not to persist logging settings across refreshes
- */
-var enableLogging = exports.enableLogging = function enableLogging(logger_, persistent) {
-    (0, _assert.assert)(!persistent || logger_ === true || logger_ === false, "Can't turn on custom loggers persistently.");
-    if (logger_ === true) {
-        if (typeof console !== 'undefined') {
-            if (typeof console.log === 'function') {
-                exports.logger = logger = console.log.bind(console);
-            } else if (_typeof(console.log) === 'object') {
-                // IE does this.
-                exports.logger = logger = function logger(message) {
-                    console.log(message);
-                };
-            }
-        }
-        if (persistent) _storage.SessionStorage.set('logging_enabled', true);
-    } else if (typeof logger_ === 'function') {
-        exports.logger = logger = logger_;
-    } else {
-        exports.logger = logger = null;
-        _storage.SessionStorage.remove('logging_enabled');
-    }
-};
-/**
- *
- * @param {...(string|Arguments)} var_args
- */
-var log = exports.log = function log() {
-    var var_args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        var_args[_i] = arguments[_i];
-    }
-    if (firstLog_ === true) {
-        firstLog_ = false;
-        if (logger === null && _storage.SessionStorage.get('logging_enabled') === true) enableLogging(true);
-    }
-    if (logger) {
-        var message = buildLogMessage_.apply(null, var_args);
-        logger(message);
-    }
-};
-/**
- * @param {!string} prefix
- * @return {function(...[*])}
- */
-var logWrapper = exports.logWrapper = function logWrapper(prefix) {
-    return function () {
-        var var_args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            var_args[_i] = arguments[_i];
-        }
-        log.apply(void 0, [prefix].concat(var_args));
-    };
-};
-/**
- * @param {...string} var_args
- */
-var error = exports.error = function error() {
-    var var_args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        var_args[_i] = arguments[_i];
-    }
-    if (typeof console !== 'undefined') {
-        var message = 'FIREBASE INTERNAL ERROR: ' + buildLogMessage_.apply(void 0, var_args);
-        if (typeof console.error !== 'undefined') {
-            console.error(message);
-        } else {
-            console.log(message);
-        }
-    }
-};
-/**
- * @param {...string} var_args
- */
-var fatal = exports.fatal = function fatal() {
-    var var_args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        var_args[_i] = arguments[_i];
-    }
-    var message = buildLogMessage_.apply(void 0, var_args);
-    throw new Error('FIREBASE FATAL ERROR: ' + message);
-};
-/**
- * @param {...*} var_args
- */
-var warn = exports.warn = function warn() {
-    var var_args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        var_args[_i] = arguments[_i];
-    }
-    if (typeof console !== 'undefined') {
-        var message = 'FIREBASE WARNING: ' + buildLogMessage_.apply(void 0, var_args);
-        if (typeof console.warn !== 'undefined') {
-            console.warn(message);
-        } else {
-            console.log(message);
-        }
-    }
-};
-/**
- * Logs a warning if the containing page uses https. Called when a call to new Firebase
- * does not use https.
- */
-var warnIfPageIsSecure = exports.warnIfPageIsSecure = function warnIfPageIsSecure() {
-    // Be very careful accessing browser globals. Who knows what may or may not exist.
-    if (typeof window !== 'undefined' && window.location && window.location.protocol && window.location.protocol.indexOf('https:') !== -1) {
-        warn('Insecure Firebase access from a secure page. ' + 'Please use https in calls to new Firebase().');
-    }
-};
-/**
- * @param {!String} methodName
- */
-var warnAboutUnsupportedMethod = exports.warnAboutUnsupportedMethod = function warnAboutUnsupportedMethod(methodName) {
-    warn(methodName + ' is unsupported and will likely change soon.  ' + 'Please do not use.');
-};
-/**
- * Returns true if data is NaN, or +/- Infinity.
- * @param {*} data
- * @return {boolean}
- */
-var isInvalidJSONNumber = exports.isInvalidJSONNumber = function isInvalidJSONNumber(data) {
-    return typeof data === 'number' && (data != data || data == Number.POSITIVE_INFINITY || data == Number.NEGATIVE_INFINITY);
-};
-/**
- * @param {function()} fn
- */
-var executeWhenDOMReady = exports.executeWhenDOMReady = function executeWhenDOMReady(fn) {
-    if ((0, _environment.isNodeSdk)() || document.readyState === 'complete') {
-        fn();
-    } else {
-        // Modeled after jQuery. Try DOMContentLoaded and onreadystatechange (which
-        // fire before onload), but fall back to onload.
-        var called_1 = false;
-        var wrappedFn_1 = function wrappedFn_1() {
-            if (!document.body) {
-                setTimeout(wrappedFn_1, Math.floor(10));
-                return;
-            }
-            if (!called_1) {
-                called_1 = true;
-                fn();
-            }
-        };
-        if (document.addEventListener) {
-            document.addEventListener('DOMContentLoaded', wrappedFn_1, false);
-            // fallback to onload.
-            window.addEventListener('load', wrappedFn_1, false);
-        } else if (document.attachEvent) {
-            // IE.
-            document.attachEvent('onreadystatechange', function () {
-                if (document.readyState === 'complete') wrappedFn_1();
-            });
-            // fallback to onload.
-            window.attachEvent('onload', wrappedFn_1);
-            // jQuery has an extra hack for IE that we could employ (based on
-            // http://javascript.nwbox.com/IEContentLoaded/) But it looks really old.
-            // I'm hoping we don't need it.
-        }
-    }
-};
-/**
- * Minimum key name. Invalid for actual data, used as a marker to sort before any valid names
- * @type {!string}
- */
-var MIN_NAME = exports.MIN_NAME = '[MIN_NAME]';
-/**
- * Maximum key name. Invalid for actual data, used as a marker to sort above any valid names
- * @type {!string}
- */
-var MAX_NAME = exports.MAX_NAME = '[MAX_NAME]';
-/**
- * Compares valid Firebase key names, plus min and max name
- * @param {!string} a
- * @param {!string} b
- * @return {!number}
- */
-var nameCompare = exports.nameCompare = function nameCompare(a, b) {
-    if (a === b) {
-        return 0;
-    } else if (a === MIN_NAME || b === MAX_NAME) {
-        return -1;
-    } else if (b === MIN_NAME || a === MAX_NAME) {
-        return 1;
-    } else {
-        var aAsInt = tryParseInt(a),
-            bAsInt = tryParseInt(b);
-        if (aAsInt !== null) {
-            if (bAsInt !== null) {
-                return aAsInt - bAsInt == 0 ? a.length - b.length : aAsInt - bAsInt;
-            } else {
-                return -1;
-            }
-        } else if (bAsInt !== null) {
-            return 1;
-        } else {
-            return a < b ? -1 : 1;
-        }
-    }
-};
-/**
- * @param {!string} a
- * @param {!string} b
- * @return {!number} comparison result.
- */
-var stringCompare = exports.stringCompare = function stringCompare(a, b) {
-    if (a === b) {
-        return 0;
-    } else if (a < b) {
-        return -1;
-    } else {
-        return 1;
-    }
-};
-/**
- * @param {string} key
- * @param {Object} obj
- * @return {*}
- */
-var requireKey = exports.requireKey = function requireKey(key, obj) {
-    if (obj && key in obj) {
-        return obj[key];
-    } else {
-        throw new Error('Missing required key (' + key + ') in object: ' + (0, _json.stringify)(obj));
-    }
-};
-/**
- * @param {*} obj
- * @return {string}
- */
-var ObjectToUniqueKey = exports.ObjectToUniqueKey = function ObjectToUniqueKey(obj) {
-    if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || obj === null) return (0, _json.stringify)(obj);
-    var keys = [];
-    for (var k in obj) {
-        keys.push(k);
-    }
-    // Export as json, but with the keys sorted.
-    keys.sort();
-    var key = '{';
-    for (var i = 0; i < keys.length; i++) {
-        if (i !== 0) key += ',';
-        key += (0, _json.stringify)(keys[i]);
-        key += ':';
-        key += ObjectToUniqueKey(obj[keys[i]]);
-    }
-    key += '}';
-    return key;
-};
-/**
- * Splits a string into a number of smaller segments of maximum size
- * @param {!string} str The string
- * @param {!number} segsize The maximum number of chars in the string.
- * @return {Array.<string>} The string, split into appropriately-sized chunks
- */
-var splitStringBySize = exports.splitStringBySize = function splitStringBySize(str, segsize) {
-    var len = str.length;
-    if (len <= segsize) {
-        return [str];
-    }
-    var dataSegs = [];
-    for (var c = 0; c < len; c += segsize) {
-        if (c + segsize > len) {
-            dataSegs.push(str.substring(c, len));
-        } else {
-            dataSegs.push(str.substring(c, c + segsize));
-        }
-    }
-    return dataSegs;
-};
-/**
- * Apply a function to each (key, value) pair in an object or
- * apply a function to each (index, value) pair in an array
- * @param {!(Object|Array)} obj The object or array to iterate over
- * @param {function(?, ?)} fn The function to apply
- */
-var each = exports.each = function each(obj, fn) {
-    if (Array.isArray(obj)) {
-        for (var i = 0; i < obj.length; ++i) {
-            fn(i, obj[i]);
-        }
-    } else {
-        /**
-         * in the conversion of code we removed the goog.object.forEach
-         * function which did a value,key callback. We standardized on
-         * a single impl that does a key, value callback. So we invert
-         * to not have to touch the `each` code points
-         */
-        (0, _obj.forEach)(obj, function (key, val) {
-            return fn(val, key);
-        });
-    }
-};
-/**
- * Like goog.bind, but doesn't bother to create a closure if opt_context is null/undefined.
- * @param {function(*)} callback Callback function.
- * @param {?Object=} context Optional context to bind to.
- * @return {function(*)}
- */
-var bindCallback = exports.bindCallback = function bindCallback(callback, context) {
-    return context ? callback.bind(context) : callback;
-};
-/**
- * Borrowed from http://hg.secondlife.com/llsd/src/tip/js/typedarray.js (MIT License)
- * I made one modification at the end and removed the NaN / Infinity
- * handling (since it seemed broken [caused an overflow] and we don't need it).  See MJL comments.
- * @param {!number} v A double
- * @return {string}
- */
-var doubleToIEEE754String = exports.doubleToIEEE754String = function doubleToIEEE754String(v) {
-    (0, _assert.assert)(!isInvalidJSONNumber(v), 'Invalid JSON number'); // MJL
-    var ebits = 11,
-        fbits = 52;
-    var bias = (1 << ebits - 1) - 1,
-        s,
-        e,
-        f,
-        ln,
-        i,
-        bits,
-        str;
-    // Compute sign, exponent, fraction
-    // Skip NaN / Infinity handling --MJL.
-    if (v === 0) {
-        e = 0;
-        f = 0;
-        s = 1 / v === -Infinity ? 1 : 0;
-    } else {
-        s = v < 0;
-        v = Math.abs(v);
-        if (v >= Math.pow(2, 1 - bias)) {
-            // Normalized
-            ln = Math.min(Math.floor(Math.log(v) / Math.LN2), bias);
-            e = ln + bias;
-            f = Math.round(v * Math.pow(2, fbits - ln) - Math.pow(2, fbits));
-        } else {
-            // Denormalized
-            e = 0;
-            f = Math.round(v / Math.pow(2, 1 - bias - fbits));
-        }
-    }
-    // Pack sign, exponent, fraction
-    bits = [];
-    for (i = fbits; i; i -= 1) {
-        bits.push(f % 2 ? 1 : 0);
-        f = Math.floor(f / 2);
-    }
-    for (i = ebits; i; i -= 1) {
-        bits.push(e % 2 ? 1 : 0);
-        e = Math.floor(e / 2);
-    }
-    bits.push(s ? 1 : 0);
-    bits.reverse();
-    str = bits.join('');
-    // Return the data as a hex string. --MJL
-    var hexByteString = '';
-    for (i = 0; i < 64; i += 8) {
-        var hexByte = parseInt(str.substr(i, 8), 2).toString(16);
-        if (hexByte.length === 1) hexByte = '0' + hexByte;
-        hexByteString = hexByteString + hexByte;
-    }
-    return hexByteString.toLowerCase();
-};
-/**
- * Used to detect if we're in a Chrome content script (which executes in an
- * isolated environment where long-polling doesn't work).
- * @return {boolean}
- */
-var isChromeExtensionContentScript = exports.isChromeExtensionContentScript = function isChromeExtensionContentScript() {
-    return !!((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window['chrome'] && window['chrome']['extension'] && !/^chrome/.test(window.location.href));
-};
-/**
- * Used to detect if we're in a Windows 8 Store app.
- * @return {boolean}
- */
-var isWindowsStoreApp = exports.isWindowsStoreApp = function isWindowsStoreApp() {
-    // Check for the presence of a couple WinRT globals
-    return (typeof Windows === 'undefined' ? 'undefined' : _typeof(Windows)) === 'object' && _typeof(Windows.UI) === 'object';
-};
-/**
- * Converts a server error code to a Javascript Error
- * @param {!string} code
- * @param {!Query} query
- * @return {Error}
- */
-var errorForServerCode = exports.errorForServerCode = function errorForServerCode(code, query) {
-    var reason = 'Unknown Error';
-    if (code === 'too_big') {
-        reason = 'The data requested exceeds the maximum size ' + 'that can be accessed with a single request.';
-    } else if (code == 'permission_denied') {
-        reason = "Client doesn't have permission to access the desired data.";
-    } else if (code == 'unavailable') {
-        reason = 'The service is unavailable';
-    }
-    var error = new Error(code + ' at ' + query.path.toString() + ': ' + reason);
-    error.code = code.toUpperCase();
-    return error;
-};
-/**
- * Used to test for integer-looking strings
- * @type {RegExp}
- * @private
- */
-var INTEGER_REGEXP_ = exports.INTEGER_REGEXP_ = new RegExp('^-?\\d{1,10}$');
-/**
- * If the string contains a 32-bit integer, return it.  Else return null.
- * @param {!string} str
- * @return {?number}
- */
-var tryParseInt = exports.tryParseInt = function tryParseInt(str) {
-    if (INTEGER_REGEXP_.test(str)) {
-        var intVal = Number(str);
-        if (intVal >= -2147483648 && intVal <= 2147483647) {
-            return intVal;
-        }
-    }
-    return null;
-};
-/**
- * Helper to run some code but catch any exceptions and re-throw them later.
- * Useful for preventing user callbacks from breaking internal code.
- *
- * Re-throwing the exception from a setTimeout is a little evil, but it's very
- * convenient (we don't have to try to figure out when is a safe point to
- * re-throw it), and the behavior seems reasonable:
- *
- * * If you aren't pausing on exceptions, you get an error in the console with
- *   the correct stack trace.
- * * If you're pausing on all exceptions, the debugger will pause on your
- *   exception and then again when we rethrow it.
- * * If you're only pausing on uncaught exceptions, the debugger will only pause
- *   on us re-throwing it.
- *
- * @param {!function()} fn The code to guard.
- */
-var exceptionGuard = exports.exceptionGuard = function exceptionGuard(fn) {
-    try {
-        fn();
-    } catch (e) {
-        // Re-throw exception when it's safe.
-        setTimeout(function () {
-            // It used to be that "throw e" would result in a good console error with
-            // relevant context, but as of Chrome 39, you just get the firebase.js
-            // file/line number where we re-throw it, which is useless. So we log
-            // e.stack explicitly.
-            var stack = e.stack || '';
-            warn('Exception was thrown by user callback.', stack);
-            throw e;
-        }, Math.floor(0));
-    }
-};
-/**
- * Helper function to safely call opt_callback with the specified arguments.  It:
- * 1. Turns into a no-op if opt_callback is null or undefined.
- * 2. Wraps the call inside exceptionGuard to prevent exceptions from breaking our state.
- *
- * @param {?Function=} callback Optional onComplete callback.
- * @param {...*} var_args Arbitrary args to be passed to opt_onComplete
- */
-var callUserCallback = exports.callUserCallback = function callUserCallback(callback) {
-    var var_args = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        var_args[_i - 1] = arguments[_i];
-    }
-    if (typeof callback === 'function') {
-        exceptionGuard(function () {
-            callback.apply(void 0, var_args);
-        });
-    }
-};
-/**
- * @return {boolean} true if we think we're currently being crawled.
- */
-var beingCrawled = exports.beingCrawled = function beingCrawled() {
-    var userAgent = (typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window['navigator'] && window['navigator']['userAgent'] || '';
-    // For now we whitelist the most popular crawlers.  We should refine this to be the set of crawlers we
-    // believe to support JavaScript/AJAX rendering.
-    // NOTE: Google Webmaster Tools doesn't really belong, but their "This is how a visitor to your website
-    // would have seen the page" is flaky if we don't treat it as a crawler.
-    return userAgent.search(/googlebot|google webmaster tools|bingbot|yahoo! slurp|baiduspider|yandexbot|duckduckbot/i) >= 0;
-};
-/**
- * Export a property of an object using a getter function.
- *
- * @param {!Object} object
- * @param {string} name
- * @param {!function(): *} fnGet
- */
-var exportPropGetter = exports.exportPropGetter = function exportPropGetter(object, name, fnGet) {
-    Object.defineProperty(object, name, { get: fnGet });
-};
-/**
- * Same as setTimeout() except on Node.JS it will /not/ prevent the process from exiting.
- *
- * It is removed with clearTimeout() as normal.
- *
- * @param {Function} fn Function to run.
- * @param {number} time Milliseconds to wait before running.
- * @return {number|Object} The setTimeout() return value.
- */
-var setTimeoutNonBlocking = exports.setTimeoutNonBlocking = function setTimeoutNonBlocking(fn, time) {
-    var timeout = setTimeout(fn, time);
-    if ((typeof timeout === 'undefined' ? 'undefined' : _typeof(timeout)) === 'object' && timeout['unref']) {
-        timeout['unref']();
-    }
-    return timeout;
-};
-//# sourceMappingURL=util.js.map
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-// See http://www.devthought.com/2012/01/18/an-object-is-not-a-hash/
-var contains = exports.contains = function contains(obj, key) {
-    return Object.prototype.hasOwnProperty.call(obj, key);
-};
-var safeGet = exports.safeGet = function safeGet(obj, key) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) return obj[key];
-    // else return undefined.
-};
-/**
- * Enumerates the keys/values in an object, excluding keys defined on the prototype.
- *
- * @param {?Object.<K,V>} obj Object to enumerate.
- * @param {!function(K, V)} fn Function to call for each key and value.
- * @template K,V
- */
-var forEach = exports.forEach = function forEach(obj, fn) {
-    for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            fn(key, obj[key]);
-        }
-    }
-};
-/**
- * Copies all the (own) properties from one object to another.
- * @param {!Object} objTo
- * @param {!Object} objFrom
- * @return {!Object} objTo
- */
-var extend = exports.extend = function extend(objTo, objFrom) {
-    forEach(objFrom, function (key, value) {
-        objTo[key] = value;
-    });
-    return objTo;
-};
-/**
- * Returns a clone of the specified object.
- * @param {!Object} obj
- * @return {!Object} cloned obj.
- */
-var clone = exports.clone = function clone(obj) {
-    return extend({}, obj);
-};
-/**
- * Returns true if obj has typeof "object" and is not null.  Unlike goog.isObject(), does not return true
- * for functions.
- *
- * @param obj {*} A potential object.
- * @returns {boolean} True if it's an object.
- */
-var isNonNullObject = exports.isNonNullObject = function isNonNullObject(obj) {
-    return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null;
-};
-var isEmpty = exports.isEmpty = function isEmpty(obj) {
-    for (var key in obj) {
-        return false;
-    }
-    return true;
-};
-var getCount = exports.getCount = function getCount(obj) {
-    var rv = 0;
-    for (var key in obj) {
-        rv++;
-    }
-    return rv;
-};
-var map = exports.map = function map(obj, f, opt_obj) {
-    var res = {};
-    for (var key in obj) {
-        res[key] = f.call(opt_obj, obj[key], key, obj);
-    }
-    return res;
-};
-var findKey = exports.findKey = function findKey(obj, fn, opt_this) {
-    for (var key in obj) {
-        if (fn.call(opt_this, obj[key], key, obj)) {
-            return key;
-        }
-    }
-    return undefined;
-};
-var findValue = exports.findValue = function findValue(obj, fn, opt_this) {
-    var key = findKey(obj, fn, opt_this);
-    return key && obj[key];
-};
-var getAnyKey = exports.getAnyKey = function getAnyKey(obj) {
-    for (var key in obj) {
-        return key;
-    }
-};
-var getValues = exports.getValues = function getValues(obj) {
-    var res = [];
-    var i = 0;
-    for (var key in obj) {
-        res[i++] = obj[key];
-    }
-    return res;
-};
-/**
- * Tests whether every key/value pair in an object pass the test implemented
- * by the provided function
- *
- * @param {?Object.<K,V>} obj Object to test.
- * @param {!function(K, V)} fn Function to call for each key and value.
- * @template K,V
- */
-var every = exports.every = function every(obj, fn) {
-    for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            if (!fn(key, obj[key])) {
-                return false;
-            }
-        }
-    }
-    return true;
-};
-//# sourceMappingURL=obj.js.map
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ValidationPath = exports.Path = undefined;
-
-var _util = __webpack_require__(1);
-
-var _utf = __webpack_require__(38);
-
-/**
- * An immutable object representing a parsed path.  It's immutable so that you
- * can pass them around to other functions without worrying about them changing
- * it.
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var Path = function () {
-    /**
-     * @param {string|Array.<string>} pathOrString Path string to parse,
-     *      or another path, or the raw tokens array
-     * @param {number=} pieceNum
-     */
-    function Path(pathOrString, pieceNum) {
-        if (pieceNum === void 0) {
-            this.pieces_ = pathOrString.split('/');
-            // Remove empty pieces.
-            var copyTo = 0;
-            for (var i = 0; i < this.pieces_.length; i++) {
-                if (this.pieces_[i].length > 0) {
-                    this.pieces_[copyTo] = this.pieces_[i];
-                    copyTo++;
-                }
-            }
-            this.pieces_.length = copyTo;
-            this.pieceNum_ = 0;
-        } else {
-            this.pieces_ = pathOrString;
-            this.pieceNum_ = pieceNum;
-        }
-    }
-    Object.defineProperty(Path, "Empty", {
-        /**
-         * Singleton to represent an empty path
-         *
-         * @const
-         */
-        get: function get() {
-            return new Path('');
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Path.prototype.getFront = function () {
-        if (this.pieceNum_ >= this.pieces_.length) return null;
-        return this.pieces_[this.pieceNum_];
-    };
-    /**
-     * @return {number} The number of segments in this path
-     */
-    Path.prototype.getLength = function () {
-        return this.pieces_.length - this.pieceNum_;
-    };
-    /**
-     * @return {!Path}
-     */
-    Path.prototype.popFront = function () {
-        var pieceNum = this.pieceNum_;
-        if (pieceNum < this.pieces_.length) {
-            pieceNum++;
-        }
-        return new Path(this.pieces_, pieceNum);
-    };
-    /**
-     * @return {?string}
-     */
-    Path.prototype.getBack = function () {
-        if (this.pieceNum_ < this.pieces_.length) return this.pieces_[this.pieces_.length - 1];
-        return null;
-    };
-    Path.prototype.toString = function () {
-        var pathString = '';
-        for (var i = this.pieceNum_; i < this.pieces_.length; i++) {
-            if (this.pieces_[i] !== '') pathString += '/' + this.pieces_[i];
-        }
-        return pathString || '/';
-    };
-    Path.prototype.toUrlEncodedString = function () {
-        var pathString = '';
-        for (var i = this.pieceNum_; i < this.pieces_.length; i++) {
-            if (this.pieces_[i] !== '') pathString += '/' + encodeURIComponent(String(this.pieces_[i]));
-        }
-        return pathString || '/';
-    };
-    /**
-     * Shallow copy of the parts of the path.
-     *
-     * @param {number=} begin
-     * @return {!Array<string>}
-     */
-    Path.prototype.slice = function (begin) {
-        if (begin === void 0) {
-            begin = 0;
-        }
-        return this.pieces_.slice(this.pieceNum_ + begin);
-    };
-    /**
-     * @return {?Path}
-     */
-    Path.prototype.parent = function () {
-        if (this.pieceNum_ >= this.pieces_.length) return null;
-        var pieces = [];
-        for (var i = this.pieceNum_; i < this.pieces_.length - 1; i++) {
-            pieces.push(this.pieces_[i]);
-        }return new Path(pieces, 0);
-    };
-    /**
-     * @param {string|!Path} childPathObj
-     * @return {!Path}
-     */
-    Path.prototype.child = function (childPathObj) {
-        var pieces = [];
-        for (var i = this.pieceNum_; i < this.pieces_.length; i++) {
-            pieces.push(this.pieces_[i]);
-        }if (childPathObj instanceof Path) {
-            for (var i = childPathObj.pieceNum_; i < childPathObj.pieces_.length; i++) {
-                pieces.push(childPathObj.pieces_[i]);
-            }
-        } else {
-            var childPieces = childPathObj.split('/');
-            for (var i = 0; i < childPieces.length; i++) {
-                if (childPieces[i].length > 0) pieces.push(childPieces[i]);
-            }
-        }
-        return new Path(pieces, 0);
-    };
-    /**
-     * @return {boolean} True if there are no segments in this path
-     */
-    Path.prototype.isEmpty = function () {
-        return this.pieceNum_ >= this.pieces_.length;
-    };
-    /**
-     * @param {!Path} outerPath
-     * @param {!Path} innerPath
-     * @return {!Path} The path from outerPath to innerPath
-     */
-    Path.relativePath = function (outerPath, innerPath) {
-        var outer = outerPath.getFront(),
-            inner = innerPath.getFront();
-        if (outer === null) {
-            return innerPath;
-        } else if (outer === inner) {
-            return Path.relativePath(outerPath.popFront(), innerPath.popFront());
-        } else {
-            throw new Error('INTERNAL ERROR: innerPath (' + innerPath + ') is not within ' + 'outerPath (' + outerPath + ')');
-        }
-    };
-    /**
-     * @param {!Path} left
-     * @param {!Path} right
-     * @return {number} -1, 0, 1 if left is less, equal, or greater than the right.
-     */
-    Path.comparePaths = function (left, right) {
-        var leftKeys = left.slice();
-        var rightKeys = right.slice();
-        for (var i = 0; i < leftKeys.length && i < rightKeys.length; i++) {
-            var cmp = (0, _util.nameCompare)(leftKeys[i], rightKeys[i]);
-            if (cmp !== 0) return cmp;
-        }
-        if (leftKeys.length === rightKeys.length) return 0;
-        return leftKeys.length < rightKeys.length ? -1 : 1;
-    };
-    /**
-     *
-     * @param {Path} other
-     * @return {boolean} true if paths are the same.
-     */
-    Path.prototype.equals = function (other) {
-        if (this.getLength() !== other.getLength()) {
-            return false;
-        }
-        for (var i = this.pieceNum_, j = other.pieceNum_; i <= this.pieces_.length; i++, j++) {
-            if (this.pieces_[i] !== other.pieces_[j]) {
-                return false;
-            }
-        }
-        return true;
-    };
-    /**
-     *
-     * @param {!Path} other
-     * @return {boolean} True if this path is a parent (or the same as) other
-     */
-    Path.prototype.contains = function (other) {
-        var i = this.pieceNum_;
-        var j = other.pieceNum_;
-        if (this.getLength() > other.getLength()) {
-            return false;
-        }
-        while (i < this.pieces_.length) {
-            if (this.pieces_[i] !== other.pieces_[j]) {
-                return false;
-            }
-            ++i;
-            ++j;
-        }
-        return true;
-    };
-    return Path;
-}(); // end Path
-exports.Path = Path;
-/**
- * Dynamic (mutable) path used to count path lengths.
- *
- * This class is used to efficiently check paths for valid
- * length (in UTF8 bytes) and depth (used in path validation).
- *
- * Throws Error exception if path is ever invalid.
- *
- * The definition of a path always begins with '/'.
- */
-
-var ValidationPath = function () {
-    /**
-     * @param {!Path} path Initial Path.
-     * @param {string} errorPrefix_ Prefix for any error messages.
-     */
-    function ValidationPath(path, errorPrefix_) {
-        this.errorPrefix_ = errorPrefix_;
-        /** @type {!Array<string>} */
-        this.parts_ = path.slice();
-        /** @type {number} Initialize to number of '/' chars needed in path. */
-        this.byteLength_ = Math.max(1, this.parts_.length);
-        for (var i = 0; i < this.parts_.length; i++) {
-            this.byteLength_ += (0, _utf.stringLength)(this.parts_[i]);
-        }
-        this.checkValid_();
-    }
-    Object.defineProperty(ValidationPath, "MAX_PATH_DEPTH", {
-        /** @const {number} Maximum key depth. */
-        get: function get() {
-            return 32;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ValidationPath, "MAX_PATH_LENGTH_BYTES", {
-        /** @const {number} Maximum number of (UTF8) bytes in a Firebase path. */
-        get: function get() {
-            return 768;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /** @param {string} child */
-    ValidationPath.prototype.push = function (child) {
-        // Count the needed '/'
-        if (this.parts_.length > 0) {
-            this.byteLength_ += 1;
-        }
-        this.parts_.push(child);
-        this.byteLength_ += (0, _utf.stringLength)(child);
-        this.checkValid_();
-    };
-    ValidationPath.prototype.pop = function () {
-        var last = this.parts_.pop();
-        this.byteLength_ -= (0, _utf.stringLength)(last);
-        // Un-count the previous '/'
-        if (this.parts_.length > 0) {
-            this.byteLength_ -= 1;
-        }
-    };
-    ValidationPath.prototype.checkValid_ = function () {
-        if (this.byteLength_ > ValidationPath.MAX_PATH_LENGTH_BYTES) {
-            throw new Error(this.errorPrefix_ + 'has a key path longer than ' + ValidationPath.MAX_PATH_LENGTH_BYTES + ' bytes (' + this.byteLength_ + ').');
-        }
-        if (this.parts_.length > ValidationPath.MAX_PATH_DEPTH) {
-            throw new Error(this.errorPrefix_ + 'path specified exceeds the maximum depth that can be written (' + ValidationPath.MAX_PATH_DEPTH + ') or object contains a cycle ' + this.toErrorString());
-        }
-    };
-    /**
-     * String for use in error messages - uses '.' notation for path.
-     *
-     * @return {string}
-     */
-    ValidationPath.prototype.toErrorString = function () {
-        if (this.parts_.length == 0) {
-            return '';
-        }
-        return "in property '" + this.parts_.join('.') + "'";
-    };
-    return ValidationPath;
-}();
-exports.ValidationPath = ValidationPath;
-//# sourceMappingURL=Path.js.map
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.PRIORITY_INDEX = exports.PriorityIndex = undefined;
-exports.setNodeFromJSON = setNodeFromJSON;
-exports.setMaxNode = setMaxNode;
-
-var _Index = __webpack_require__(28);
-
-var _util = __webpack_require__(1);
-
-var _Node = __webpack_require__(7);
-
-var _LeafNode = __webpack_require__(29);
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var __extends = undefined && undefined.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-
-var nodeFromJSON;
-var MAX_NODE;
-function setNodeFromJSON(val) {
-    nodeFromJSON = val;
-}
-function setMaxNode(val) {
-    MAX_NODE = val;
-}
-/**
- * @constructor
- * @extends {Index}
- * @private
- */
-var PriorityIndex = function (_super) {
-    __extends(PriorityIndex, _super);
-    function PriorityIndex() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * @inheritDoc
-     */
-    PriorityIndex.prototype.compare = function (a, b) {
-        var aPriority = a.node.getPriority();
-        var bPriority = b.node.getPriority();
-        var indexCmp = aPriority.compareTo(bPriority);
-        if (indexCmp === 0) {
-            return (0, _util.nameCompare)(a.name, b.name);
-        } else {
-            return indexCmp;
-        }
-    };
-    /**
-     * @inheritDoc
-     */
-    PriorityIndex.prototype.isDefinedOn = function (node) {
-        return !node.getPriority().isEmpty();
-    };
-    /**
-     * @inheritDoc
-     */
-    PriorityIndex.prototype.indexedValueChanged = function (oldNode, newNode) {
-        return !oldNode.getPriority().equals(newNode.getPriority());
-    };
-    /**
-     * @inheritDoc
-     */
-    PriorityIndex.prototype.minPost = function () {
-        return _Node.NamedNode.MIN;
-    };
-    /**
-     * @inheritDoc
-     */
-    PriorityIndex.prototype.maxPost = function () {
-        return new _Node.NamedNode(_util.MAX_NAME, new _LeafNode.LeafNode('[PRIORITY-POST]', MAX_NODE));
-    };
-    /**
-     * @param {*} indexValue
-     * @param {string} name
-     * @return {!NamedNode}
-     */
-    PriorityIndex.prototype.makePost = function (indexValue, name) {
-        var priorityNode = nodeFromJSON(indexValue);
-        return new _Node.NamedNode(name, new _LeafNode.LeafNode('[PRIORITY-POST]', priorityNode));
-    };
-    /**
-     * @return {!string} String representation for inclusion in a query spec
-     */
-    PriorityIndex.prototype.toString = function () {
-        return '.priority';
-    };
-    return PriorityIndex;
-}(_Index.Index);
-exports.PriorityIndex = PriorityIndex;
-var PRIORITY_INDEX = exports.PRIORITY_INDEX = new PriorityIndex();
-//# sourceMappingURL=PriorityIndex.js.map
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.MAX_NODE = exports.MaxNode = exports.ChildrenNode = undefined;
-
-var _assert = __webpack_require__(0);
-
-var _util = __webpack_require__(1);
-
-var _SortedMap = __webpack_require__(40);
-
-var _Node = __webpack_require__(7);
-
-var _snap = __webpack_require__(62);
-
-var _PriorityIndex = __webpack_require__(4);
-
-var _KeyIndex = __webpack_require__(22);
-
-var _IndexMap = __webpack_require__(64);
-
-var _LeafNode = __webpack_require__(29);
-
-var _comparators = __webpack_require__(66);
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var __extends = undefined && undefined.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-
-// TODO: For memory savings, don't store priorityNode_ if it's empty.
-var EMPTY_NODE;
-/**
- * ChildrenNode is a class for storing internal nodes in a DataSnapshot
- * (i.e. nodes with children).  It implements Node and stores the
- * list of children in the children property, sorted by child name.
- *
- * @constructor
- * @implements {Node}
- */
-var ChildrenNode = function () {
-    /**
-     *
-     * @param {!SortedMap.<string, !Node>} children_ List of children
-     * of this node..
-     * @param {?Node} priorityNode_ The priority of this node (as a snapshot node).
-     * @param {!IndexMap} indexMap_
-     */
-    function ChildrenNode(children_, priorityNode_, indexMap_) {
-        this.children_ = children_;
-        this.priorityNode_ = priorityNode_;
-        this.indexMap_ = indexMap_;
-        this.lazyHash_ = null;
-        /**
-         * Note: The only reason we allow null priority is for EMPTY_NODE, since we can't use
-         * EMPTY_NODE as the priority of EMPTY_NODE.  We might want to consider making EMPTY_NODE its own
-         * class instead of an empty ChildrenNode.
-         */
-        if (this.priorityNode_) {
-            (0, _snap.validatePriorityNode)(this.priorityNode_);
-        }
-        if (this.children_.isEmpty()) {
-            (0, _assert.assert)(!this.priorityNode_ || this.priorityNode_.isEmpty(), 'An empty node cannot have a priority');
-        }
-    }
-    Object.defineProperty(ChildrenNode, "EMPTY_NODE", {
-        get: function get() {
-            return EMPTY_NODE || (EMPTY_NODE = new ChildrenNode(new _SortedMap.SortedMap(_comparators.NAME_COMPARATOR), null, _IndexMap.IndexMap.Default));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /** @inheritDoc */
-    ChildrenNode.prototype.isLeafNode = function () {
-        return false;
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.getPriority = function () {
-        return this.priorityNode_ || EMPTY_NODE;
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.updatePriority = function (newPriorityNode) {
-        if (this.children_.isEmpty()) {
-            // Don't allow priorities on empty nodes
-            return this;
-        } else {
-            return new ChildrenNode(this.children_, newPriorityNode, this.indexMap_);
-        }
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.getImmediateChild = function (childName) {
-        // Hack to treat priority as a regular child
-        if (childName === '.priority') {
-            return this.getPriority();
-        } else {
-            var child = this.children_.get(childName);
-            return child === null ? EMPTY_NODE : child;
-        }
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.getChild = function (path) {
-        var front = path.getFront();
-        if (front === null) return this;
-        return this.getImmediateChild(front).getChild(path.popFront());
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.hasChild = function (childName) {
-        return this.children_.get(childName) !== null;
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.updateImmediateChild = function (childName, newChildNode) {
-        (0, _assert.assert)(newChildNode, 'We should always be passing snapshot nodes');
-        if (childName === '.priority') {
-            return this.updatePriority(newChildNode);
-        } else {
-            var namedNode = new _Node.NamedNode(childName, newChildNode);
-            var newChildren = void 0,
-                newIndexMap = void 0,
-                newPriority = void 0;
-            if (newChildNode.isEmpty()) {
-                newChildren = this.children_.remove(childName);
-                newIndexMap = this.indexMap_.removeFromIndexes(namedNode, this.children_);
-            } else {
-                newChildren = this.children_.insert(childName, newChildNode);
-                newIndexMap = this.indexMap_.addToIndexes(namedNode, this.children_);
-            }
-            newPriority = newChildren.isEmpty() ? EMPTY_NODE : this.priorityNode_;
-            return new ChildrenNode(newChildren, newPriority, newIndexMap);
-        }
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.updateChild = function (path, newChildNode) {
-        var front = path.getFront();
-        if (front === null) {
-            return newChildNode;
-        } else {
-            (0, _assert.assert)(path.getFront() !== '.priority' || path.getLength() === 1, '.priority must be the last token in a path');
-            var newImmediateChild = this.getImmediateChild(front).updateChild(path.popFront(), newChildNode);
-            return this.updateImmediateChild(front, newImmediateChild);
-        }
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.isEmpty = function () {
-        return this.children_.isEmpty();
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.numChildren = function () {
-        return this.children_.count();
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.val = function (exportFormat) {
-        if (this.isEmpty()) return null;
-        var obj = {};
-        var numKeys = 0,
-            maxKey = 0,
-            allIntegerKeys = true;
-        this.forEachChild(_PriorityIndex.PRIORITY_INDEX, function (key, childNode) {
-            obj[key] = childNode.val(exportFormat);
-            numKeys++;
-            if (allIntegerKeys && ChildrenNode.INTEGER_REGEXP_.test(key)) {
-                maxKey = Math.max(maxKey, Number(key));
-            } else {
-                allIntegerKeys = false;
-            }
-        });
-        if (!exportFormat && allIntegerKeys && maxKey < 2 * numKeys) {
-            // convert to array.
-            var array = [];
-            for (var key in obj) {
-                array[key] = obj[key];
-            }return array;
-        } else {
-            if (exportFormat && !this.getPriority().isEmpty()) {
-                obj['.priority'] = this.getPriority().val();
-            }
-            return obj;
-        }
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.hash = function () {
-        if (this.lazyHash_ === null) {
-            var toHash_1 = '';
-            if (!this.getPriority().isEmpty()) toHash_1 += 'priority:' + (0, _snap.priorityHashText)(this.getPriority().val()) + ':';
-            this.forEachChild(_PriorityIndex.PRIORITY_INDEX, function (key, childNode) {
-                var childHash = childNode.hash();
-                if (childHash !== '') toHash_1 += ':' + key + ':' + childHash;
-            });
-            this.lazyHash_ = toHash_1 === '' ? '' : (0, _util.sha1)(toHash_1);
-        }
-        return this.lazyHash_;
-    };
-    /** @inheritDoc */
-    ChildrenNode.prototype.getPredecessorChildName = function (childName, childNode, index) {
-        var idx = this.resolveIndex_(index);
-        if (idx) {
-            var predecessor = idx.getPredecessorKey(new _Node.NamedNode(childName, childNode));
-            return predecessor ? predecessor.name : null;
-        } else {
-            return this.children_.getPredecessorKey(childName);
-        }
-    };
-    /**
-     * @param {!Index} indexDefinition
-     * @return {?string}
-     */
-    ChildrenNode.prototype.getFirstChildName = function (indexDefinition) {
-        var idx = this.resolveIndex_(indexDefinition);
-        if (idx) {
-            var minKey = idx.minKey();
-            return minKey && minKey.name;
-        } else {
-            return this.children_.minKey();
-        }
-    };
-    /**
-     * @param {!Index} indexDefinition
-     * @return {?NamedNode}
-     */
-    ChildrenNode.prototype.getFirstChild = function (indexDefinition) {
-        var minKey = this.getFirstChildName(indexDefinition);
-        if (minKey) {
-            return new _Node.NamedNode(minKey, this.children_.get(minKey));
-        } else {
-            return null;
-        }
-    };
-    /**
-     * Given an index, return the key name of the largest value we have, according to that index
-     * @param {!Index} indexDefinition
-     * @return {?string}
-     */
-    ChildrenNode.prototype.getLastChildName = function (indexDefinition) {
-        var idx = this.resolveIndex_(indexDefinition);
-        if (idx) {
-            var maxKey = idx.maxKey();
-            return maxKey && maxKey.name;
-        } else {
-            return this.children_.maxKey();
-        }
-    };
-    /**
-     * @param {!Index} indexDefinition
-     * @return {?NamedNode}
-     */
-    ChildrenNode.prototype.getLastChild = function (indexDefinition) {
-        var maxKey = this.getLastChildName(indexDefinition);
-        if (maxKey) {
-            return new _Node.NamedNode(maxKey, this.children_.get(maxKey));
-        } else {
-            return null;
-        }
-    };
-    /**
-     * @inheritDoc
-     */
-    ChildrenNode.prototype.forEachChild = function (index, action) {
-        var idx = this.resolveIndex_(index);
-        if (idx) {
-            return idx.inorderTraversal(function (wrappedNode) {
-                return action(wrappedNode.name, wrappedNode.node);
-            });
-        } else {
-            return this.children_.inorderTraversal(action);
-        }
-    };
-    /**
-     * @param {!Index} indexDefinition
-     * @return {SortedMapIterator}
-     */
-    ChildrenNode.prototype.getIterator = function (indexDefinition) {
-        return this.getIteratorFrom(indexDefinition.minPost(), indexDefinition);
-    };
-    /**
-     *
-     * @param {!NamedNode} startPost
-     * @param {!Index} indexDefinition
-     * @return {!SortedMapIterator}
-     */
-    ChildrenNode.prototype.getIteratorFrom = function (startPost, indexDefinition) {
-        var idx = this.resolveIndex_(indexDefinition);
-        if (idx) {
-            return idx.getIteratorFrom(startPost, function (key) {
-                return key;
-            });
-        } else {
-            var iterator = this.children_.getIteratorFrom(startPost.name, _Node.NamedNode.Wrap);
-            var next = iterator.peek();
-            while (next != null && indexDefinition.compare(next, startPost) < 0) {
-                iterator.getNext();
-                next = iterator.peek();
-            }
-            return iterator;
-        }
-    };
-    /**
-     * @param {!Index} indexDefinition
-     * @return {!SortedMapIterator}
-     */
-    ChildrenNode.prototype.getReverseIterator = function (indexDefinition) {
-        return this.getReverseIteratorFrom(indexDefinition.maxPost(), indexDefinition);
-    };
-    /**
-     * @param {!NamedNode} endPost
-     * @param {!Index} indexDefinition
-     * @return {!SortedMapIterator}
-     */
-    ChildrenNode.prototype.getReverseIteratorFrom = function (endPost, indexDefinition) {
-        var idx = this.resolveIndex_(indexDefinition);
-        if (idx) {
-            return idx.getReverseIteratorFrom(endPost, function (key) {
-                return key;
-            });
-        } else {
-            var iterator = this.children_.getReverseIteratorFrom(endPost.name, _Node.NamedNode.Wrap);
-            var next = iterator.peek();
-            while (next != null && indexDefinition.compare(next, endPost) > 0) {
-                iterator.getNext();
-                next = iterator.peek();
-            }
-            return iterator;
-        }
-    };
-    /**
-     * @inheritDoc
-     */
-    ChildrenNode.prototype.compareTo = function (other) {
-        if (this.isEmpty()) {
-            if (other.isEmpty()) {
-                return 0;
-            } else {
-                return -1;
-            }
-        } else if (other.isLeafNode() || other.isEmpty()) {
-            return 1;
-        } else if (other === MAX_NODE) {
-            return -1;
-        } else {
-            // Must be another node with children.
-            return 0;
-        }
-    };
-    /**
-     * @inheritDoc
-     */
-    ChildrenNode.prototype.withIndex = function (indexDefinition) {
-        if (indexDefinition === _KeyIndex.KEY_INDEX || this.indexMap_.hasIndex(indexDefinition)) {
-            return this;
-        } else {
-            var newIndexMap = this.indexMap_.addIndex(indexDefinition, this.children_);
-            return new ChildrenNode(this.children_, this.priorityNode_, newIndexMap);
-        }
-    };
-    /**
-     * @inheritDoc
-     */
-    ChildrenNode.prototype.isIndexed = function (index) {
-        return index === _KeyIndex.KEY_INDEX || this.indexMap_.hasIndex(index);
-    };
-    /**
-     * @inheritDoc
-     */
-    ChildrenNode.prototype.equals = function (other) {
-        if (other === this) {
-            return true;
-        } else if (other.isLeafNode()) {
-            return false;
-        } else {
-            var otherChildrenNode = other;
-            if (!this.getPriority().equals(otherChildrenNode.getPriority())) {
-                return false;
-            } else if (this.children_.count() === otherChildrenNode.children_.count()) {
-                var thisIter = this.getIterator(_PriorityIndex.PRIORITY_INDEX);
-                var otherIter = otherChildrenNode.getIterator(_PriorityIndex.PRIORITY_INDEX);
-                var thisCurrent = thisIter.getNext();
-                var otherCurrent = otherIter.getNext();
-                while (thisCurrent && otherCurrent) {
-                    if (thisCurrent.name !== otherCurrent.name || !thisCurrent.node.equals(otherCurrent.node)) {
-                        return false;
-                    }
-                    thisCurrent = thisIter.getNext();
-                    otherCurrent = otherIter.getNext();
-                }
-                return thisCurrent === null && otherCurrent === null;
-            } else {
-                return false;
-            }
-        }
-    };
-    /**
-     * Returns a SortedMap ordered by index, or null if the default (by-key) ordering can be used
-     * instead.
-     *
-     * @private
-     * @param {!Index} indexDefinition
-     * @return {?SortedMap.<NamedNode, Node>}
-     */
-    ChildrenNode.prototype.resolveIndex_ = function (indexDefinition) {
-        if (indexDefinition === _KeyIndex.KEY_INDEX) {
-            return null;
-        } else {
-            return this.indexMap_.get(indexDefinition.toString());
-        }
-    };
-    /**
-     * @private
-     * @type {RegExp}
-     */
-    ChildrenNode.INTEGER_REGEXP_ = /^(0|[1-9]\d*)$/;
-    return ChildrenNode;
-}();
-exports.ChildrenNode = ChildrenNode;
-/**
- * @constructor
- * @extends {ChildrenNode}
- * @private
- */
-
-var MaxNode = function (_super) {
-    __extends(MaxNode, _super);
-    function MaxNode() {
-        return _super.call(this, new _SortedMap.SortedMap(_comparators.NAME_COMPARATOR), ChildrenNode.EMPTY_NODE, _IndexMap.IndexMap.Default) || this;
-    }
-    MaxNode.prototype.compareTo = function (other) {
-        if (other === this) {
-            return 0;
-        } else {
-            return 1;
-        }
-    };
-    MaxNode.prototype.equals = function (other) {
-        // Not that we every compare it, but MAX_NODE is only ever equal to itself
-        return other === this;
-    };
-    MaxNode.prototype.getPriority = function () {
-        return this;
-    };
-    MaxNode.prototype.getImmediateChild = function (childName) {
-        return ChildrenNode.EMPTY_NODE;
-    };
-    MaxNode.prototype.isEmpty = function () {
-        return false;
-    };
-    return MaxNode;
-}(ChildrenNode);
-exports.MaxNode = MaxNode;
-/**
- * Marker that will sort higher than any other snapshot.
- * @type {!MAX_NODE}
- * @const
- */
-
-var MAX_NODE = exports.MAX_NODE = new MaxNode();
-Object.defineProperties(_Node.NamedNode, {
-    MIN: {
-        value: new _Node.NamedNode(_util.MIN_NAME, ChildrenNode.EMPTY_NODE)
-    },
-    MAX: {
-        value: new _Node.NamedNode(_util.MAX_NAME, MAX_NODE)
-    }
-});
-/**
- * Reference Extensions
- */
-_KeyIndex.KeyIndex.__EMPTY_NODE = ChildrenNode.EMPTY_NODE;
-_LeafNode.LeafNode.__childrenNodeConstructor = ChildrenNode;
-(0, _snap.setMaxNode)(MAX_NODE);
-(0, _PriorityIndex.setMaxNode)(MAX_NODE);
-//# sourceMappingURL=ChildrenNode.js.map
-
-
-/***/ }),
-/* 6 */,
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- *
- * @param {!string} name
- * @param {!Node} node
- * @constructor
- * @struct
- */
-var NamedNode = function () {
-    function NamedNode(name, node) {
-        this.name = name;
-        this.node = node;
-    }
-    /**
-     *
-     * @param {!string} name
-     * @param {!Node} node
-     * @return {NamedNode}
-     */
-    NamedNode.Wrap = function (name, node) {
-        return new NamedNode(name, node);
-    };
-    return NamedNode;
-}();
-exports.NamedNode = NamedNode;
-//# sourceMappingURL=Node.js.map
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.isDef = isDef;
-exports.isJustDef = isJustDef;
-exports.isFunction = isFunction;
-exports.isObject = isObject;
-exports.isNonNullObject = isNonNullObject;
-exports.isNonArrayObject = isNonArrayObject;
-exports.isString = isString;
-exports.isNumber = isNumber;
-exports.isNativeBlob = isNativeBlob;
-exports.isNativeBlobDefined = isNativeBlobDefined;
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @return False if the object is undefined or null, true otherwise.
- */
-function isDef(p) {
-    return p != null;
-}
-function isJustDef(p) {
-    return p !== void 0;
-}
-function isFunction(p) {
-    return typeof p === 'function';
-}
-function isObject(p) {
-    return (typeof p === 'undefined' ? 'undefined' : _typeof(p)) === 'object';
-}
-function isNonNullObject(p) {
-    return isObject(p) && p !== null;
-}
-function isNonArrayObject(p) {
-    return isObject(p) && !Array.isArray(p);
-}
-function isString(p) {
-    return typeof p === 'string' || p instanceof String;
-}
-function isNumber(p) {
-    return typeof p === 'number' || p instanceof Number;
-}
-function isNativeBlob(p) {
-    return isNativeBlobDefined() && p instanceof Blob;
-}
-function isNativeBlobDefined() {
-    return typeof Blob !== 'undefined';
-}
-//# sourceMappingURL=type.js.map
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * Evaluates a JSON string into a javascript object.
- *
- * @param {string} str A string containing JSON.
- * @return {*} The javascript object representing the specified JSON.
- */
-var jsonEval = exports.jsonEval = function jsonEval(str) {
-  return JSON.parse(str);
-};
-/**
- * Returns JSON representing a javascript object.
- * @param {*} data Javascript object to be stringified.
- * @return {string} The JSON contents of the object.
- */
-var stringify = exports.stringify = function stringify(data) {
-  return JSON.stringify(data);
-};
-//# sourceMappingURL=json.js.map
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Code = exports.errors = exports.FirebaseStorageError = undefined;
-exports.prependCode = prependCode;
-exports.unknown = unknown;
-exports.objectNotFound = objectNotFound;
-exports.bucketNotFound = bucketNotFound;
-exports.projectNotFound = projectNotFound;
-exports.quotaExceeded = quotaExceeded;
-exports.unauthenticated = unauthenticated;
-exports.unauthorized = unauthorized;
-exports.retryLimitExceeded = retryLimitExceeded;
-exports.invalidChecksum = invalidChecksum;
-exports.canceled = canceled;
-exports.invalidEventName = invalidEventName;
-exports.invalidUrl = invalidUrl;
-exports.invalidDefaultBucket = invalidDefaultBucket;
-exports.noDefaultBucket = noDefaultBucket;
-exports.cannotSliceBlob = cannotSliceBlob;
-exports.serverFileWrongSize = serverFileWrongSize;
-exports.noDownloadURL = noDownloadURL;
-exports.invalidArgument = invalidArgument;
-exports.invalidArgumentCount = invalidArgumentCount;
-exports.appDeleted = appDeleted;
-exports.invalidRootOperation = invalidRootOperation;
-exports.invalidFormat = invalidFormat;
-exports.internalError = internalError;
-
-var _constants = __webpack_require__(32);
-
-var FirebaseStorageError = function () {
-    function FirebaseStorageError(code, message) {
-        this.code_ = prependCode(code);
-        this.message_ = 'Firebase Storage: ' + message;
-        this.serverResponse_ = null;
-        this.name_ = 'FirebaseError';
-    }
-    FirebaseStorageError.prototype.codeProp = function () {
-        return this.code;
-    };
-    FirebaseStorageError.prototype.codeEquals = function (code) {
-        return prependCode(code) === this.codeProp();
-    };
-    FirebaseStorageError.prototype.serverResponseProp = function () {
-        return this.serverResponse_;
-    };
-    FirebaseStorageError.prototype.setServerResponseProp = function (serverResponse) {
-        this.serverResponse_ = serverResponse;
-    };
-    Object.defineProperty(FirebaseStorageError.prototype, "name", {
-        get: function get() {
-            return this.name_;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FirebaseStorageError.prototype, "code", {
-        get: function get() {
-            return this.code_;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FirebaseStorageError.prototype, "message", {
-        get: function get() {
-            return this.message_;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FirebaseStorageError.prototype, "serverResponse", {
-        get: function get() {
-            return this.serverResponse_;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return FirebaseStorageError;
-}(); /**
-     * Copyright 2017 Google Inc.
-     *
-     * Licensed under the Apache License, Version 2.0 (the "License");
-     * you may not use this file except in compliance with the License.
-     * You may obtain a copy of the License at
-     *
-     *   http://www.apache.org/licenses/LICENSE-2.0
-     *
-     * Unless required by applicable law or agreed to in writing, software
-     * distributed under the License is distributed on an "AS IS" BASIS,
-     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     * See the License for the specific language governing permissions and
-     * limitations under the License.
-     */
-exports.FirebaseStorageError = FirebaseStorageError;
-var errors = exports.errors = {};
-var Code = exports.Code = {
-    // Shared between all platforms
-    UNKNOWN: 'unknown',
-    OBJECT_NOT_FOUND: 'object-not-found',
-    BUCKET_NOT_FOUND: 'bucket-not-found',
-    PROJECT_NOT_FOUND: 'project-not-found',
-    QUOTA_EXCEEDED: 'quota-exceeded',
-    UNAUTHENTICATED: 'unauthenticated',
-    UNAUTHORIZED: 'unauthorized',
-    RETRY_LIMIT_EXCEEDED: 'retry-limit-exceeded',
-    INVALID_CHECKSUM: 'invalid-checksum',
-    CANCELED: 'canceled',
-    // JS specific
-    INVALID_EVENT_NAME: 'invalid-event-name',
-    INVALID_URL: 'invalid-url',
-    INVALID_DEFAULT_BUCKET: 'invalid-default-bucket',
-    NO_DEFAULT_BUCKET: 'no-default-bucket',
-    CANNOT_SLICE_BLOB: 'cannot-slice-blob',
-    SERVER_FILE_WRONG_SIZE: 'server-file-wrong-size',
-    NO_DOWNLOAD_URL: 'no-download-url',
-    INVALID_ARGUMENT: 'invalid-argument',
-    INVALID_ARGUMENT_COUNT: 'invalid-argument-count',
-    APP_DELETED: 'app-deleted',
-    INVALID_ROOT_OPERATION: 'invalid-root-operation',
-    INVALID_FORMAT: 'invalid-format',
-    INTERNAL_ERROR: 'internal-error'
-};
-function prependCode(code) {
-    return 'storage/' + code;
-}
-function unknown() {
-    var message = 'An unknown error occurred, please check the error payload for ' + 'server response.';
-    return new FirebaseStorageError(Code.UNKNOWN, message);
-}
-function objectNotFound(path) {
-    return new FirebaseStorageError(Code.OBJECT_NOT_FOUND, "Object '" + path + "' does not exist.");
-}
-function bucketNotFound(bucket) {
-    return new FirebaseStorageError(Code.BUCKET_NOT_FOUND, "Bucket '" + bucket + "' does not exist.");
-}
-function projectNotFound(project) {
-    return new FirebaseStorageError(Code.PROJECT_NOT_FOUND, "Project '" + project + "' does not exist.");
-}
-function quotaExceeded(bucket) {
-    return new FirebaseStorageError(Code.QUOTA_EXCEEDED, "Quota for bucket '" + bucket + "' exceeded, please view quota on " + 'https://firebase.google.com/pricing/.');
-}
-function unauthenticated() {
-    var message = 'User is not authenticated, please authenticate using Firebase ' + 'Authentication and try again.';
-    return new FirebaseStorageError(Code.UNAUTHENTICATED, message);
-}
-function unauthorized(path) {
-    return new FirebaseStorageError(Code.UNAUTHORIZED, "User does not have permission to access '" + path + "'.");
-}
-function retryLimitExceeded() {
-    return new FirebaseStorageError(Code.RETRY_LIMIT_EXCEEDED, 'Max retry time for operation exceeded, please try again.');
-}
-function invalidChecksum(path, checksum, calculated) {
-    return new FirebaseStorageError(Code.INVALID_CHECKSUM, "Uploaded/downloaded object '" + path + "' has checksum '" + checksum + "' which does not match '" + calculated + "'. Please retry the upload/download.");
-}
-function canceled() {
-    return new FirebaseStorageError(Code.CANCELED, 'User canceled the upload/download.');
-}
-function invalidEventName(name) {
-    return new FirebaseStorageError(Code.INVALID_EVENT_NAME, "Invalid event name '" + name + "'.");
-}
-function invalidUrl(url) {
-    return new FirebaseStorageError(Code.INVALID_URL, "Invalid URL '" + url + "'.");
-}
-function invalidDefaultBucket(bucket) {
-    return new FirebaseStorageError(Code.INVALID_DEFAULT_BUCKET, "Invalid default bucket '" + bucket + "'.");
-}
-function noDefaultBucket() {
-    return new FirebaseStorageError(Code.NO_DEFAULT_BUCKET, 'No default bucket ' + "found. Did you set the '" + _constants.configOption + "' property when initializing the app?");
-}
-function cannotSliceBlob() {
-    return new FirebaseStorageError(Code.CANNOT_SLICE_BLOB, 'Cannot slice blob for upload. Please retry the upload.');
-}
-function serverFileWrongSize() {
-    return new FirebaseStorageError(Code.SERVER_FILE_WRONG_SIZE, 'Server recorded incorrect upload file size, please retry the upload.');
-}
-function noDownloadURL() {
-    return new FirebaseStorageError(Code.NO_DOWNLOAD_URL, 'The given file does not have any download URLs.');
-}
-function invalidArgument(index, fnName, message) {
-    return new FirebaseStorageError(Code.INVALID_ARGUMENT, 'Invalid argument in `' + fnName + '` at index ' + index + ': ' + message);
-}
-function invalidArgumentCount(argMin, argMax, fnName, real) {
-    var countPart;
-    var plural;
-    if (argMin === argMax) {
-        countPart = argMin;
-        plural = argMin === 1 ? 'argument' : 'arguments';
-    } else {
-        countPart = 'between ' + argMin + ' and ' + argMax;
-        plural = 'arguments';
-    }
-    return new FirebaseStorageError(Code.INVALID_ARGUMENT_COUNT, 'Invalid argument count in `' + fnName + '`: Expected ' + countPart + ' ' + plural + ', received ' + real + '.');
-}
-function appDeleted() {
-    return new FirebaseStorageError(Code.APP_DELETED, 'The Firebase app was deleted.');
-}
-/**
- * @param name The name of the operation that was invalid.
- */
-function invalidRootOperation(name) {
-    return new FirebaseStorageError(Code.INVALID_ROOT_OPERATION, "The operation '" + name + "' cannot be performed on a root reference, create a non-root " + "reference using child, such as .child('file.png').");
-}
-/**
- * @param format The format that was not valid.
- * @param message A message describing the format violation.
- */
-function invalidFormat(format, message) {
-    return new FirebaseStorageError(Code.INVALID_FORMAT, "String does not match format '" + format + "': " + message);
-}
-/**
- * @param message A message describing the internal error.
- */
-function internalError(message) {
-    throw new FirebaseStorageError(Code.INTERNAL_ERROR, 'Internal error: ' + message);
-}
-//# sourceMappingURL=error.js.map
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-__webpack_require__(140);
-
-var _firebase_app = __webpack_require__(141);
-
-// Export a single instance of firebase app
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-// Import the needed shims
-var firebase = (0, _firebase_app.createFirebaseNamespace)();
-// Import the createFirebaseNamespace function
-exports.default = firebase;
-module.exports = exports['default'];
-//# sourceMappingURL=app.js.map
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.attachDummyErrorHandler = exports.Deferred = exports.PromiseImpl = undefined;
-
-var _globalScope = __webpack_require__(56);
-
-var PromiseImpl = exports.PromiseImpl = _globalScope.globalScope.Promise || __webpack_require__(142);
-/**
- * A deferred promise implementation.
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var Deferred = function () {
-    /** @constructor */
-    function Deferred() {
-        var self = this;
-        this.resolve = null;
-        this.reject = null;
-        this.promise = new PromiseImpl(function (resolve, reject) {
-            self.resolve = resolve;
-            self.reject = reject;
-        });
-    }
-    /**
-     * Our API internals are not promiseified and cannot because our callback APIs have subtle expectations around
-     * invoking promises inline, which Promises are forbidden to do. This method accepts an optional node-style callback
-     * and returns a node-style callback which will resolve or reject the Deferred's promise.
-     * @param {((?function(?(Error)): (?|undefined))| (?function(?(Error),?=): (?|undefined)))=} opt_nodeCallback
-     * @return {!function(?(Error), ?=)}
-     */
-    Deferred.prototype.wrapCallback = function (opt_nodeCallback) {
-        var self = this;
-        /**
-           * @param {?Error} error
-           * @param {?=} opt_value
-           */
-        function meta(error, opt_value) {
-            if (error) {
-                self.reject(error);
-            } else {
-                self.resolve(opt_value);
-            }
-            if (typeof opt_nodeCallback === 'function') {
-                attachDummyErrorHandler(self.promise);
-                // Some of our callbacks don't expect a value and our own tests
-                // assert that the parameter length is 1
-                if (opt_nodeCallback.length === 1) {
-                    opt_nodeCallback(error);
-                } else {
-                    opt_nodeCallback(error, opt_value);
-                }
-            }
-        }
-        return meta;
-    };
-    return Deferred;
-}();
-exports.Deferred = Deferred;
-/**
- * Chrome (and maybe other browsers) report an Error in the console if you reject a promise
- * and nobody handles the error. This is normally a good thing, but this will confuse devs who
- * never intended to use promises in the first place. So in some cases (in particular, if the
- * developer attached a callback), we should attach a dummy resolver to the promise to suppress
- * this error.
- *
- * Note: We can't do this all the time, since it breaks the Promise spec (though in the obscure
- * 3.3.3 section related to upgrading non-compliant promises).
- * @param {!firebase.Promise} promise
- */
-
-var attachDummyErrorHandler = exports.attachDummyErrorHandler = function attachDummyErrorHandler(promise) {
-    promise.catch(function () {});
-};
-//# sourceMappingURL=promise.js.map
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.errorPrefix = errorPrefix;
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * Check to make sure the appropriate number of arguments are provided for a public function.
- * Throws an error if it fails.
- *
- * @param {!string} fnName The function name
- * @param {!number} minCount The minimum number of arguments to allow for the function call
- * @param {!number} maxCount The maximum number of argument to allow for the function call
- * @param {!number} argCount The actual number of arguments provided.
- */
-var validateArgCount = exports.validateArgCount = function validateArgCount(fnName, minCount, maxCount, argCount) {
-    var argError;
-    if (argCount < minCount) {
-        argError = 'at least ' + minCount;
-    } else if (argCount > maxCount) {
-        argError = maxCount === 0 ? 'none' : 'no more than ' + maxCount;
-    }
-    if (argError) {
-        var error = fnName + ' failed: Was called with ' + argCount + (argCount === 1 ? ' argument.' : ' arguments.') + ' Expects ' + argError + '.';
-        throw new Error(error);
-    }
-};
-/**
- * Generates a string to prefix an error message about failed argument validation
- *
- * @param {!string} fnName The function name
- * @param {!number} argumentNumber The index of the argument
- * @param {boolean} optional Whether or not the argument is optional
- * @return {!string} The prefix to add to the error thrown for validation.
- */
-function errorPrefix(fnName, argumentNumber, optional) {
-    var argName = '';
-    switch (argumentNumber) {
-        case 1:
-            argName = optional ? 'first' : 'First';
-            break;
-        case 2:
-            argName = optional ? 'second' : 'Second';
-            break;
-        case 3:
-            argName = optional ? 'third' : 'Third';
-            break;
-        case 4:
-            argName = optional ? 'fourth' : 'Fourth';
-            break;
-        default:
-            throw new Error('errorPrefix called with argumentNumber > 4.  Need to update it?');
-    }
-    var error = fnName + ' failed: ';
-    error += argName + ' argument ';
-    return error;
-}
-/**
- * @param {!string} fnName
- * @param {!number} argumentNumber
- * @param {!string} namespace
- * @param {boolean} optional
- */
-var validateNamespace = exports.validateNamespace = function validateNamespace(fnName, argumentNumber, namespace, optional) {
-    if (optional && !namespace) return;
-    if (typeof namespace !== 'string') {
-        //TODO: I should do more validation here. We only allow certain chars in namespaces.
-        throw new Error(errorPrefix(fnName, argumentNumber, optional) + 'must be a valid firebase namespace.');
-    }
-};
-var validateCallback = exports.validateCallback = function validateCallback(fnName, argumentNumber, callback, optional) {
-    if (optional && !callback) return;
-    if (typeof callback !== 'function') throw new Error(errorPrefix(fnName, argumentNumber, optional) + 'must be a valid function.');
-};
-var validateContextObject = exports.validateContextObject = function validateContextObject(fnName, argumentNumber, context, optional) {
-    if (optional && !context) return;
-    if ((typeof context === 'undefined' ? 'undefined' : _typeof(context)) !== 'object' || context === null) throw new Error(errorPrefix(fnName, argumentNumber, optional) + 'must be a valid context object.');
-};
-//# sourceMappingURL=validation.js.map
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.validateObjectContainsKey = exports.validateObject = exports.validateString = exports.validateBoolean = exports.validateCredential = exports.validateUrl = exports.validateWritablePath = exports.validateRootPathString = exports.validatePathString = exports.validateKey = exports.validateEventType = exports.validatePriority = exports.validateFirebaseMergeDataArg = exports.validateFirebaseMergePaths = exports.validateFirebaseData = exports.validateFirebaseDataArg = exports.isValidPriority = exports.isValidRootPathString = exports.isValidPathString = exports.isValidKey = exports.MAX_LEAF_SIZE_ = exports.INVALID_PATH_REGEX_ = exports.INVALID_KEY_REGEX_ = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
-                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                              * limitations under the License.
-                                                                                                                                                                                                                                                                              */
-
-
-var _Path = __webpack_require__(3);
-
-var _obj = __webpack_require__(2);
-
-var _util = __webpack_require__(1);
-
-var _validation = __webpack_require__(13);
-
-var _utf = __webpack_require__(38);
-
-/**
- * True for invalid Firebase keys
- * @type {RegExp}
- * @private
- */
-var INVALID_KEY_REGEX_ = exports.INVALID_KEY_REGEX_ = /[\[\].#$\/\u0000-\u001F\u007F]/;
-/**
- * True for invalid Firebase paths.
- * Allows '/' in paths.
- * @type {RegExp}
- * @private
- */
-var INVALID_PATH_REGEX_ = exports.INVALID_PATH_REGEX_ = /[\[\].#$\u0000-\u001F\u007F]/;
-/**
- * Maximum number of characters to allow in leaf value
- * @type {number}
- * @private
- */
-var MAX_LEAF_SIZE_ = exports.MAX_LEAF_SIZE_ = 10 * 1024 * 1024;
-/**
- * @param {*} key
- * @return {boolean}
- */
-var isValidKey = exports.isValidKey = function isValidKey(key) {
-    return typeof key === 'string' && key.length !== 0 && !INVALID_KEY_REGEX_.test(key);
-};
-/**
- * @param {string} pathString
- * @return {boolean}
- */
-var isValidPathString = exports.isValidPathString = function isValidPathString(pathString) {
-    return typeof pathString === 'string' && pathString.length !== 0 && !INVALID_PATH_REGEX_.test(pathString);
-};
-/**
- * @param {string} pathString
- * @return {boolean}
- */
-var isValidRootPathString = exports.isValidRootPathString = function isValidRootPathString(pathString) {
-    if (pathString) {
-        // Allow '/.info/' at the beginning.
-        pathString = pathString.replace(/^\/*\.info(\/|$)/, '/');
-    }
-    return isValidPathString(pathString);
-};
-/**
- * @param {*} priority
- * @return {boolean}
- */
-var isValidPriority = exports.isValidPriority = function isValidPriority(priority) {
-    return priority === null || typeof priority === 'string' || typeof priority === 'number' && !(0, _util.isInvalidJSONNumber)(priority) || priority && (typeof priority === 'undefined' ? 'undefined' : _typeof(priority)) === 'object' && (0, _obj.contains)(priority, '.sv');
-};
-/**
- * Pre-validate a datum passed as an argument to Firebase function.
- *
- * @param {string} fnName
- * @param {number} argumentNumber
- * @param {*} data
- * @param {!Path} path
- * @param {boolean} optional
- */
-var validateFirebaseDataArg = exports.validateFirebaseDataArg = function validateFirebaseDataArg(fnName, argumentNumber, data, path, optional) {
-    if (optional && data === undefined) return;
-    validateFirebaseData((0, _validation.errorPrefix)(fnName, argumentNumber, optional), data, path);
-};
-/**
- * Validate a data object client-side before sending to server.
- *
- * @param {string} errorPrefix
- * @param {*} data
- * @param {!Path|!ValidationPath} path_
- */
-var validateFirebaseData = exports.validateFirebaseData = function validateFirebaseData(errorPrefix, data, path_) {
-    var path = path_ instanceof _Path.Path ? new _Path.ValidationPath(path_, errorPrefix) : path_;
-    if (data === undefined) {
-        throw new Error(errorPrefix + 'contains undefined ' + path.toErrorString());
-    }
-    if (typeof data === 'function') {
-        throw new Error(errorPrefix + 'contains a function ' + path.toErrorString() + ' with contents = ' + data.toString());
-    }
-    if ((0, _util.isInvalidJSONNumber)(data)) {
-        throw new Error(errorPrefix + 'contains ' + data.toString() + ' ' + path.toErrorString());
-    }
-    // Check max leaf size, but try to avoid the utf8 conversion if we can.
-    if (typeof data === 'string' && data.length > MAX_LEAF_SIZE_ / 3 && (0, _utf.stringLength)(data) > MAX_LEAF_SIZE_) {
-        throw new Error(errorPrefix + 'contains a string greater than ' + MAX_LEAF_SIZE_ + ' utf8 bytes ' + path.toErrorString() + " ('" + data.substring(0, 50) + "...')");
-    }
-    // TODO = Perf = Consider combining the recursive validation of keys into NodeFromJSON
-    // to save extra walking of large objects.
-    if (data && (typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
-        var hasDotValue_1 = false,
-            hasActualChild_1 = false;
-        (0, _obj.forEach)(data, function (key, value) {
-            if (key === '.value') {
-                hasDotValue_1 = true;
-            } else if (key !== '.priority' && key !== '.sv') {
-                hasActualChild_1 = true;
-                if (!isValidKey(key)) {
-                    throw new Error(errorPrefix + ' contains an invalid key (' + key + ') ' + path.toErrorString() + '.  Keys must be non-empty strings ' + 'and can\'t contain ".", "#", "$", "/", "[", or "]"');
-                }
-            }
-            path.push(key);
-            validateFirebaseData(errorPrefix, value, path);
-            path.pop();
-        });
-        if (hasDotValue_1 && hasActualChild_1) {
-            throw new Error(errorPrefix + ' contains ".value" child ' + path.toErrorString() + ' in addition to actual children.');
-        }
-    }
-};
-/**
- * Pre-validate paths passed in the firebase function.
- *
- * @param {string} errorPrefix
- * @param {Array<!Path>} mergePaths
- */
-var validateFirebaseMergePaths = exports.validateFirebaseMergePaths = function validateFirebaseMergePaths(errorPrefix, mergePaths) {
-    var i, curPath;
-    for (i = 0; i < mergePaths.length; i++) {
-        curPath = mergePaths[i];
-        var keys = curPath.slice();
-        for (var j = 0; j < keys.length; j++) {
-            if (keys[j] === '.priority' && j === keys.length - 1) {
-                // .priority is OK
-            } else if (!isValidKey(keys[j])) {
-                throw new Error(errorPrefix + 'contains an invalid key (' + keys[j] + ') in path ' + curPath.toString() + '. Keys must be non-empty strings ' + 'and can\'t contain ".", "#", "$", "/", "[", or "]"');
-            }
-        }
-    }
-    // Check that update keys are not descendants of each other.
-    // We rely on the property that sorting guarantees that ancestors come
-    // right before descendants.
-    mergePaths.sort(_Path.Path.comparePaths);
-    var prevPath = null;
-    for (i = 0; i < mergePaths.length; i++) {
-        curPath = mergePaths[i];
-        if (prevPath !== null && prevPath.contains(curPath)) {
-            throw new Error(errorPrefix + 'contains a path ' + prevPath.toString() + ' that is ancestor of another path ' + curPath.toString());
-        }
-        prevPath = curPath;
-    }
-};
-/**
- * pre-validate an object passed as an argument to firebase function (
- * must be an object - e.g. for firebase.update()).
- *
- * @param {string} fnName
- * @param {number} argumentNumber
- * @param {*} data
- * @param {!Path} path
- * @param {boolean} optional
- */
-var validateFirebaseMergeDataArg = exports.validateFirebaseMergeDataArg = function validateFirebaseMergeDataArg(fnName, argumentNumber, data, path, optional) {
-    if (optional && data === undefined) return;
-    var errorPrefix = (0, _validation.errorPrefix)(fnName, argumentNumber, optional);
-    if (!(data && (typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') || Array.isArray(data)) {
-        throw new Error(errorPrefix + ' must be an object containing the children to replace.');
-    }
-    var mergePaths = [];
-    (0, _obj.forEach)(data, function (key, value) {
-        var curPath = new _Path.Path(key);
-        validateFirebaseData(errorPrefix, value, path.child(curPath));
-        if (curPath.getBack() === '.priority') {
-            if (!isValidPriority(value)) {
-                throw new Error(errorPrefix + "contains an invalid value for '" + curPath.toString() + "', which must be a valid " + 'Firebase priority (a string, finite number, server value, or null).');
-            }
-        }
-        mergePaths.push(curPath);
-    });
-    validateFirebaseMergePaths(errorPrefix, mergePaths);
-};
-var validatePriority = exports.validatePriority = function validatePriority(fnName, argumentNumber, priority, optional) {
-    if (optional && priority === undefined) return;
-    if ((0, _util.isInvalidJSONNumber)(priority)) throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'is ' + priority.toString() + ', but must be a valid Firebase priority (a string, finite number, ' + 'server value, or null).');
-    // Special case to allow importing data with a .sv.
-    if (!isValidPriority(priority)) throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a valid Firebase priority ' + '(a string, finite number, server value, or null).');
-};
-var validateEventType = exports.validateEventType = function validateEventType(fnName, argumentNumber, eventType, optional) {
-    if (optional && eventType === undefined) return;
-    switch (eventType) {
-        case 'value':
-        case 'child_added':
-        case 'child_removed':
-        case 'child_changed':
-        case 'child_moved':
-            break;
-        default:
-            throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a valid event type = "value", "child_added", "child_removed", ' + '"child_changed", or "child_moved".');
-    }
-};
-var validateKey = exports.validateKey = function validateKey(fnName, argumentNumber, key, optional) {
-    if (optional && key === undefined) return;
-    if (!isValidKey(key)) throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'was an invalid key = "' + key + '".  Firebase keys must be non-empty strings and ' + 'can\'t contain ".", "#", "$", "/", "[", or "]").');
-};
-var validatePathString = exports.validatePathString = function validatePathString(fnName, argumentNumber, pathString, optional) {
-    if (optional && pathString === undefined) return;
-    if (!isValidPathString(pathString)) throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'was an invalid path = "' + pathString + '". Paths must be non-empty strings and ' + 'can\'t contain ".", "#", "$", "[", or "]"');
-};
-var validateRootPathString = exports.validateRootPathString = function validateRootPathString(fnName, argumentNumber, pathString, optional) {
-    if (pathString) {
-        // Allow '/.info/' at the beginning.
-        pathString = pathString.replace(/^\/*\.info(\/|$)/, '/');
-    }
-    validatePathString(fnName, argumentNumber, pathString, optional);
-};
-var validateWritablePath = exports.validateWritablePath = function validateWritablePath(fnName, path) {
-    if (path.getFront() === '.info') {
-        throw new Error(fnName + " failed = Can't modify data under /.info/");
-    }
-};
-var validateUrl = exports.validateUrl = function validateUrl(fnName, argumentNumber, parsedUrl) {
-    // TODO = Validate server better.
-    var pathString = parsedUrl.path.toString();
-    if (!(typeof parsedUrl.repoInfo.host === 'string') || parsedUrl.repoInfo.host.length === 0 || !isValidKey(parsedUrl.repoInfo.namespace) || pathString.length !== 0 && !isValidRootPathString(pathString)) {
-        throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, false) + 'must be a valid firebase URL and ' + 'the path can\'t contain ".", "#", "$", "[", or "]".');
-    }
-};
-var validateCredential = exports.validateCredential = function validateCredential(fnName, argumentNumber, cred, optional) {
-    if (optional && cred === undefined) return;
-    if (!(typeof cred === 'string')) throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a valid credential (a string).');
-};
-var validateBoolean = exports.validateBoolean = function validateBoolean(fnName, argumentNumber, bool, optional) {
-    if (optional && bool === undefined) return;
-    if (typeof bool !== 'boolean') throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a boolean.');
-};
-var validateString = exports.validateString = function validateString(fnName, argumentNumber, string, optional) {
-    if (optional && string === undefined) return;
-    if (!(typeof string === 'string')) {
-        throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a valid string.');
-    }
-};
-var validateObject = exports.validateObject = function validateObject(fnName, argumentNumber, obj, optional) {
-    if (optional && obj === undefined) return;
-    if (!(obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object') || obj === null) {
-        throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a valid object.');
-    }
-};
-var validateObjectContainsKey = exports.validateObjectContainsKey = function validateObjectContainsKey(fnName, argumentNumber, obj, key, optional, opt_type) {
-    var objectContainsKey = obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && (0, _obj.contains)(obj, key);
-    if (!objectContainsKey) {
-        if (optional) {
-            return;
-        } else {
-            throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must contain the key "' + key + '"');
-        }
-    }
-    if (opt_type) {
-        var val = (0, _obj.safeGet)(obj, key);
-        if (opt_type === 'number' && !(typeof val === 'number') || opt_type === 'string' && !(typeof val === 'string') || opt_type === 'boolean' && !(typeof val === 'boolean') || opt_type === 'function' && !(typeof val === 'function') || opt_type === 'object' && !((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object') && val) {
-            if (optional) {
-                throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'contains invalid value for key "' + key + '" (must be of type "' + opt_type + '")');
-            } else {
-                throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must contain the key "' + key + '" with type "' + opt_type + '"');
-            }
-        }
-    }
-};
-//# sourceMappingURL=validation.js.map
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.OperationSource = exports.OperationType = undefined;
-
-var _assert = __webpack_require__(0);
-
-/**
- *
- * @enum
- */
-var OperationType = exports.OperationType = undefined; /**
-                                                       * Copyright 2017 Google Inc.
-                                                       *
-                                                       * Licensed under the Apache License, Version 2.0 (the "License");
-                                                       * you may not use this file except in compliance with the License.
-                                                       * You may obtain a copy of the License at
-                                                       *
-                                                       *   http://www.apache.org/licenses/LICENSE-2.0
-                                                       *
-                                                       * Unless required by applicable law or agreed to in writing, software
-                                                       * distributed under the License is distributed on an "AS IS" BASIS,
-                                                       * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                       * See the License for the specific language governing permissions and
-                                                       * limitations under the License.
-                                                       */
-
-(function (OperationType) {
-  OperationType[OperationType["OVERWRITE"] = 0] = "OVERWRITE";
-  OperationType[OperationType["MERGE"] = 1] = "MERGE";
-  OperationType[OperationType["ACK_USER_WRITE"] = 2] = "ACK_USER_WRITE";
-  OperationType[OperationType["LISTEN_COMPLETE"] = 3] = "LISTEN_COMPLETE";
-})(OperationType || (exports.OperationType = OperationType = {}));
-/**
- * @param {boolean} fromUser
- * @param {boolean} fromServer
- * @param {?string} queryId
- * @param {boolean} tagged
- * @constructor
- */
-var OperationSource = function () {
-  function OperationSource(fromUser, fromServer, queryId, tagged) {
-    this.fromUser = fromUser;
-    this.fromServer = fromServer;
-    this.queryId = queryId;
-    this.tagged = tagged;
-    (0, _assert.assert)(!tagged || fromServer, 'Tagged queries must be from server.');
-  }
-  /**
-   * @const
-   * @type {!OperationSource}
-   */
-  OperationSource.User = new OperationSource(
-  /*fromUser=*/true, false, null,
-  /*tagged=*/false);
-  /**
-   * @const
-   * @type {!OperationSource}
-   */
-  OperationSource.Server = new OperationSource(false,
-  /*fromServer=*/true, null,
-  /*tagged=*/false);
-  /**
-   * @param {string} queryId
-   * @return {!OperationSource}
-   */
-  OperationSource.forServerTaggedQuery = function (queryId) {
-    return new OperationSource(false,
-    /*fromServer=*/true, queryId,
-    /*tagged=*/true);
-  };
-  return OperationSource;
-}();
-exports.OperationSource = OperationSource;
-//# sourceMappingURL=Operation.js.map
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.make = make;
-exports.resolve = resolve;
-exports.reject = reject;
-
-var _promise = __webpack_require__(12);
-
-function make(resolver) {
-  return new _promise.PromiseImpl(resolver);
-}
-/**
- * @template T
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Implements the promise abstraction interface for external
- * (public SDK) packaging, which just passes through to the firebase-app impl.
- */
-/**
- * @template T
- * @param {function((function(T): void),
- *                  (function(!Error): void))} resolver
- */
-function resolve(value) {
-  return _promise.PromiseImpl.resolve(value);
-}
-function reject(error) {
-  return _promise.PromiseImpl.reject(error);
-}
-//# sourceMappingURL=promise_external.js.map
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 18 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -3123,2094 +162,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.isNodeSdk = exports.isReactNative = exports.isMobileCordova = exports.getUA = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
-                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                              * limitations under the License.
-                                                                                                                                                                                                                                                                              */
-
-
-var _constants = __webpack_require__(25);
-
-/**
- * Returns navigator.userAgent string or '' if it's not defined.
- * @return {string} user agent string
- */
-var getUA = exports.getUA = function getUA() {
-    if (typeof navigator !== 'undefined' && typeof navigator['userAgent'] === 'string') {
-        return navigator['userAgent'];
-    } else {
-        return '';
-    }
-};
-/**
- * Detect Cordova / PhoneGap / Ionic frameworks on a mobile device.
- *
- * Deliberately does not rely on checking `file://` URLs (as this fails PhoneGap in the Ripple emulator) nor
- * Cordova `onDeviceReady`, which would normally wait for a callback.
- *
- * @return {boolean} isMobileCordova
- */
-var isMobileCordova = exports.isMobileCordova = function isMobileCordova() {
-    return typeof window !== 'undefined' && !!(window['cordova'] || window['phonegap'] || window['PhoneGap']) && /ios|iphone|ipod|ipad|android|blackberry|iemobile/i.test(getUA());
-};
-/**
- * Detect React Native.
- *
- * @return {boolean} True if ReactNative environment is detected.
- */
-var isReactNative = exports.isReactNative = function isReactNative() {
-    return (typeof navigator === 'undefined' ? 'undefined' : _typeof(navigator)) === 'object' && navigator['product'] === 'ReactNative';
-};
-/**
- * Detect Node.js.
- *
- * @return {boolean} True if Node.js environment is detected.
- */
-var isNodeSdk = exports.isNodeSdk = function isNodeSdk() {
-    return _constants.CONSTANTS.NODE_CLIENT === true || _constants.CONSTANTS.NODE_ADMIN === true;
-};
-//# sourceMappingURL=environment.js.map
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @constructor
- * @struct
- * @param {!string} type The event type
- * @param {!Node} snapshotNode The data
- * @param {string=} childName The name for this child, if it's a child event
- * @param {Node=} oldSnap Used for intermediate processing of child changed events
- * @param {string=} prevName The name for the previous child, if applicable
- */
-var Change = function () {
-    function Change(type, snapshotNode, childName, oldSnap, prevName) {
-        this.type = type;
-        this.snapshotNode = snapshotNode;
-        this.childName = childName;
-        this.oldSnap = oldSnap;
-        this.prevName = prevName;
-    }
-    /**
-     * @param {!Node} snapshot
-     * @return {!Change}
-     */
-    Change.valueChange = function (snapshot) {
-        return new Change(Change.VALUE, snapshot);
-    };
-    /**
-     * @param {string} childKey
-     * @param {!Node} snapshot
-     * @return {!Change}
-     */
-    Change.childAddedChange = function (childKey, snapshot) {
-        return new Change(Change.CHILD_ADDED, snapshot, childKey);
-    };
-    /**
-     * @param {string} childKey
-     * @param {!Node} snapshot
-     * @return {!Change}
-     */
-    Change.childRemovedChange = function (childKey, snapshot) {
-        return new Change(Change.CHILD_REMOVED, snapshot, childKey);
-    };
-    /**
-     * @param {string} childKey
-     * @param {!Node} newSnapshot
-     * @param {!Node} oldSnapshot
-     * @return {!Change}
-     */
-    Change.childChangedChange = function (childKey, newSnapshot, oldSnapshot) {
-        return new Change(Change.CHILD_CHANGED, newSnapshot, childKey, oldSnapshot);
-    };
-    /**
-     * @param {string} childKey
-     * @param {!Node} snapshot
-     * @return {!Change}
-     */
-    Change.childMovedChange = function (childKey, snapshot) {
-        return new Change(Change.CHILD_MOVED, snapshot, childKey);
-    };
-    //event types
-    /** Event type for a child added */
-    Change.CHILD_ADDED = 'child_added';
-    /** Event type for a child removed */
-    Change.CHILD_REMOVED = 'child_removed';
-    /** Event type for a child changed */
-    Change.CHILD_CHANGED = 'child_changed';
-    /** Event type for a child moved */
-    Change.CHILD_MOVED = 'child_moved';
-    /** Event type for a value change */
-    Change.VALUE = 'value';
-    return Change;
-}();
-exports.Change = Change;
-//# sourceMappingURL=Change.js.map
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.contains = contains;
-exports.forEach = forEach;
-exports.clone = clone;
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Contains methods for working with objects.
- */
-function contains(obj, prop) {
-    return Object.prototype.hasOwnProperty.call(obj, prop);
-}
-function forEach(obj, f) {
-    for (var key in obj) {
-        if (contains(obj, key)) {
-            f(key, obj[key]);
-        }
-    }
-}
-function clone(obj) {
-    if (obj == null) {
-        return {};
-    }
-    var c = {};
-    forEach(obj, function (key, val) {
-        c[key] = val;
-    });
-    return c;
-}
-//# sourceMappingURL=object.js.map
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.KEY_INDEX = exports.KeyIndex = undefined;
-
-var _Index = __webpack_require__(28);
-
-var _Node = __webpack_require__(7);
-
-var _util = __webpack_require__(1);
-
-var _assert = __webpack_require__(0);
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var __extends = undefined && undefined.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-
-var __EMPTY_NODE;
-var KeyIndex = function (_super) {
-    __extends(KeyIndex, _super);
-    function KeyIndex() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(KeyIndex, "__EMPTY_NODE", {
-        get: function get() {
-            return __EMPTY_NODE;
-        },
-        set: function set(val) {
-            __EMPTY_NODE = val;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @inheritDoc
-     */
-    KeyIndex.prototype.compare = function (a, b) {
-        return (0, _util.nameCompare)(a.name, b.name);
-    };
-    /**
-     * @inheritDoc
-     */
-    KeyIndex.prototype.isDefinedOn = function (node) {
-        // We could probably return true here (since every node has a key), but it's never called
-        // so just leaving unimplemented for now.
-        throw (0, _assert.assertionError)('KeyIndex.isDefinedOn not expected to be called.');
-    };
-    /**
-     * @inheritDoc
-     */
-    KeyIndex.prototype.indexedValueChanged = function (oldNode, newNode) {
-        return false; // The key for a node never changes.
-    };
-    /**
-     * @inheritDoc
-     */
-    KeyIndex.prototype.minPost = function () {
-        return _Node.NamedNode.MIN;
-    };
-    /**
-     * @inheritDoc
-     */
-    KeyIndex.prototype.maxPost = function () {
-        // TODO: This should really be created once and cached in a static property, but
-        // NamedNode isn't defined yet, so I can't use it in a static.  Bleh.
-        return new _Node.NamedNode(_util.MAX_NAME, __EMPTY_NODE);
-    };
-    /**
-     * @param {*} indexValue
-     * @param {string} name
-     * @return {!NamedNode}
-     */
-    KeyIndex.prototype.makePost = function (indexValue, name) {
-        (0, _assert.assert)(typeof indexValue === 'string', 'KeyIndex indexValue must always be a string.');
-        // We just use empty node, but it'll never be compared, since our comparator only looks at name.
-        return new _Node.NamedNode(indexValue, __EMPTY_NODE);
-    };
-    /**
-     * @return {!string} String representation for inclusion in a query spec
-     */
-    KeyIndex.prototype.toString = function () {
-        return '.key';
-    };
-    return KeyIndex;
-}(_Index.Index);
-exports.KeyIndex = KeyIndex;
-var KEY_INDEX = exports.KEY_INDEX = new KeyIndex();
-//# sourceMappingURL=KeyIndex.js.map
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
-                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                              * limitations under the License.
-                                                                                                                                                                                                                                                                              */
-
-
-exports.nodeFromJSON = nodeFromJSON;
-
-var _ChildrenNode = __webpack_require__(5);
-
-var _LeafNode = __webpack_require__(29);
-
-var _Node = __webpack_require__(7);
-
-var _obj = __webpack_require__(2);
-
-var _assert = __webpack_require__(0);
-
-var _childSet = __webpack_require__(65);
-
-var _comparators = __webpack_require__(66);
-
-var _IndexMap = __webpack_require__(64);
-
-var _PriorityIndex = __webpack_require__(4);
-
-var USE_HINZE = true;
-/**
- * Constructs a snapshot node representing the passed JSON and returns it.
- * @param {*} json JSON to create a node for.
- * @param {?string|?number=} priority Optional priority to use.  This will be ignored if the
- * passed JSON contains a .priority property.
- * @return {!Node}
- */
-function nodeFromJSON(json, priority) {
-    if (priority === void 0) {
-        priority = null;
-    }
-    if (json === null) {
-        return _ChildrenNode.ChildrenNode.EMPTY_NODE;
-    }
-    if ((typeof json === 'undefined' ? 'undefined' : _typeof(json)) === 'object' && '.priority' in json) {
-        priority = json['.priority'];
-    }
-    (0, _assert.assert)(priority === null || typeof priority === 'string' || typeof priority === 'number' || (typeof priority === 'undefined' ? 'undefined' : _typeof(priority)) === 'object' && '.sv' in priority, 'Invalid priority type found: ' + (typeof priority === 'undefined' ? 'undefined' : _typeof(priority)));
-    if ((typeof json === 'undefined' ? 'undefined' : _typeof(json)) === 'object' && '.value' in json && json['.value'] !== null) {
-        json = json['.value'];
-    }
-    // Valid leaf nodes include non-objects or server-value wrapper objects
-    if ((typeof json === 'undefined' ? 'undefined' : _typeof(json)) !== 'object' || '.sv' in json) {
-        var jsonLeaf = json;
-        return new _LeafNode.LeafNode(jsonLeaf, nodeFromJSON(priority));
-    }
-    if (!(json instanceof Array) && USE_HINZE) {
-        var children_1 = [];
-        var childrenHavePriority_1 = false;
-        var hinzeJsonObj_1 = json;
-        (0, _obj.forEach)(hinzeJsonObj_1, function (key, child) {
-            if (typeof key !== 'string' || key.substring(0, 1) !== '.') {
-                // Ignore metadata nodes
-                var childNode = nodeFromJSON(hinzeJsonObj_1[key]);
-                if (!childNode.isEmpty()) {
-                    childrenHavePriority_1 = childrenHavePriority_1 || !childNode.getPriority().isEmpty();
-                    children_1.push(new _Node.NamedNode(key, childNode));
-                }
-            }
-        });
-        if (children_1.length == 0) {
-            return _ChildrenNode.ChildrenNode.EMPTY_NODE;
-        }
-        var childSet = (0, _childSet.buildChildSet)(children_1, _comparators.NAME_ONLY_COMPARATOR, function (namedNode) {
-            return namedNode.name;
-        }, _comparators.NAME_COMPARATOR);
-        if (childrenHavePriority_1) {
-            var sortedChildSet = (0, _childSet.buildChildSet)(children_1, _PriorityIndex.PRIORITY_INDEX.getCompare());
-            return new _ChildrenNode.ChildrenNode(childSet, nodeFromJSON(priority), new _IndexMap.IndexMap({ '.priority': sortedChildSet }, { '.priority': _PriorityIndex.PRIORITY_INDEX }));
-        } else {
-            return new _ChildrenNode.ChildrenNode(childSet, nodeFromJSON(priority), _IndexMap.IndexMap.Default);
-        }
-    } else {
-        var node_1 = _ChildrenNode.ChildrenNode.EMPTY_NODE;
-        var jsonObj_1 = json;
-        (0, _obj.forEach)(jsonObj_1, function (key, childData) {
-            if ((0, _obj.contains)(jsonObj_1, key)) {
-                if (key.substring(0, 1) !== '.') {
-                    // ignore metadata nodes.
-                    var childNode = nodeFromJSON(childData);
-                    if (childNode.isLeafNode() || !childNode.isEmpty()) node_1 = node_1.updateImmediateChild(key, childNode);
-                }
-            }
-        });
-        return node_1.updatePriority(nodeFromJSON(priority));
-    }
-}
-(0, _PriorityIndex.setNodeFromJSON)(nodeFromJSON);
-//# sourceMappingURL=nodeFromJSON.js.map
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Firebase constants.  Some of these (@defines) can be overridden at compile-time.
- */
-var CONSTANTS = exports.CONSTANTS = {
-  /**
-   * @define {boolean} Whether this is the client Node.js SDK.
-   */
-  NODE_CLIENT: false,
-  /**
-   * @define {boolean} Whether this is the Admin Node.js SDK.
-   */
-  NODE_ADMIN: false,
-  /**
-   * Firebase SDK Version
-   */
-  SDK_VERSION: '4.3.1'
-};
-//# sourceMappingURL=constants.js.map
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.SessionStorage = exports.PersistentStorage = undefined;
-
-var _DOMStorageWrapper = __webpack_require__(150);
-
-var _MemoryStorage = __webpack_require__(151);
-
-/**
-* Helper to create a DOMStorageWrapper or else fall back to MemoryStorage.
-* TODO: Once MemoryStorage and DOMStorageWrapper have a shared interface this method annotation should change
-* to reflect this type
-*
-* @param {string} domStorageName Name of the underlying storage object
-*   (e.g. 'localStorage' or 'sessionStorage').
-* @return {?} Turning off type information until a common interface is defined.
-*/
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var createStoragefor = function createStoragefor(domStorageName) {
-    try {
-        // NOTE: just accessing "localStorage" or "window['localStorage']" may throw a security exception,
-        // so it must be inside the try/catch.
-        if (typeof window !== 'undefined' && typeof window[domStorageName] !== 'undefined') {
-            // Need to test cache. Just because it's here doesn't mean it works
-            var domStorage = window[domStorageName];
-            domStorage.setItem('firebase:sentinel', 'cache');
-            domStorage.removeItem('firebase:sentinel');
-            return new _DOMStorageWrapper.DOMStorageWrapper(domStorage);
-        }
-    } catch (e) {}
-    // Failed to create wrapper.  Just return in-memory storage.
-    // TODO: log?
-    return new _MemoryStorage.MemoryStorage();
-};
-/** A storage object that lasts across sessions */
-var PersistentStorage = exports.PersistentStorage = createStoragefor('localStorage');
-/** A storage object that only lasts one session */
-var SessionStorage = exports.SessionStorage = createStoragefor('sessionStorage');
-//# sourceMappingURL=storage.js.map
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var PROTOCOL_VERSION = exports.PROTOCOL_VERSION = '5';
-var VERSION_PARAM = exports.VERSION_PARAM = 'v';
-var TRANSPORT_SESSION_PARAM = exports.TRANSPORT_SESSION_PARAM = 's';
-var REFERER_PARAM = exports.REFERER_PARAM = 'r';
-var FORGE_REF = exports.FORGE_REF = 'f';
-var FORGE_DOMAIN = exports.FORGE_DOMAIN = 'firebaseio.com';
-var LAST_SESSION_PARAM = exports.LAST_SESSION_PARAM = 'ls';
-var WEBSOCKET = exports.WEBSOCKET = 'websocket';
-var LONG_POLLING = exports.LONG_POLLING = 'long_polling';
-//# sourceMappingURL=Constants.js.map
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Index = undefined;
-
-var _Node = __webpack_require__(7);
-
-var _util = __webpack_require__(1);
-
-/**
- *
- * @constructor
- */
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var Index = function () {
-  function Index() {}
-  /**
-   * @return {function(!NamedNode, !NamedNode):number} A standalone comparison function for
-   * this index
-   */
-  Index.prototype.getCompare = function () {
-    return this.compare.bind(this);
-  };
-  /**
-   * Given a before and after value for a node, determine if the indexed value has changed. Even if they are different,
-   * it's possible that the changes are isolated to parts of the snapshot that are not indexed.
-   *
-   * @param {!Node} oldNode
-   * @param {!Node} newNode
-   * @return {boolean} True if the portion of the snapshot being indexed changed between oldNode and newNode
-   */
-  Index.prototype.indexedValueChanged = function (oldNode, newNode) {
-    var oldWrapped = new _Node.NamedNode(_util.MIN_NAME, oldNode);
-    var newWrapped = new _Node.NamedNode(_util.MIN_NAME, newNode);
-    return this.compare(oldWrapped, newWrapped) !== 0;
-  };
-  /**
-   * @return {!NamedNode} a node wrapper that will sort equal to or less than
-   * any other node wrapper, using this index
-   */
-  Index.prototype.minPost = function () {
-    return _Node.NamedNode.MIN;
-  };
-  return Index;
-}();
-exports.Index = Index;
-//# sourceMappingURL=Index.js.map
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.LeafNode = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
-                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                              * limitations under the License.
-                                                                                                                                                                                                                                                                              */
-
-
-var _assert = __webpack_require__(0);
-
-var _util = __webpack_require__(1);
-
-var _snap = __webpack_require__(62);
-
-var __childrenNodeConstructor;
-/**
- * LeafNode is a class for storing leaf nodes in a DataSnapshot.  It
- * implements Node and stores the value of the node (a string,
- * number, or boolean) accessible via getValue().
- */
-var LeafNode = function () {
-    /**
-     * @implements {Node}
-     * @param {!(string|number|boolean|Object)} value_ The value to store in this leaf node.
-     *                                         The object type is possible in the event of a deferred value
-     * @param {!Node=} priorityNode_ The priority of this node.
-     */
-    function LeafNode(value_, priorityNode_) {
-        if (priorityNode_ === void 0) {
-            priorityNode_ = LeafNode.__childrenNodeConstructor.EMPTY_NODE;
-        }
-        this.value_ = value_;
-        this.priorityNode_ = priorityNode_;
-        this.lazyHash_ = null;
-        (0, _assert.assert)(this.value_ !== undefined && this.value_ !== null, "LeafNode shouldn't be created with null/undefined value.");
-        (0, _snap.validatePriorityNode)(this.priorityNode_);
-    }
-    Object.defineProperty(LeafNode, "__childrenNodeConstructor", {
-        get: function get() {
-            return __childrenNodeConstructor;
-        },
-        set: function set(val) {
-            __childrenNodeConstructor = val;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /** @inheritDoc */
-    LeafNode.prototype.isLeafNode = function () {
-        return true;
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.getPriority = function () {
-        return this.priorityNode_;
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.updatePriority = function (newPriorityNode) {
-        return new LeafNode(this.value_, newPriorityNode);
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.getImmediateChild = function (childName) {
-        // Hack to treat priority as a regular child
-        if (childName === '.priority') {
-            return this.priorityNode_;
-        } else {
-            return LeafNode.__childrenNodeConstructor.EMPTY_NODE;
-        }
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.getChild = function (path) {
-        if (path.isEmpty()) {
-            return this;
-        } else if (path.getFront() === '.priority') {
-            return this.priorityNode_;
-        } else {
-            return LeafNode.__childrenNodeConstructor.EMPTY_NODE;
-        }
-    };
-    /**
-     * @inheritDoc
-     */
-    LeafNode.prototype.hasChild = function () {
-        return false;
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.getPredecessorChildName = function (childName, childNode) {
-        return null;
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.updateImmediateChild = function (childName, newChildNode) {
-        if (childName === '.priority') {
-            return this.updatePriority(newChildNode);
-        } else if (newChildNode.isEmpty() && childName !== '.priority') {
-            return this;
-        } else {
-            return LeafNode.__childrenNodeConstructor.EMPTY_NODE.updateImmediateChild(childName, newChildNode).updatePriority(this.priorityNode_);
-        }
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.updateChild = function (path, newChildNode) {
-        var front = path.getFront();
-        if (front === null) {
-            return newChildNode;
-        } else if (newChildNode.isEmpty() && front !== '.priority') {
-            return this;
-        } else {
-            (0, _assert.assert)(front !== '.priority' || path.getLength() === 1, '.priority must be the last token in a path');
-            return this.updateImmediateChild(front, LeafNode.__childrenNodeConstructor.EMPTY_NODE.updateChild(path.popFront(), newChildNode));
-        }
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.isEmpty = function () {
-        return false;
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.numChildren = function () {
-        return 0;
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.forEachChild = function (index, action) {
-        return false;
-    };
-    /**
-     * @inheritDoc
-     */
-    LeafNode.prototype.val = function (exportFormat) {
-        if (exportFormat && !this.getPriority().isEmpty()) return {
-            '.value': this.getValue(),
-            '.priority': this.getPriority().val()
-        };else return this.getValue();
-    };
-    /** @inheritDoc */
-    LeafNode.prototype.hash = function () {
-        if (this.lazyHash_ === null) {
-            var toHash = '';
-            if (!this.priorityNode_.isEmpty()) toHash += 'priority:' + (0, _snap.priorityHashText)(this.priorityNode_.val()) + ':';
-            var type = _typeof(this.value_);
-            toHash += type + ':';
-            if (type === 'number') {
-                toHash += (0, _util.doubleToIEEE754String)(this.value_);
-            } else {
-                toHash += this.value_;
-            }
-            this.lazyHash_ = (0, _util.sha1)(toHash);
-        }
-        return this.lazyHash_;
-    };
-    /**
-     * Returns the value of the leaf node.
-     * @return {Object|string|number|boolean} The value of the node.
-     */
-    LeafNode.prototype.getValue = function () {
-        return this.value_;
-    };
-    /**
-     * @inheritDoc
-     */
-    LeafNode.prototype.compareTo = function (other) {
-        if (other === LeafNode.__childrenNodeConstructor.EMPTY_NODE) {
-            return 1;
-        } else if (other instanceof LeafNode.__childrenNodeConstructor) {
-            return -1;
-        } else {
-            (0, _assert.assert)(other.isLeafNode(), 'Unknown node type');
-            return this.compareToLeafNode_(other);
-        }
-    };
-    /**
-     * Comparison specifically for two leaf nodes
-     * @param {!LeafNode} otherLeaf
-     * @return {!number}
-     * @private
-     */
-    LeafNode.prototype.compareToLeafNode_ = function (otherLeaf) {
-        var otherLeafType = _typeof(otherLeaf.value_);
-        var thisLeafType = _typeof(this.value_);
-        var otherIndex = LeafNode.VALUE_TYPE_ORDER.indexOf(otherLeafType);
-        var thisIndex = LeafNode.VALUE_TYPE_ORDER.indexOf(thisLeafType);
-        (0, _assert.assert)(otherIndex >= 0, 'Unknown leaf type: ' + otherLeafType);
-        (0, _assert.assert)(thisIndex >= 0, 'Unknown leaf type: ' + thisLeafType);
-        if (otherIndex === thisIndex) {
-            // Same type, compare values
-            if (thisLeafType === 'object') {
-                // Deferred value nodes are all equal, but we should also never get to this point...
-                return 0;
-            } else {
-                // Note that this works because true > false, all others are number or string comparisons
-                if (this.value_ < otherLeaf.value_) {
-                    return -1;
-                } else if (this.value_ === otherLeaf.value_) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            }
-        } else {
-            return thisIndex - otherIndex;
-        }
-    };
-    /**
-     * @inheritDoc
-     */
-    LeafNode.prototype.withIndex = function () {
-        return this;
-    };
-    /**
-     * @inheritDoc
-     */
-    LeafNode.prototype.isIndexed = function () {
-        return true;
-    };
-    /**
-     * @inheritDoc
-     */
-    LeafNode.prototype.equals = function (other) {
-        /**
-         * @inheritDoc
-         */
-        if (other === this) {
-            return true;
-        } else if (other.isLeafNode()) {
-            var otherLeaf = other;
-            return this.value_ === otherLeaf.value_ && this.priorityNode_.equals(otherLeaf.priorityNode_);
-        } else {
-            return false;
-        }
-    };
-    /**
-     * The sort order for comparing leaf nodes of different types. If two leaf nodes have
-     * the same type, the comparison falls back to their value
-     * @type {Array.<!string>}
-     * @const
-     */
-    LeafNode.VALUE_TYPE_ORDER = ['object', 'boolean', 'number', 'string'];
-    return LeafNode;
-}();
-exports.LeafNode = LeafNode;
-//# sourceMappingURL=LeafNode.js.map
-
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Repo = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
-                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                              *
-                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                              * limitations under the License.
-                                                                                                                                                                                                                                                                              */
-
-
-var _ServerValues = __webpack_require__(69);
-
-var _nodeFromJSON = __webpack_require__(23);
-
-var _Path = __webpack_require__(3);
-
-var _SparseSnapshotTree = __webpack_require__(70);
-
-var _SyncTree = __webpack_require__(157);
-
-var _SnapshotHolder = __webpack_require__(168);
-
-var _json = __webpack_require__(9);
-
-var _util = __webpack_require__(1);
-
-var _obj = __webpack_require__(2);
-
-var _AuthTokenProvider = __webpack_require__(169);
-
-var _StatsManager = __webpack_require__(43);
-
-var _StatsReporter = __webpack_require__(171);
-
-var _StatsListener = __webpack_require__(75);
-
-var _EventQueue = __webpack_require__(172);
-
-var _PersistentConnection = __webpack_require__(76);
-
-var _ReadonlyRestClient = __webpack_require__(178);
-
-var _Database = __webpack_require__(58);
-
-var INTERRUPT_REASON = 'repo_interrupt';
-/**
- * A connection to a single data repository.
- */
-var Repo = function () {
-    /**
-     * @param {!RepoInfo} repoInfo_
-     * @param {boolean} forceRestClient
-     * @param {!FirebaseApp} app
-     */
-    function Repo(repoInfo_, forceRestClient, app) {
-        var _this = this;
-        this.repoInfo_ = repoInfo_;
-        this.app = app;
-        this.dataUpdateCount = 0;
-        this.statsListener_ = null;
-        this.eventQueue_ = new _EventQueue.EventQueue();
-        this.nextWriteId_ = 1;
-        this.interceptServerDataCallback_ = null;
-        // A list of data pieces and paths to be set when this client disconnects.
-        this.onDisconnect_ = new _SparseSnapshotTree.SparseSnapshotTree();
-        /**
-         * TODO: This should be @private but it's used by test_access.js and internal.js
-         * @type {?PersistentConnection}
-         */
-        this.persistentConnection_ = null;
-        /** @type {!AuthTokenProvider} */
-        var authTokenProvider = new _AuthTokenProvider.AuthTokenProvider(app);
-        this.stats_ = _StatsManager.StatsManager.getCollection(repoInfo_);
-        if (forceRestClient || (0, _util.beingCrawled)()) {
-            this.server_ = new _ReadonlyRestClient.ReadonlyRestClient(this.repoInfo_, this.onDataUpdate_.bind(this), authTokenProvider);
-            // Minor hack: Fire onConnect immediately, since there's no actual connection.
-            setTimeout(this.onConnectStatus_.bind(this, true), 0);
-        } else {
-            var authOverride = app.options['databaseAuthVariableOverride'];
-            // Validate authOverride
-            if (typeof authOverride !== 'undefined' && authOverride !== null) {
-                if ((typeof authOverride === 'undefined' ? 'undefined' : _typeof(authOverride)) !== 'object') {
-                    throw new Error('Only objects are supported for option databaseAuthVariableOverride');
-                }
-                try {
-                    (0, _json.stringify)(authOverride);
-                } catch (e) {
-                    throw new Error('Invalid authOverride provided: ' + e);
-                }
-            }
-            this.persistentConnection_ = new _PersistentConnection.PersistentConnection(this.repoInfo_, this.onDataUpdate_.bind(this), this.onConnectStatus_.bind(this), this.onServerInfoUpdate_.bind(this), authTokenProvider, authOverride);
-            this.server_ = this.persistentConnection_;
-        }
-        authTokenProvider.addTokenChangeListener(function (token) {
-            _this.server_.refreshAuthToken(token);
-        });
-        // In the case of multiple Repos for the same repoInfo (i.e. there are multiple Firebase.Contexts being used),
-        // we only want to create one StatsReporter.  As such, we'll report stats over the first Repo created.
-        this.statsReporter_ = _StatsManager.StatsManager.getOrCreateReporter(repoInfo_, function () {
-            return new _StatsReporter.StatsReporter(_this.stats_, _this.server_);
-        });
-        this.transactions_init_();
-        // Used for .info.
-        this.infoData_ = new _SnapshotHolder.SnapshotHolder();
-        this.infoSyncTree_ = new _SyncTree.SyncTree({
-            startListening: function startListening(query, tag, currentHashFn, onComplete) {
-                var infoEvents = [];
-                var node = _this.infoData_.getNode(query.path);
-                // This is possibly a hack, but we have different semantics for .info endpoints. We don't raise null events
-                // on initial data...
-                if (!node.isEmpty()) {
-                    infoEvents = _this.infoSyncTree_.applyServerOverwrite(query.path, node);
-                    setTimeout(function () {
-                        onComplete('ok');
-                    }, 0);
-                }
-                return infoEvents;
-            },
-            stopListening: function stopListening() {}
-        });
-        this.updateInfo_('connected', false);
-        this.serverSyncTree_ = new _SyncTree.SyncTree({
-            startListening: function startListening(query, tag, currentHashFn, onComplete) {
-                _this.server_.listen(query, currentHashFn, tag, function (status, data) {
-                    var events = onComplete(status, data);
-                    _this.eventQueue_.raiseEventsForChangedPath(query.path, events);
-                });
-                // No synchronous events for network-backed sync trees
-                return [];
-            },
-            stopListening: function stopListening(query, tag) {
-                _this.server_.unlisten(query, tag);
-            }
-        });
-    }
-    /**
-     * @return {string}  The URL corresponding to the root of this Firebase.
-     */
-    Repo.prototype.toString = function () {
-        return (this.repoInfo_.secure ? 'https://' : 'http://') + this.repoInfo_.host;
-    };
-    /**
-     * @return {!string} The namespace represented by the repo.
-     */
-    Repo.prototype.name = function () {
-        return this.repoInfo_.namespace;
-    };
-    /**
-     * @return {!number} The time in milliseconds, taking the server offset into account if we have one.
-     */
-    Repo.prototype.serverTime = function () {
-        var offsetNode = this.infoData_.getNode(new _Path.Path('.info/serverTimeOffset'));
-        var offset = offsetNode.val() || 0;
-        return new Date().getTime() + offset;
-    };
-    /**
-     * Generate ServerValues using some variables from the repo object.
-     * @return {!Object}
-     */
-    Repo.prototype.generateServerValues = function () {
-        return (0, _ServerValues.generateWithValues)({
-            timestamp: this.serverTime()
-        });
-    };
-    /**
-     * Called by realtime when we get new messages from the server.
-     *
-     * @private
-     * @param {string} pathString
-     * @param {*} data
-     * @param {boolean} isMerge
-     * @param {?number} tag
-     */
-    Repo.prototype.onDataUpdate_ = function (pathString, data, isMerge, tag) {
-        // For testing.
-        this.dataUpdateCount++;
-        var path = new _Path.Path(pathString);
-        data = this.interceptServerDataCallback_ ? this.interceptServerDataCallback_(pathString, data) : data;
-        var events = [];
-        if (tag) {
-            if (isMerge) {
-                var taggedChildren = (0, _obj.map)(data, function (raw) {
-                    return (0, _nodeFromJSON.nodeFromJSON)(raw);
-                });
-                events = this.serverSyncTree_.applyTaggedQueryMerge(path, taggedChildren, tag);
-            } else {
-                var taggedSnap = (0, _nodeFromJSON.nodeFromJSON)(data);
-                events = this.serverSyncTree_.applyTaggedQueryOverwrite(path, taggedSnap, tag);
-            }
-        } else if (isMerge) {
-            var changedChildren = (0, _obj.map)(data, function (raw) {
-                return (0, _nodeFromJSON.nodeFromJSON)(raw);
-            });
-            events = this.serverSyncTree_.applyServerMerge(path, changedChildren);
-        } else {
-            var snap = (0, _nodeFromJSON.nodeFromJSON)(data);
-            events = this.serverSyncTree_.applyServerOverwrite(path, snap);
-        }
-        var affectedPath = path;
-        if (events.length > 0) {
-            // Since we have a listener outstanding for each transaction, receiving any events
-            // is a proxy for some change having occurred.
-            affectedPath = this.rerunTransactions_(path);
-        }
-        this.eventQueue_.raiseEventsForChangedPath(affectedPath, events);
-    };
-    /**
-     * TODO: This should be @private but it's used by test_access.js and internal.js
-     * @param {?function(!string, *):*} callback
-     * @private
-     */
-    Repo.prototype.interceptServerData_ = function (callback) {
-        this.interceptServerDataCallback_ = callback;
-    };
-    /**
-     * @param {!boolean} connectStatus
-     * @private
-     */
-    Repo.prototype.onConnectStatus_ = function (connectStatus) {
-        this.updateInfo_('connected', connectStatus);
-        if (connectStatus === false) {
-            this.runOnDisconnectEvents_();
-        }
-    };
-    /**
-     * @param {!Object} updates
-     * @private
-     */
-    Repo.prototype.onServerInfoUpdate_ = function (updates) {
-        var _this = this;
-        (0, _util.each)(updates, function (value, key) {
-            _this.updateInfo_(key, value);
-        });
-    };
-    /**
-     *
-     * @param {!string} pathString
-     * @param {*} value
-     * @private
-     */
-    Repo.prototype.updateInfo_ = function (pathString, value) {
-        var path = new _Path.Path('/.info/' + pathString);
-        var newNode = (0, _nodeFromJSON.nodeFromJSON)(value);
-        this.infoData_.updateSnapshot(path, newNode);
-        var events = this.infoSyncTree_.applyServerOverwrite(path, newNode);
-        this.eventQueue_.raiseEventsForChangedPath(path, events);
-    };
-    /**
-     * @return {!number}
-     * @private
-     */
-    Repo.prototype.getNextWriteId_ = function () {
-        return this.nextWriteId_++;
-    };
-    /**
-     * @param {!Path} path
-     * @param {*} newVal
-     * @param {number|string|null} newPriority
-     * @param {?function(?Error, *=)} onComplete
-     */
-    Repo.prototype.setWithPriority = function (path, newVal, newPriority, onComplete) {
-        var _this = this;
-        this.log_('set', {
-            path: path.toString(),
-            value: newVal,
-            priority: newPriority
-        });
-        // TODO: Optimize this behavior to either (a) store flag to skip resolving where possible and / or
-        // (b) store unresolved paths on JSON parse
-        var serverValues = this.generateServerValues();
-        var newNodeUnresolved = (0, _nodeFromJSON.nodeFromJSON)(newVal, newPriority);
-        var newNode = (0, _ServerValues.resolveDeferredValueSnapshot)(newNodeUnresolved, serverValues);
-        var writeId = this.getNextWriteId_();
-        var events = this.serverSyncTree_.applyUserOverwrite(path, newNode, writeId, true);
-        this.eventQueue_.queueEvents(events);
-        this.server_.put(path.toString(), newNodeUnresolved.val( /*export=*/true), function (status, errorReason) {
-            var success = status === 'ok';
-            if (!success) {
-                (0, _util.warn)('set at ' + path + ' failed: ' + status);
-            }
-            var clearEvents = _this.serverSyncTree_.ackUserWrite(writeId, !success);
-            _this.eventQueue_.raiseEventsForChangedPath(path, clearEvents);
-            _this.callOnCompleteCallback(onComplete, status, errorReason);
-        });
-        var affectedPath = this.abortTransactions_(path);
-        this.rerunTransactions_(affectedPath);
-        // We queued the events above, so just flush the queue here
-        this.eventQueue_.raiseEventsForChangedPath(affectedPath, []);
-    };
-    /**
-     * @param {!Path} path
-     * @param {!Object} childrenToMerge
-     * @param {?function(?Error, *=)} onComplete
-     */
-    Repo.prototype.update = function (path, childrenToMerge, onComplete) {
-        var _this = this;
-        this.log_('update', { path: path.toString(), value: childrenToMerge });
-        // Start with our existing data and merge each child into it.
-        var empty = true;
-        var serverValues = this.generateServerValues();
-        var changedChildren = {};
-        (0, _obj.forEach)(childrenToMerge, function (changedKey, changedValue) {
-            empty = false;
-            var newNodeUnresolved = (0, _nodeFromJSON.nodeFromJSON)(changedValue);
-            changedChildren[changedKey] = (0, _ServerValues.resolveDeferredValueSnapshot)(newNodeUnresolved, serverValues);
-        });
-        if (!empty) {
-            var writeId_1 = this.getNextWriteId_();
-            var events = this.serverSyncTree_.applyUserMerge(path, changedChildren, writeId_1);
-            this.eventQueue_.queueEvents(events);
-            this.server_.merge(path.toString(), childrenToMerge, function (status, errorReason) {
-                var success = status === 'ok';
-                if (!success) {
-                    (0, _util.warn)('update at ' + path + ' failed: ' + status);
-                }
-                var clearEvents = _this.serverSyncTree_.ackUserWrite(writeId_1, !success);
-                var affectedPath = clearEvents.length > 0 ? _this.rerunTransactions_(path) : path;
-                _this.eventQueue_.raiseEventsForChangedPath(affectedPath, clearEvents);
-                _this.callOnCompleteCallback(onComplete, status, errorReason);
-            });
-            (0, _obj.forEach)(childrenToMerge, function (changedPath) {
-                var affectedPath = _this.abortTransactions_(path.child(changedPath));
-                _this.rerunTransactions_(affectedPath);
-            });
-            // We queued the events above, so just flush the queue here
-            this.eventQueue_.raiseEventsForChangedPath(path, []);
-        } else {
-            (0, _util.log)("update() called with empty data.  Don't do anything.");
-            this.callOnCompleteCallback(onComplete, 'ok');
-        }
-    };
-    /**
-     * Applies all of the changes stored up in the onDisconnect_ tree.
-     * @private
-     */
-    Repo.prototype.runOnDisconnectEvents_ = function () {
-        var _this = this;
-        this.log_('onDisconnectEvents');
-        var serverValues = this.generateServerValues();
-        var resolvedOnDisconnectTree = (0, _ServerValues.resolveDeferredValueTree)(this.onDisconnect_, serverValues);
-        var events = [];
-        resolvedOnDisconnectTree.forEachTree(_Path.Path.Empty, function (path, snap) {
-            events = events.concat(_this.serverSyncTree_.applyServerOverwrite(path, snap));
-            var affectedPath = _this.abortTransactions_(path);
-            _this.rerunTransactions_(affectedPath);
-        });
-        this.onDisconnect_ = new _SparseSnapshotTree.SparseSnapshotTree();
-        this.eventQueue_.raiseEventsForChangedPath(_Path.Path.Empty, events);
-    };
-    /**
-     * @param {!Path} path
-     * @param {?function(?Error, *=)} onComplete
-     */
-    Repo.prototype.onDisconnectCancel = function (path, onComplete) {
-        var _this = this;
-        this.server_.onDisconnectCancel(path.toString(), function (status, errorReason) {
-            if (status === 'ok') {
-                _this.onDisconnect_.forget(path);
-            }
-            _this.callOnCompleteCallback(onComplete, status, errorReason);
-        });
-    };
-    /**
-     * @param {!Path} path
-     * @param {*} value
-     * @param {?function(?Error, *=)} onComplete
-     */
-    Repo.prototype.onDisconnectSet = function (path, value, onComplete) {
-        var _this = this;
-        var newNode = (0, _nodeFromJSON.nodeFromJSON)(value);
-        this.server_.onDisconnectPut(path.toString(), newNode.val( /*export=*/true), function (status, errorReason) {
-            if (status === 'ok') {
-                _this.onDisconnect_.remember(path, newNode);
-            }
-            _this.callOnCompleteCallback(onComplete, status, errorReason);
-        });
-    };
-    /**
-     * @param {!Path} path
-     * @param {*} value
-     * @param {*} priority
-     * @param {?function(?Error, *=)} onComplete
-     */
-    Repo.prototype.onDisconnectSetWithPriority = function (path, value, priority, onComplete) {
-        var _this = this;
-        var newNode = (0, _nodeFromJSON.nodeFromJSON)(value, priority);
-        this.server_.onDisconnectPut(path.toString(), newNode.val( /*export=*/true), function (status, errorReason) {
-            if (status === 'ok') {
-                _this.onDisconnect_.remember(path, newNode);
-            }
-            _this.callOnCompleteCallback(onComplete, status, errorReason);
-        });
-    };
-    /**
-     * @param {!Path} path
-     * @param {*} childrenToMerge
-     * @param {?function(?Error, *=)} onComplete
-     */
-    Repo.prototype.onDisconnectUpdate = function (path, childrenToMerge, onComplete) {
-        var _this = this;
-        if ((0, _obj.isEmpty)(childrenToMerge)) {
-            (0, _util.log)("onDisconnect().update() called with empty data.  Don't do anything.");
-            this.callOnCompleteCallback(onComplete, 'ok');
-            return;
-        }
-        this.server_.onDisconnectMerge(path.toString(), childrenToMerge, function (status, errorReason) {
-            if (status === 'ok') {
-                (0, _obj.forEach)(childrenToMerge, function (childName, childNode) {
-                    var newChildNode = (0, _nodeFromJSON.nodeFromJSON)(childNode);
-                    _this.onDisconnect_.remember(path.child(childName), newChildNode);
-                });
-            }
-            _this.callOnCompleteCallback(onComplete, status, errorReason);
-        });
-    };
-    /**
-     * @param {!Query} query
-     * @param {!EventRegistration} eventRegistration
-     */
-    Repo.prototype.addEventCallbackForQuery = function (query, eventRegistration) {
-        var events;
-        if (query.path.getFront() === '.info') {
-            events = this.infoSyncTree_.addEventRegistration(query, eventRegistration);
-        } else {
-            events = this.serverSyncTree_.addEventRegistration(query, eventRegistration);
-        }
-        this.eventQueue_.raiseEventsAtPath(query.path, events);
-    };
-    /**
-     * @param {!Query} query
-     * @param {?EventRegistration} eventRegistration
-     */
-    Repo.prototype.removeEventCallbackForQuery = function (query, eventRegistration) {
-        // These are guaranteed not to raise events, since we're not passing in a cancelError. However, we can future-proof
-        // a little bit by handling the return values anyways.
-        var events;
-        if (query.path.getFront() === '.info') {
-            events = this.infoSyncTree_.removeEventRegistration(query, eventRegistration);
-        } else {
-            events = this.serverSyncTree_.removeEventRegistration(query, eventRegistration);
-        }
-        this.eventQueue_.raiseEventsAtPath(query.path, events);
-    };
-    Repo.prototype.interrupt = function () {
-        if (this.persistentConnection_) {
-            this.persistentConnection_.interrupt(INTERRUPT_REASON);
-        }
-    };
-    Repo.prototype.resume = function () {
-        if (this.persistentConnection_) {
-            this.persistentConnection_.resume(INTERRUPT_REASON);
-        }
-    };
-    Repo.prototype.stats = function (showDelta) {
-        if (showDelta === void 0) {
-            showDelta = false;
-        }
-        if (typeof console === 'undefined') return;
-        var stats;
-        if (showDelta) {
-            if (!this.statsListener_) this.statsListener_ = new _StatsListener.StatsListener(this.stats_);
-            stats = this.statsListener_.get();
-        } else {
-            stats = this.stats_.get();
-        }
-        var longestName = Object.keys(stats).reduce(function (previousValue, currentValue) {
-            return Math.max(currentValue.length, previousValue);
-        }, 0);
-        (0, _obj.forEach)(stats, function (stat, value) {
-            // pad stat names to be the same length (plus 2 extra spaces).
-            for (var i = stat.length; i < longestName + 2; i++) {
-                stat += ' ';
-            }console.log(stat + value);
-        });
-    };
-    Repo.prototype.statsIncrementCounter = function (metric) {
-        this.stats_.incrementCounter(metric);
-        this.statsReporter_.includeStat(metric);
-    };
-    /**
-     * @param {...*} var_args
-     * @private
-     */
-    Repo.prototype.log_ = function () {
-        var var_args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            var_args[_i] = arguments[_i];
-        }
-        var prefix = '';
-        if (this.persistentConnection_) {
-            prefix = this.persistentConnection_.id + ':';
-        }
-        _util.log.apply(void 0, [prefix].concat(var_args));
-    };
-    /**
-     * @param {?function(?Error, *=)} callback
-     * @param {!string} status
-     * @param {?string=} errorReason
-     */
-    Repo.prototype.callOnCompleteCallback = function (callback, status, errorReason) {
-        if (callback) {
-            (0, _util.exceptionGuard)(function () {
-                if (status == 'ok') {
-                    callback(null);
-                } else {
-                    var code = (status || 'error').toUpperCase();
-                    var message = code;
-                    if (errorReason) message += ': ' + errorReason;
-                    var error = new Error(message);
-                    error.code = code;
-                    callback(error);
-                }
-            });
-        }
-    };
-    Object.defineProperty(Repo.prototype, "database", {
-        get: function get() {
-            return this.__database || (this.__database = new _Database.Database(this));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return Repo;
-}();
-exports.Repo = Repo;
-//# sourceMappingURL=Repo.js.map
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * A cache node only stores complete children. Additionally it holds a flag whether the node can be considered fully
- * initialized in the sense that we know at one point in time this represented a valid state of the world, e.g.
- * initialized with data from the server, or a complete overwrite by the client. The filtered flag also tracks
- * whether a node potentially had children removed due to a filter.
- */
-var CacheNode = function () {
-    /**
-     * @param {!Node} node_
-     * @param {boolean} fullyInitialized_
-     * @param {boolean} filtered_
-     */
-    function CacheNode(node_, fullyInitialized_, filtered_) {
-        this.node_ = node_;
-        this.fullyInitialized_ = fullyInitialized_;
-        this.filtered_ = filtered_;
-    }
-    /**
-     * Returns whether this node was fully initialized with either server data or a complete overwrite by the client
-     * @return {boolean}
-     */
-    CacheNode.prototype.isFullyInitialized = function () {
-        return this.fullyInitialized_;
-    };
-    /**
-     * Returns whether this node is potentially missing children due to a filter applied to the node
-     * @return {boolean}
-     */
-    CacheNode.prototype.isFiltered = function () {
-        return this.filtered_;
-    };
-    /**
-     * @param {!Path} path
-     * @return {boolean}
-     */
-    CacheNode.prototype.isCompleteForPath = function (path) {
-        if (path.isEmpty()) {
-            return this.isFullyInitialized() && !this.filtered_;
-        }
-        var childKey = path.getFront();
-        return this.isCompleteForChild(childKey);
-    };
-    /**
-     * @param {!string} key
-     * @return {boolean}
-     */
-    CacheNode.prototype.isCompleteForChild = function (key) {
-        return this.isFullyInitialized() && !this.filtered_ || this.node_.hasChild(key);
-    };
-    /**
-     * @return {!Node}
-     */
-    CacheNode.prototype.getNode = function () {
-        return this.node_;
-    };
-    return CacheNode;
-}();
-exports.CacheNode = CacheNode;
-//# sourceMappingURL=CacheNode.js.map
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setDomainBase = setDomainBase;
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-/**
- * @fileoverview Constants used in the Firebase Storage library.
- */
-/**
- * Domain and scheme for API calls.
- */
-var domainBase = exports.domainBase = 'https://firebasestorage.googleapis.com';
-/**
- * Domain and scheme for object downloads.
- */
-var downloadBase = exports.downloadBase = 'https://firebasestorage.googleapis.com';
-/**
- * Base URL for non-upload calls to the API.
- */
-var apiBaseUrl = exports.apiBaseUrl = '/v0';
-/**
- * Base URL for upload calls to the API.
- */
-var apiUploadBaseUrl = exports.apiUploadBaseUrl = '/v0';
-function setDomainBase(domainBase) {
-  domainBase = domainBase;
-}
-var configOption = exports.configOption = 'storageBucket';
-/**
- * 1 minute
- */
-var shortMaxOperationRetryTime = exports.shortMaxOperationRetryTime = 1 * 60 * 1000;
-/**
- * 2 minutes
- */
-var defaultMaxOperationRetryTime = exports.defaultMaxOperationRetryTime = 2 * 60 * 1000;
-/**
- * 10 minutes
- */
-var defaultMaxUploadRetryTime = exports.defaultMaxUploadRetryTime = 10 * 60 * 100;
-/**
- * This is the value of Number.MIN_SAFE_INTEGER, which is not well supported
- * enough for us to use it directly.
- */
-var minSafeInteger = exports.minSafeInteger = -9007199254740991;
-//# sourceMappingURL=constants.js.map
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Location = undefined;
-
-var _error = __webpack_require__(10);
-
-var errorsExports = _interopRequireWildcard(_error);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
- * @struct
- */
-var Location = function () {
-    function Location(bucket, path) {
-        this.bucket = bucket;
-        this.path_ = path;
-    }
-    Object.defineProperty(Location.prototype, "path", {
-        get: function get() {
-            return this.path_;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Location.prototype.fullServerUrl = function () {
-        var encode = encodeURIComponent;
-        return '/b/' + encode(this.bucket) + '/o/' + encode(this.path);
-    };
-    Location.prototype.bucketOnlyServerUrl = function () {
-        var encode = encodeURIComponent;
-        return '/b/' + encode(this.bucket) + '/o';
-    };
-    Location.makeFromBucketSpec = function (bucketString) {
-        var bucketLocation;
-        try {
-            bucketLocation = Location.makeFromUrl(bucketString);
-        } catch (e) {
-            // Not valid URL, use as-is. This lets you put bare bucket names in
-            // config.
-            return new Location(bucketString, '');
-        }
-        if (bucketLocation.path === '') {
-            return bucketLocation;
-        } else {
-            throw errorsExports.invalidDefaultBucket(bucketString);
-        }
-    };
-    Location.makeFromUrl = function (url) {
-        var location = null;
-        var bucketDomain = '([A-Za-z0-9.\\-]+)';
-        function gsModify(loc) {
-            if (loc.path.charAt(loc.path.length - 1) === '/') {
-                loc.path_ = loc.path_.slice(0, -1);
-            }
-        }
-        var gsPath = '(/(.*))?$';
-        var path = '(/([^?#]*).*)?$';
-        var gsRegex = new RegExp('^gs://' + bucketDomain + gsPath, 'i');
-        var gsIndices = { bucket: 1, path: 3 };
-        function httpModify(loc) {
-            loc.path_ = decodeURIComponent(loc.path);
-        }
-        var version = 'v[A-Za-z0-9_]+';
-        var httpRegex = new RegExp('^https?://firebasestorage\\.googleapis\\.com/' + version + '/b/' + bucketDomain + '/o' + path, 'i');
-        var httpIndices = { bucket: 1, path: 3 };
-        var groups = [{ regex: gsRegex, indices: gsIndices, postModify: gsModify }, { regex: httpRegex, indices: httpIndices, postModify: httpModify }];
-        for (var i = 0; i < groups.length; i++) {
-            var group = groups[i];
-            var captures = group.regex.exec(url);
-            if (captures) {
-                var bucketValue = captures[group.indices.bucket];
-                var pathValue = captures[group.indices.path];
-                if (!pathValue) {
-                    pathValue = '';
-                }
-                location = new Location(bucketValue, pathValue);
-                group.postModify(location);
-                break;
-            }
-        }
-        if (location == null) {
-            throw errorsExports.invalidUrl(url);
-        }
-        return location;
-    };
-    return Location;
-}(); /**
-     * Copyright 2017 Google Inc.
-     *
-     * Licensed under the Apache License, Version 2.0 (the "License");
-     * you may not use this file except in compliance with the License.
-     * You may obtain a copy of the License at
-     *
-     *   http://www.apache.org/licenses/LICENSE-2.0
-     *
-     * Unless required by applicable law or agreed to in writing, software
-     * distributed under the License is distributed on an "AS IS" BASIS,
-     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     * See the License for the specific language governing permissions and
-     * limitations under the License.
-     */
-/**
- * @fileoverview Functionality related to the parsing/composition of bucket/
- * object location.
- */
-exports.Location = Location;
-//# sourceMappingURL=location.js.map
-
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*! @license Firebase v4.3.1
-Build: rev-b4fe95f
-Terms: https://firebase.google.com/terms/ */
-
-/**
-* Copyright 2017 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var CODES = {
-    AVAILABLE_IN_WINDOW: 'only-available-in-window',
-    AVAILABLE_IN_SW: 'only-available-in-sw',
-    SHOULD_BE_INHERITED: 'should-be-overriden',
-    BAD_SENDER_ID: 'bad-sender-id',
-    INCORRECT_GCM_SENDER_ID: 'incorrect-gcm-sender-id',
-    PERMISSION_DEFAULT: 'permission-default',
-    PERMISSION_BLOCKED: 'permission-blocked',
-    UNSUPPORTED_BROWSER: 'unsupported-browser',
-    NOTIFICATIONS_BLOCKED: 'notifications-blocked',
-    FAILED_DEFAULT_REGISTRATION: 'failed-serviceworker-registration',
-    SW_REGISTRATION_EXPECTED: 'sw-registration-expected',
-    GET_SUBSCRIPTION_FAILED: 'get-subscription-failed',
-    INVALID_SAVED_TOKEN: 'invalid-saved-token',
-    SW_REG_REDUNDANT: 'sw-reg-redundant',
-    TOKEN_SUBSCRIBE_FAILED: 'token-subscribe-failed',
-    TOKEN_SUBSCRIBE_NO_TOKEN: 'token-subscribe-no-token',
-    TOKEN_SUBSCRIBE_NO_PUSH_SET: 'token-subscribe-no-push-set',
-    USE_SW_BEFORE_GET_TOKEN: 'use-sw-before-get-token',
-    INVALID_DELETE_TOKEN: 'invalid-delete-token',
-    DELETE_TOKEN_NOT_FOUND: 'delete-token-not-found',
-    DELETE_SCOPE_NOT_FOUND: 'delete-scope-not-found',
-    BG_HANDLER_FUNCTION_EXPECTED: 'bg-handler-function-expected',
-    NO_WINDOW_CLIENT_TO_MSG: 'no-window-client-to-msg',
-    UNABLE_TO_RESUBSCRIBE: 'unable-to-resubscribe',
-    NO_FCM_TOKEN_FOR_RESUBSCRIBE: 'no-fcm-token-for-resubscribe',
-    FAILED_TO_DELETE_TOKEN: 'failed-to-delete-token',
-    NO_SW_IN_REG: 'no-sw-in-reg',
-    BAD_SCOPE: 'bad-scope',
-    BAD_VAPID_KEY: 'bad-vapid-key',
-    BAD_SUBSCRIPTION: 'bad-subscription',
-    BAD_TOKEN: 'bad-token',
-    BAD_PUSH_SET: 'bad-push-set',
-    FAILED_DELETE_VAPID_KEY: 'failed-delete-vapid-key'
-};
-var ERROR_MAP = (_a = {}, _a[CODES.AVAILABLE_IN_WINDOW] = 'This method is available in a Window context.', _a[CODES.AVAILABLE_IN_SW] = 'This method is available in a service worker ' + 'context.', _a[CODES.SHOULD_BE_INHERITED] = 'This method should be overriden by ' + 'extended classes.', _a[CODES.BAD_SENDER_ID] = "Please ensure that 'messagingSenderId' is set " + 'correctly in the options passed into firebase.initializeApp().', _a[CODES.PERMISSION_DEFAULT] = 'The required permissions were not granted and ' + 'dismissed instead.', _a[CODES.PERMISSION_BLOCKED] = 'The required permissions were not granted and ' + 'blocked instead.', _a[CODES.UNSUPPORTED_BROWSER] = "This browser doesn't support the API's " + 'required to use the firebase SDK.', _a[CODES.NOTIFICATIONS_BLOCKED] = 'Notifications have been blocked.', _a[CODES.FAILED_DEFAULT_REGISTRATION] = 'We are unable to register the ' + 'default service worker. {$browserErrorMessage}', _a[CODES.SW_REGISTRATION_EXPECTED] = 'A service worker registration was the ' + 'expected input.', _a[CODES.GET_SUBSCRIPTION_FAILED] = 'There was an error when trying to get ' + 'any existing Push Subscriptions.', _a[CODES.INVALID_SAVED_TOKEN] = 'Unable to access details of the saved token.', _a[CODES.SW_REG_REDUNDANT] = 'The service worker being used for push was made ' + 'redundant.', _a[CODES.TOKEN_SUBSCRIBE_FAILED] = 'A problem occured while subscribing the ' + 'user to FCM: {$message}', _a[CODES.TOKEN_SUBSCRIBE_NO_TOKEN] = 'FCM returned no token when subscribing ' + 'the user to push.', _a[CODES.TOKEN_SUBSCRIBE_NO_PUSH_SET] = 'FCM returned an invalid response ' + 'when getting an FCM token.', _a[CODES.USE_SW_BEFORE_GET_TOKEN] = 'You must call useServiceWorker() before ' + 'calling getToken() to ensure your service worker is used.', _a[CODES.INVALID_DELETE_TOKEN] = 'You must pass a valid token into ' + 'deleteToken(), i.e. the token from getToken().', _a[CODES.DELETE_TOKEN_NOT_FOUND] = 'The deletion attempt for token could not ' + 'be performed as the token was not found.', _a[CODES.DELETE_SCOPE_NOT_FOUND] = 'The deletion attempt for service worker ' + 'scope could not be performed as the scope was not found.', _a[CODES.BG_HANDLER_FUNCTION_EXPECTED] = 'The input to ' + 'setBackgroundMessageHandler() must be a function.', _a[CODES.NO_WINDOW_CLIENT_TO_MSG] = 'An attempt was made to message a ' + 'non-existant window client.', _a[CODES.UNABLE_TO_RESUBSCRIBE] = 'There was an error while re-subscribing ' + 'the FCM token for push messaging. Will have to resubscribe the ' + 'user on next visit. {$message}', _a[CODES.NO_FCM_TOKEN_FOR_RESUBSCRIBE] = 'Could not find an FCM token ' + 'and as a result, unable to resubscribe. Will have to resubscribe the ' + 'user on next visit.', _a[CODES.FAILED_TO_DELETE_TOKEN] = 'Unable to delete the currently saved token.', _a[CODES.NO_SW_IN_REG] = 'Even though the service worker registration was ' + 'successful, there was a problem accessing the service worker itself.', _a[CODES.INCORRECT_GCM_SENDER_ID] = "Please change your web app manifest's " + "'gcm_sender_id' value to '103953800507' to use Firebase messaging.", _a[CODES.BAD_SCOPE] = 'The service worker scope must be a string with at ' + 'least one character.', _a[CODES.BAD_VAPID_KEY] = 'The public VAPID key must be a string with at ' + 'least one character.', _a[CODES.BAD_SUBSCRIPTION] = 'The subscription must be a valid ' + 'PushSubscription.', _a[CODES.BAD_TOKEN] = 'The FCM Token used for storage / lookup was not ' + 'a valid token string.', _a[CODES.BAD_PUSH_SET] = 'The FCM push set used for storage / lookup was not ' + 'not a valid push set string.', _a[CODES.FAILED_DELETE_VAPID_KEY] = 'The VAPID key could not be deleted.', _a);
-exports.default = {
-    codes: CODES,
-    map: ERROR_MAP
-};
-
-var _a;
-module.exports = exports['default'];
-//# sourceMappingURL=errors.js.map
-
-
-/***/ }),
-/* 35 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15302,11 +10254,5864 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
 /* 36 */,
-/* 37 */
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(53);
+
+
+/***/ }),
+/* 53 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuefire__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Welcome_vue__ = __webpack_require__(55);
+
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuefire___default.a);
+
+new __WEBPACK_IMPORTED_MODULE_0_vue___default.a(__WEBPACK_IMPORTED_MODULE_2__components_Welcome_vue__["a" /* default */]).$mount('#app');
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(true)
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["VueFire"] = factory();
+	else
+		root["VueFire"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports) {
+
+	var Vue // late binding
+
+	/**
+	 * Returns the key of a Firebase snapshot across SDK versions.
+	 *
+	 * @param {FirebaseSnapshot} snapshot
+	 * @return {string|null}
+	 */
+	function _getKey (snapshot) {
+	  return typeof snapshot.key === 'function'
+	    ? snapshot.key()
+	    : snapshot.key
+	}
+
+	/**
+	 * Returns the original reference of a Firebase reference or query across SDK versions.
+	 *
+	 * @param {FirebaseReference|FirebaseQuery} refOrQuery
+	 * @return {FirebaseReference}
+	 */
+	function _getRef (refOrQuery) {
+	  if (typeof refOrQuery.ref === 'function') {
+	    refOrQuery = refOrQuery.ref()
+	  } else if (typeof refOrQuery.ref === 'object') {
+	    refOrQuery = refOrQuery.ref
+	  }
+
+	  return refOrQuery
+	}
+
+	/**
+	 * Check if a value is an object.
+	 *
+	 * @param {*} val
+	 * @return {boolean}
+	 */
+	function isObject (val) {
+	  return Object.prototype.toString.call(val) === '[object Object]'
+	}
+
+	/**
+	 * Convert firebase snapshot into a bindable data record.
+	 *
+	 * @param {FirebaseSnapshot} snapshot
+	 * @return {Object}
+	 */
+	function createRecord (snapshot) {
+	  var value = snapshot.val()
+	  var res = isObject(value)
+	    ? value
+	    : { '.value': value }
+	  res['.key'] = _getKey(snapshot)
+	  return res
+	}
+
+	/**
+	 * Find the index for an object with given key.
+	 *
+	 * @param {array} array
+	 * @param {string} key
+	 * @return {number}
+	 */
+	function indexForKey (array, key) {
+	  for (var i = 0; i < array.length; i++) {
+	    if (array[i]['.key'] === key) {
+	      return i
+	    }
+	  }
+	  /* istanbul ignore next */
+	  return -1
+	}
+
+	/**
+	 * Bind a firebase data source to a key on a vm.
+	 *
+	 * @param {Vue} vm
+	 * @param {string} key
+	 * @param {object} source
+	 */
+	function bind (vm, key, source) {
+	  var asObject = false
+	  var cancelCallback = null
+	  var readyCallback = null
+	  // check { source, asArray, cancelCallback } syntax
+	  if (isObject(source) && source.hasOwnProperty('source')) {
+	    asObject = source.asObject
+	    cancelCallback = source.cancelCallback
+	    readyCallback = source.readyCallback
+	    source = source.source
+	  }
+	  if (!isObject(source)) {
+	    throw new Error('VueFire: invalid Firebase binding source.')
+	  }
+	  var ref = _getRef(source)
+	  vm.$firebaseRefs[key] = ref
+	  vm._firebaseSources[key] = source
+	  // bind based on initial value type
+	  if (asObject) {
+	    bindAsObject(vm, key, source, cancelCallback)
+	  } else {
+	    bindAsArray(vm, key, source, cancelCallback)
+	  }
+	  if (readyCallback) {
+	    source.once('value', readyCallback.bind(vm))
+	  }
+	}
+
+	/**
+	 * Define a reactive property in a given vm if it's not defined
+	 * yet
+	 *
+	 * @param {Vue} vm
+	 * @param {string} key
+	 * @param {*} val
+	 */
+	function defineReactive (vm, key, val) {
+	  if (key in vm) {
+	    vm[key] = val
+	  } else {
+	    Vue.util.defineReactive(vm, key, val)
+	  }
+	}
+
+	/**
+	 * Bind a firebase data source to a key on a vm as an Array.
+	 *
+	 * @param {Vue} vm
+	 * @param {string} key
+	 * @param {object} source
+	 * @param {function|null} cancelCallback
+	 */
+	function bindAsArray (vm, key, source, cancelCallback) {
+	  var array = []
+	  defineReactive(vm, key, array)
+
+	  var onAdd = source.on('child_added', function (snapshot, prevKey) {
+	    var index = prevKey ? indexForKey(array, prevKey) + 1 : 0
+	    array.splice(index, 0, createRecord(snapshot))
+	  }, cancelCallback)
+
+	  var onRemove = source.on('child_removed', function (snapshot) {
+	    var index = indexForKey(array, _getKey(snapshot))
+	    array.splice(index, 1)
+	  }, cancelCallback)
+
+	  var onChange = source.on('child_changed', function (snapshot) {
+	    var index = indexForKey(array, _getKey(snapshot))
+	    array.splice(index, 1, createRecord(snapshot))
+	  }, cancelCallback)
+
+	  var onMove = source.on('child_moved', function (snapshot, prevKey) {
+	    var index = indexForKey(array, _getKey(snapshot))
+	    var record = array.splice(index, 1)[0]
+	    var newIndex = prevKey ? indexForKey(array, prevKey) + 1 : 0
+	    array.splice(newIndex, 0, record)
+	  }, cancelCallback)
+
+	  vm._firebaseListeners[key] = {
+	    child_added: onAdd,
+	    child_removed: onRemove,
+	    child_changed: onChange,
+	    child_moved: onMove
+	  }
+	}
+
+	/**
+	 * Bind a firebase data source to a key on a vm as an Object.
+	 *
+	 * @param {Vue} vm
+	 * @param {string} key
+	 * @param {Object} source
+	 * @param {function|null} cancelCallback
+	 */
+	function bindAsObject (vm, key, source, cancelCallback) {
+	  defineReactive(vm, key, {})
+	  var cb = source.on('value', function (snapshot) {
+	    vm[key] = createRecord(snapshot)
+	  }, cancelCallback)
+	  vm._firebaseListeners[key] = { value: cb }
+	}
+
+	/**
+	 * Unbind a firebase-bound key from a vm.
+	 *
+	 * @param {Vue} vm
+	 * @param {string} key
+	 */
+	function unbind (vm, key) {
+	  var source = vm._firebaseSources && vm._firebaseSources[key]
+	  if (!source) {
+	    throw new Error(
+	      'VueFire: unbind failed: "' + key + '" is not bound to ' +
+	      'a Firebase reference.'
+	    )
+	  }
+	  var listeners = vm._firebaseListeners[key]
+	  for (var event in listeners) {
+	    source.off(event, listeners[event])
+	  }
+	  vm[key] = null
+	  vm.$firebaseRefs[key] = null
+	  vm._firebaseSources[key] = null
+	  vm._firebaseListeners[key] = null
+	}
+
+	/**
+	 * Ensure the related bookkeeping variables on an instance.
+	 *
+	 * @param {Vue} vm
+	 */
+	function ensureRefs (vm) {
+	  if (!vm.$firebaseRefs) {
+	    vm.$firebaseRefs = Object.create(null)
+	    vm._firebaseSources = Object.create(null)
+	    vm._firebaseListeners = Object.create(null)
+	  }
+	}
+
+	var init = function () {
+	  var bindings = this.$options.firebase
+	  if (typeof bindings === 'function') bindings = bindings.call(this)
+	  if (!bindings) return
+	  ensureRefs(this)
+	  for (var key in bindings) {
+	    bind(this, key, bindings[key])
+	  }
+	}
+
+	var VueFireMixin = {
+	  created: init, // 1.x and 2.x
+	  beforeDestroy: function () {
+	    if (!this.$firebaseRefs) return
+	    for (var key in this.$firebaseRefs) {
+	      if (this.$firebaseRefs[key]) {
+	        this.$unbind(key)
+	      }
+	    }
+	    this.$firebaseRefs = null
+	    this._firebaseSources = null
+	    this._firebaseListeners = null
+	  }
+	}
+
+	/**
+	 * Install function passed to Vue.use() in manual installation.
+	 *
+	 * @param {function} _Vue
+	 */
+	function install (_Vue) {
+	  Vue = _Vue
+	  Vue.mixin(VueFireMixin)
+
+	  // use object-based merge strategy
+	  // TODO This makes impossible to merge functions
+	  var mergeStrats = Vue.config.optionMergeStrategies
+	  mergeStrats.firebase = mergeStrats.methods
+
+	  // extend instance methods
+	  Vue.prototype.$bindAsObject = function (key, source, cancelCallback, readyCallback) {
+	    ensureRefs(this)
+	    bind(this, key, {
+	      source: source,
+	      asObject: true,
+	      cancelCallback: cancelCallback,
+	      readyCallback: readyCallback
+	    })
+	  }
+
+	  Vue.prototype.$bindAsArray = function (key, source, cancelCallback, readyCallback) {
+	    ensureRefs(this)
+	    bind(this, key, {
+	      source: source,
+	      cancelCallback: cancelCallback,
+	      readyCallback: readyCallback
+	    })
+	  }
+
+	  Vue.prototype.$unbind = function (key) {
+	    unbind(this, key)
+	  }
+	}
+
+	// auto install
+	/* istanbul ignore if */
+	if (typeof window !== 'undefined' && window.Vue) {
+	  install(window.Vue)
+	}
+
+	module.exports = install
+
+
+/***/ }
+/******/ ])
+});
+;
+
+/***/ }),
+/* 55 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_node_modules_vue_loader_lib_selector_type_script_index_0_Welcome_vue__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_196e559e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Welcome_vue__ = __webpack_require__(57);
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+/* template */
+
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_node_modules_vue_loader_lib_selector_type_script_index_0_Welcome_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_196e559e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Welcome_vue__["a" /* default */],
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Welcome.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Welcome.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-196e559e", Component.options)
+  } else {
+    hotAPI.reload("data-v-196e559e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_toastr__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_toastr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_toastr__);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+var config = {
+  apiKey: "AIzaSyAfigVQQr7AJ62FSsfDkwrwK55JwT--3l4",
+  authDomain: "faster-items.firebaseapp.com",
+  databaseURL: "https://faster-items.firebaseio.com",
+  projectId: "faster-items",
+  storageBucket: "faster-items.appspot.com",
+  messagingSenderId: "88753616585"
+};
+
+var app = __WEBPACK_IMPORTED_MODULE_0_firebase___default.a.initializeApp(config);
+var db = app.database();
+var bookingsRef = db.ref('bookings');
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  name: 'Welcome',
+  firebase: {
+    bookings: bookingsRef
+  },
+  data: function data() {
+    return {
+      message: 'Hi hell Vue, What kind o magic is this!',
+      edit: false,
+      newBook: {
+        nombre: '',
+        fecha: '',
+        hora: '00:00'
+      },
+      booking: null
+    };
+  },
+
+  methods: {
+    addBook: function addBook(book) {
+      if (this.edit == true) {
+        var item = _extends({}, this.newBook);
+        delete item['.key'];
+        bookingsRef.child(this.newBook['.key']).set(item);
+      } else {
+        bookingsRef.push(this.newBook, function (error) {
+          if (!error) {
+            __WEBPACK_IMPORTED_MODULE_1_toastr___default.a.success("Booking added Successfuly!");
+          }
+        });
+      }
+      this.clearForm();
+    },
+    clearForm: function clearForm() {
+      this.newBook = {
+        nombre: '',
+        fecha: '',
+        hora: ''
+      };
+      this.edit = false;
+    },
+
+    editBook: function editBook(book) {
+      console.log("edit book:", book);
+      this.edit = true;
+      this.newBook = book;
+    },
+    removeBook: function removeBook(book) {
+      bookingsRef.child(book['.key']).remove(function (error) {
+        if (!error) {
+          // removed!
+          __WEBPACK_IMPORTED_MODULE_1_toastr___default.a.success('Booking removed Successfuly');
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 57 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_vm._v("\n  Dashboard Message: "), _c('strong', [_vm._v(_vm._s(_vm.message))]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('table', {
+    staticClass: "table table-striped"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.bookings), function(book) {
+    return _c('tr', [_c('td', [_c('span', {
+      on: {
+        "click": function($event) {
+          _vm.editBook(book)
+        }
+      }
+    }, [_vm._v(_vm._s(book.nombre))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(book.hora))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(book.fecha))]), _vm._v(" "), _c('td', [_c('span', {
+      staticClass: "glyphicon glyphicon-trash",
+      attrs: {
+        "aria-hidden": "true"
+      },
+      on: {
+        "click": function($event) {
+          _vm.removeBook(book)
+        }
+      }
+    })])])
+  }))]), _vm._v(" "), _c('span', {
+    staticClass: "btn btn-xs btn-primary",
+    on: {
+      "click": function($event) {
+        _vm.clearForm()
+      }
+    }
+  }, [_vm._v(" Add Booking")])]), _vm._v(" "), _c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(1), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('form', {
+    staticClass: "form-inline",
+    attrs: {
+      "id": "form"
+    },
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.addBook($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "bookTitle"
+    }
+  }, [_vm._v("Nombre:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newBook.nombre),
+      expression: "newBook.nombre"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "bookTitle"
+    },
+    domProps: {
+      "value": (_vm.newBook.nombre)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newBook.nombre = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "bookAuthor"
+    }
+  }, [_vm._v("Fecha:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newBook.fecha),
+      expression: "newBook.fecha"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "date",
+      "id": "bookAuthor"
+    },
+    domProps: {
+      "value": (_vm.newBook.fecha)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newBook.fecha = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "bookUrl"
+    }
+  }, [_vm._v("Hora:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newBook.hora),
+      expression: "newBook.hora"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "time",
+      "id": "bookUrl"
+    },
+    domProps: {
+      "value": (_vm.newBook.hora)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newBook.hora = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.edit),
+      expression: "!edit"
+    }],
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit",
+      "value": "Add Booking"
+    }
+  }), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.edit),
+      expression: "edit"
+    }],
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit",
+      "value": "Edit Booking"
+    }
+  })])])])])
+}
+var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Nombre")]), _vm._v(" "), _c('th', [_vm._v("Hora")]), _vm._v(" "), _c('th', [_vm._v("Fecha")])])])
+},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', {
+    staticClass: "panel-title"
+  }, [_vm._v("Add New Book")])])
+}]
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-196e559e", esExports)
+  }
+}
+
+/***/ }),
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.assertionError = exports.assert = undefined;
+
+var _constants = __webpack_require__(87);
+
+/**
+ * Throws an error if the provided assertion is falsy
+ * @param {*} assertion The assertion to be tested for falsiness
+ * @param {!string} message The message to display if the check fails
+ */
+var assert = exports.assert = function assert(assertion, message) {
+    if (!assertion) {
+        throw assertionError(message);
+    }
+};
+/**
+ * Returns an Error object suitable for throwing.
+ * @param {string} message
+ * @return {!Error}
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var assertionError = exports.assertionError = function assertionError(message) {
+    return new Error('Firebase Database (' + _constants.CONSTANTS.SDK_VERSION + ') INTERNAL ASSERT FAILED: ' + message);
+};
+//# sourceMappingURL=assert.js.map
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.setTimeoutNonBlocking = exports.exportPropGetter = exports.beingCrawled = exports.callUserCallback = exports.exceptionGuard = exports.tryParseInt = exports.INTEGER_REGEXP_ = exports.errorForServerCode = exports.isWindowsStoreApp = exports.isChromeExtensionContentScript = exports.doubleToIEEE754String = exports.bindCallback = exports.each = exports.splitStringBySize = exports.ObjectToUniqueKey = exports.requireKey = exports.stringCompare = exports.nameCompare = exports.MAX_NAME = exports.MIN_NAME = exports.executeWhenDOMReady = exports.isInvalidJSONNumber = exports.warnAboutUnsupportedMethod = exports.warnIfPageIsSecure = exports.warn = exports.fatal = exports.error = exports.logWrapper = exports.log = exports.enableLogging = exports.logger = exports.sha1 = exports.base64Decode = exports.base64Encode = exports.LUIDGenerator = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
+                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                              * limitations under the License.
+                                                                                                                                                                                                                                                                              */
+
+
+exports.setBufferImpl = setBufferImpl;
+
+var _assert = __webpack_require__(66);
+
+var _obj = __webpack_require__(68);
+
+var _crypt = __webpack_require__(156);
+
+var _Sha = __webpack_require__(157);
+
+var _utf = __webpack_require__(98);
+
+var _json = __webpack_require__(74);
+
+var _storage = __webpack_require__(88);
+
+var _environment = __webpack_require__(82);
+
+/**
+ * Returns a locally-unique ID (generated by just incrementing up from 0 each time its called).
+ * @type {function(): number} Generated ID.
+ */
+var LUIDGenerator = exports.LUIDGenerator = function () {
+    var id = 1;
+    return function () {
+        return id++;
+    };
+}();
+/**
+ * URL-safe base64 encoding
+ * @param {!string} str
+ * @return {!string}
+ */
+var base64Encode = exports.base64Encode = function base64Encode(str) {
+    var utf8Bytes = (0, _utf.stringToByteArray)(str);
+    return _crypt.base64.encodeByteArray(utf8Bytes, /*useWebSafe=*/true);
+};
+var BufferImpl;
+function setBufferImpl(impl) {
+    BufferImpl = impl;
+}
+/**
+ * URL-safe base64 decoding
+ *
+ * NOTE: DO NOT use the global atob() function - it does NOT support the
+ * base64Url variant encoding.
+ *
+ * @param {string} str To be decoded
+ * @return {?string} Decoded result, if possible
+ */
+var base64Decode = exports.base64Decode = function base64Decode(str) {
+    try {
+        if (BufferImpl) {
+            return new BufferImpl(str, 'base64').toString('utf8');
+        } else {
+            return _crypt.base64.decodeString(str, /*useWebSafe=*/true);
+        }
+    } catch (e) {
+        log('base64Decode failed: ', e);
+    }
+    return null;
+};
+/**
+ * Sha1 hash of the input string
+ * @param {!string} str The string to hash
+ * @return {!string} The resulting hash
+ */
+var sha1 = exports.sha1 = function sha1(str) {
+    var utf8Bytes = (0, _utf.stringToByteArray)(str);
+    var sha1 = new _Sha.Sha1();
+    sha1.update(utf8Bytes);
+    var sha1Bytes = sha1.digest();
+    return _crypt.base64.encodeByteArray(sha1Bytes);
+};
+/**
+ * @param {...*} var_args
+ * @return {string}
+ * @private
+ */
+var buildLogMessage_ = function buildLogMessage_() {
+    var var_args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        var_args[_i] = arguments[_i];
+    }
+    var message = '';
+    for (var i = 0; i < var_args.length; i++) {
+        if (Array.isArray(var_args[i]) || var_args[i] && _typeof(var_args[i]) === 'object' && typeof var_args[i].length === 'number') {
+            message += buildLogMessage_.apply(null, var_args[i]);
+        } else if (_typeof(var_args[i]) === 'object') {
+            message += (0, _json.stringify)(var_args[i]);
+        } else {
+            message += var_args[i];
+        }
+        message += ' ';
+    }
+    return message;
+};
+/**
+ * Use this for all debug messages in Firebase.
+ * @type {?function(string)}
+ */
+var logger = exports.logger = null;
+/**
+ * Flag to check for log availability on first log message
+ * @type {boolean}
+ * @private
+ */
+var firstLog_ = true;
+/**
+ * The implementation of Firebase.enableLogging (defined here to break dependencies)
+ * @param {boolean|?function(string)} logger_ A flag to turn on logging, or a custom logger
+ * @param {boolean=} persistent Whether or not to persist logging settings across refreshes
+ */
+var enableLogging = exports.enableLogging = function enableLogging(logger_, persistent) {
+    (0, _assert.assert)(!persistent || logger_ === true || logger_ === false, "Can't turn on custom loggers persistently.");
+    if (logger_ === true) {
+        if (typeof console !== 'undefined') {
+            if (typeof console.log === 'function') {
+                exports.logger = logger = console.log.bind(console);
+            } else if (_typeof(console.log) === 'object') {
+                // IE does this.
+                exports.logger = logger = function logger(message) {
+                    console.log(message);
+                };
+            }
+        }
+        if (persistent) _storage.SessionStorage.set('logging_enabled', true);
+    } else if (typeof logger_ === 'function') {
+        exports.logger = logger = logger_;
+    } else {
+        exports.logger = logger = null;
+        _storage.SessionStorage.remove('logging_enabled');
+    }
+};
+/**
+ *
+ * @param {...(string|Arguments)} var_args
+ */
+var log = exports.log = function log() {
+    var var_args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        var_args[_i] = arguments[_i];
+    }
+    if (firstLog_ === true) {
+        firstLog_ = false;
+        if (logger === null && _storage.SessionStorage.get('logging_enabled') === true) enableLogging(true);
+    }
+    if (logger) {
+        var message = buildLogMessage_.apply(null, var_args);
+        logger(message);
+    }
+};
+/**
+ * @param {!string} prefix
+ * @return {function(...[*])}
+ */
+var logWrapper = exports.logWrapper = function logWrapper(prefix) {
+    return function () {
+        var var_args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            var_args[_i] = arguments[_i];
+        }
+        log.apply(void 0, [prefix].concat(var_args));
+    };
+};
+/**
+ * @param {...string} var_args
+ */
+var error = exports.error = function error() {
+    var var_args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        var_args[_i] = arguments[_i];
+    }
+    if (typeof console !== 'undefined') {
+        var message = 'FIREBASE INTERNAL ERROR: ' + buildLogMessage_.apply(void 0, var_args);
+        if (typeof console.error !== 'undefined') {
+            console.error(message);
+        } else {
+            console.log(message);
+        }
+    }
+};
+/**
+ * @param {...string} var_args
+ */
+var fatal = exports.fatal = function fatal() {
+    var var_args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        var_args[_i] = arguments[_i];
+    }
+    var message = buildLogMessage_.apply(void 0, var_args);
+    throw new Error('FIREBASE FATAL ERROR: ' + message);
+};
+/**
+ * @param {...*} var_args
+ */
+var warn = exports.warn = function warn() {
+    var var_args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        var_args[_i] = arguments[_i];
+    }
+    if (typeof console !== 'undefined') {
+        var message = 'FIREBASE WARNING: ' + buildLogMessage_.apply(void 0, var_args);
+        if (typeof console.warn !== 'undefined') {
+            console.warn(message);
+        } else {
+            console.log(message);
+        }
+    }
+};
+/**
+ * Logs a warning if the containing page uses https. Called when a call to new Firebase
+ * does not use https.
+ */
+var warnIfPageIsSecure = exports.warnIfPageIsSecure = function warnIfPageIsSecure() {
+    // Be very careful accessing browser globals. Who knows what may or may not exist.
+    if (typeof window !== 'undefined' && window.location && window.location.protocol && window.location.protocol.indexOf('https:') !== -1) {
+        warn('Insecure Firebase access from a secure page. ' + 'Please use https in calls to new Firebase().');
+    }
+};
+/**
+ * @param {!String} methodName
+ */
+var warnAboutUnsupportedMethod = exports.warnAboutUnsupportedMethod = function warnAboutUnsupportedMethod(methodName) {
+    warn(methodName + ' is unsupported and will likely change soon.  ' + 'Please do not use.');
+};
+/**
+ * Returns true if data is NaN, or +/- Infinity.
+ * @param {*} data
+ * @return {boolean}
+ */
+var isInvalidJSONNumber = exports.isInvalidJSONNumber = function isInvalidJSONNumber(data) {
+    return typeof data === 'number' && (data != data || data == Number.POSITIVE_INFINITY || data == Number.NEGATIVE_INFINITY);
+};
+/**
+ * @param {function()} fn
+ */
+var executeWhenDOMReady = exports.executeWhenDOMReady = function executeWhenDOMReady(fn) {
+    if ((0, _environment.isNodeSdk)() || document.readyState === 'complete') {
+        fn();
+    } else {
+        // Modeled after jQuery. Try DOMContentLoaded and onreadystatechange (which
+        // fire before onload), but fall back to onload.
+        var called_1 = false;
+        var wrappedFn_1 = function wrappedFn_1() {
+            if (!document.body) {
+                setTimeout(wrappedFn_1, Math.floor(10));
+                return;
+            }
+            if (!called_1) {
+                called_1 = true;
+                fn();
+            }
+        };
+        if (document.addEventListener) {
+            document.addEventListener('DOMContentLoaded', wrappedFn_1, false);
+            // fallback to onload.
+            window.addEventListener('load', wrappedFn_1, false);
+        } else if (document.attachEvent) {
+            // IE.
+            document.attachEvent('onreadystatechange', function () {
+                if (document.readyState === 'complete') wrappedFn_1();
+            });
+            // fallback to onload.
+            window.attachEvent('onload', wrappedFn_1);
+            // jQuery has an extra hack for IE that we could employ (based on
+            // http://javascript.nwbox.com/IEContentLoaded/) But it looks really old.
+            // I'm hoping we don't need it.
+        }
+    }
+};
+/**
+ * Minimum key name. Invalid for actual data, used as a marker to sort before any valid names
+ * @type {!string}
+ */
+var MIN_NAME = exports.MIN_NAME = '[MIN_NAME]';
+/**
+ * Maximum key name. Invalid for actual data, used as a marker to sort above any valid names
+ * @type {!string}
+ */
+var MAX_NAME = exports.MAX_NAME = '[MAX_NAME]';
+/**
+ * Compares valid Firebase key names, plus min and max name
+ * @param {!string} a
+ * @param {!string} b
+ * @return {!number}
+ */
+var nameCompare = exports.nameCompare = function nameCompare(a, b) {
+    if (a === b) {
+        return 0;
+    } else if (a === MIN_NAME || b === MAX_NAME) {
+        return -1;
+    } else if (b === MIN_NAME || a === MAX_NAME) {
+        return 1;
+    } else {
+        var aAsInt = tryParseInt(a),
+            bAsInt = tryParseInt(b);
+        if (aAsInt !== null) {
+            if (bAsInt !== null) {
+                return aAsInt - bAsInt == 0 ? a.length - b.length : aAsInt - bAsInt;
+            } else {
+                return -1;
+            }
+        } else if (bAsInt !== null) {
+            return 1;
+        } else {
+            return a < b ? -1 : 1;
+        }
+    }
+};
+/**
+ * @param {!string} a
+ * @param {!string} b
+ * @return {!number} comparison result.
+ */
+var stringCompare = exports.stringCompare = function stringCompare(a, b) {
+    if (a === b) {
+        return 0;
+    } else if (a < b) {
+        return -1;
+    } else {
+        return 1;
+    }
+};
+/**
+ * @param {string} key
+ * @param {Object} obj
+ * @return {*}
+ */
+var requireKey = exports.requireKey = function requireKey(key, obj) {
+    if (obj && key in obj) {
+        return obj[key];
+    } else {
+        throw new Error('Missing required key (' + key + ') in object: ' + (0, _json.stringify)(obj));
+    }
+};
+/**
+ * @param {*} obj
+ * @return {string}
+ */
+var ObjectToUniqueKey = exports.ObjectToUniqueKey = function ObjectToUniqueKey(obj) {
+    if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || obj === null) return (0, _json.stringify)(obj);
+    var keys = [];
+    for (var k in obj) {
+        keys.push(k);
+    }
+    // Export as json, but with the keys sorted.
+    keys.sort();
+    var key = '{';
+    for (var i = 0; i < keys.length; i++) {
+        if (i !== 0) key += ',';
+        key += (0, _json.stringify)(keys[i]);
+        key += ':';
+        key += ObjectToUniqueKey(obj[keys[i]]);
+    }
+    key += '}';
+    return key;
+};
+/**
+ * Splits a string into a number of smaller segments of maximum size
+ * @param {!string} str The string
+ * @param {!number} segsize The maximum number of chars in the string.
+ * @return {Array.<string>} The string, split into appropriately-sized chunks
+ */
+var splitStringBySize = exports.splitStringBySize = function splitStringBySize(str, segsize) {
+    var len = str.length;
+    if (len <= segsize) {
+        return [str];
+    }
+    var dataSegs = [];
+    for (var c = 0; c < len; c += segsize) {
+        if (c + segsize > len) {
+            dataSegs.push(str.substring(c, len));
+        } else {
+            dataSegs.push(str.substring(c, c + segsize));
+        }
+    }
+    return dataSegs;
+};
+/**
+ * Apply a function to each (key, value) pair in an object or
+ * apply a function to each (index, value) pair in an array
+ * @param {!(Object|Array)} obj The object or array to iterate over
+ * @param {function(?, ?)} fn The function to apply
+ */
+var each = exports.each = function each(obj, fn) {
+    if (Array.isArray(obj)) {
+        for (var i = 0; i < obj.length; ++i) {
+            fn(i, obj[i]);
+        }
+    } else {
+        /**
+         * in the conversion of code we removed the goog.object.forEach
+         * function which did a value,key callback. We standardized on
+         * a single impl that does a key, value callback. So we invert
+         * to not have to touch the `each` code points
+         */
+        (0, _obj.forEach)(obj, function (key, val) {
+            return fn(val, key);
+        });
+    }
+};
+/**
+ * Like goog.bind, but doesn't bother to create a closure if opt_context is null/undefined.
+ * @param {function(*)} callback Callback function.
+ * @param {?Object=} context Optional context to bind to.
+ * @return {function(*)}
+ */
+var bindCallback = exports.bindCallback = function bindCallback(callback, context) {
+    return context ? callback.bind(context) : callback;
+};
+/**
+ * Borrowed from http://hg.secondlife.com/llsd/src/tip/js/typedarray.js (MIT License)
+ * I made one modification at the end and removed the NaN / Infinity
+ * handling (since it seemed broken [caused an overflow] and we don't need it).  See MJL comments.
+ * @param {!number} v A double
+ * @return {string}
+ */
+var doubleToIEEE754String = exports.doubleToIEEE754String = function doubleToIEEE754String(v) {
+    (0, _assert.assert)(!isInvalidJSONNumber(v), 'Invalid JSON number'); // MJL
+    var ebits = 11,
+        fbits = 52;
+    var bias = (1 << ebits - 1) - 1,
+        s,
+        e,
+        f,
+        ln,
+        i,
+        bits,
+        str;
+    // Compute sign, exponent, fraction
+    // Skip NaN / Infinity handling --MJL.
+    if (v === 0) {
+        e = 0;
+        f = 0;
+        s = 1 / v === -Infinity ? 1 : 0;
+    } else {
+        s = v < 0;
+        v = Math.abs(v);
+        if (v >= Math.pow(2, 1 - bias)) {
+            // Normalized
+            ln = Math.min(Math.floor(Math.log(v) / Math.LN2), bias);
+            e = ln + bias;
+            f = Math.round(v * Math.pow(2, fbits - ln) - Math.pow(2, fbits));
+        } else {
+            // Denormalized
+            e = 0;
+            f = Math.round(v / Math.pow(2, 1 - bias - fbits));
+        }
+    }
+    // Pack sign, exponent, fraction
+    bits = [];
+    for (i = fbits; i; i -= 1) {
+        bits.push(f % 2 ? 1 : 0);
+        f = Math.floor(f / 2);
+    }
+    for (i = ebits; i; i -= 1) {
+        bits.push(e % 2 ? 1 : 0);
+        e = Math.floor(e / 2);
+    }
+    bits.push(s ? 1 : 0);
+    bits.reverse();
+    str = bits.join('');
+    // Return the data as a hex string. --MJL
+    var hexByteString = '';
+    for (i = 0; i < 64; i += 8) {
+        var hexByte = parseInt(str.substr(i, 8), 2).toString(16);
+        if (hexByte.length === 1) hexByte = '0' + hexByte;
+        hexByteString = hexByteString + hexByte;
+    }
+    return hexByteString.toLowerCase();
+};
+/**
+ * Used to detect if we're in a Chrome content script (which executes in an
+ * isolated environment where long-polling doesn't work).
+ * @return {boolean}
+ */
+var isChromeExtensionContentScript = exports.isChromeExtensionContentScript = function isChromeExtensionContentScript() {
+    return !!((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window['chrome'] && window['chrome']['extension'] && !/^chrome/.test(window.location.href));
+};
+/**
+ * Used to detect if we're in a Windows 8 Store app.
+ * @return {boolean}
+ */
+var isWindowsStoreApp = exports.isWindowsStoreApp = function isWindowsStoreApp() {
+    // Check for the presence of a couple WinRT globals
+    return (typeof Windows === 'undefined' ? 'undefined' : _typeof(Windows)) === 'object' && _typeof(Windows.UI) === 'object';
+};
+/**
+ * Converts a server error code to a Javascript Error
+ * @param {!string} code
+ * @param {!Query} query
+ * @return {Error}
+ */
+var errorForServerCode = exports.errorForServerCode = function errorForServerCode(code, query) {
+    var reason = 'Unknown Error';
+    if (code === 'too_big') {
+        reason = 'The data requested exceeds the maximum size ' + 'that can be accessed with a single request.';
+    } else if (code == 'permission_denied') {
+        reason = "Client doesn't have permission to access the desired data.";
+    } else if (code == 'unavailable') {
+        reason = 'The service is unavailable';
+    }
+    var error = new Error(code + ' at ' + query.path.toString() + ': ' + reason);
+    error.code = code.toUpperCase();
+    return error;
+};
+/**
+ * Used to test for integer-looking strings
+ * @type {RegExp}
+ * @private
+ */
+var INTEGER_REGEXP_ = exports.INTEGER_REGEXP_ = new RegExp('^-?\\d{1,10}$');
+/**
+ * If the string contains a 32-bit integer, return it.  Else return null.
+ * @param {!string} str
+ * @return {?number}
+ */
+var tryParseInt = exports.tryParseInt = function tryParseInt(str) {
+    if (INTEGER_REGEXP_.test(str)) {
+        var intVal = Number(str);
+        if (intVal >= -2147483648 && intVal <= 2147483647) {
+            return intVal;
+        }
+    }
+    return null;
+};
+/**
+ * Helper to run some code but catch any exceptions and re-throw them later.
+ * Useful for preventing user callbacks from breaking internal code.
+ *
+ * Re-throwing the exception from a setTimeout is a little evil, but it's very
+ * convenient (we don't have to try to figure out when is a safe point to
+ * re-throw it), and the behavior seems reasonable:
+ *
+ * * If you aren't pausing on exceptions, you get an error in the console with
+ *   the correct stack trace.
+ * * If you're pausing on all exceptions, the debugger will pause on your
+ *   exception and then again when we rethrow it.
+ * * If you're only pausing on uncaught exceptions, the debugger will only pause
+ *   on us re-throwing it.
+ *
+ * @param {!function()} fn The code to guard.
+ */
+var exceptionGuard = exports.exceptionGuard = function exceptionGuard(fn) {
+    try {
+        fn();
+    } catch (e) {
+        // Re-throw exception when it's safe.
+        setTimeout(function () {
+            // It used to be that "throw e" would result in a good console error with
+            // relevant context, but as of Chrome 39, you just get the firebase.js
+            // file/line number where we re-throw it, which is useless. So we log
+            // e.stack explicitly.
+            var stack = e.stack || '';
+            warn('Exception was thrown by user callback.', stack);
+            throw e;
+        }, Math.floor(0));
+    }
+};
+/**
+ * Helper function to safely call opt_callback with the specified arguments.  It:
+ * 1. Turns into a no-op if opt_callback is null or undefined.
+ * 2. Wraps the call inside exceptionGuard to prevent exceptions from breaking our state.
+ *
+ * @param {?Function=} callback Optional onComplete callback.
+ * @param {...*} var_args Arbitrary args to be passed to opt_onComplete
+ */
+var callUserCallback = exports.callUserCallback = function callUserCallback(callback) {
+    var var_args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        var_args[_i - 1] = arguments[_i];
+    }
+    if (typeof callback === 'function') {
+        exceptionGuard(function () {
+            callback.apply(void 0, var_args);
+        });
+    }
+};
+/**
+ * @return {boolean} true if we think we're currently being crawled.
+ */
+var beingCrawled = exports.beingCrawled = function beingCrawled() {
+    var userAgent = (typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window['navigator'] && window['navigator']['userAgent'] || '';
+    // For now we whitelist the most popular crawlers.  We should refine this to be the set of crawlers we
+    // believe to support JavaScript/AJAX rendering.
+    // NOTE: Google Webmaster Tools doesn't really belong, but their "This is how a visitor to your website
+    // would have seen the page" is flaky if we don't treat it as a crawler.
+    return userAgent.search(/googlebot|google webmaster tools|bingbot|yahoo! slurp|baiduspider|yandexbot|duckduckbot/i) >= 0;
+};
+/**
+ * Export a property of an object using a getter function.
+ *
+ * @param {!Object} object
+ * @param {string} name
+ * @param {!function(): *} fnGet
+ */
+var exportPropGetter = exports.exportPropGetter = function exportPropGetter(object, name, fnGet) {
+    Object.defineProperty(object, name, { get: fnGet });
+};
+/**
+ * Same as setTimeout() except on Node.JS it will /not/ prevent the process from exiting.
+ *
+ * It is removed with clearTimeout() as normal.
+ *
+ * @param {Function} fn Function to run.
+ * @param {number} time Milliseconds to wait before running.
+ * @return {number|Object} The setTimeout() return value.
+ */
+var setTimeoutNonBlocking = exports.setTimeoutNonBlocking = function setTimeoutNonBlocking(fn, time) {
+    var timeout = setTimeout(fn, time);
+    if ((typeof timeout === 'undefined' ? 'undefined' : _typeof(timeout)) === 'object' && timeout['unref']) {
+        timeout['unref']();
+    }
+    return timeout;
+};
+//# sourceMappingURL=util.js.map
+
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+// See http://www.devthought.com/2012/01/18/an-object-is-not-a-hash/
+var contains = exports.contains = function contains(obj, key) {
+    return Object.prototype.hasOwnProperty.call(obj, key);
+};
+var safeGet = exports.safeGet = function safeGet(obj, key) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) return obj[key];
+    // else return undefined.
+};
+/**
+ * Enumerates the keys/values in an object, excluding keys defined on the prototype.
+ *
+ * @param {?Object.<K,V>} obj Object to enumerate.
+ * @param {!function(K, V)} fn Function to call for each key and value.
+ * @template K,V
+ */
+var forEach = exports.forEach = function forEach(obj, fn) {
+    for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            fn(key, obj[key]);
+        }
+    }
+};
+/**
+ * Copies all the (own) properties from one object to another.
+ * @param {!Object} objTo
+ * @param {!Object} objFrom
+ * @return {!Object} objTo
+ */
+var extend = exports.extend = function extend(objTo, objFrom) {
+    forEach(objFrom, function (key, value) {
+        objTo[key] = value;
+    });
+    return objTo;
+};
+/**
+ * Returns a clone of the specified object.
+ * @param {!Object} obj
+ * @return {!Object} cloned obj.
+ */
+var clone = exports.clone = function clone(obj) {
+    return extend({}, obj);
+};
+/**
+ * Returns true if obj has typeof "object" and is not null.  Unlike goog.isObject(), does not return true
+ * for functions.
+ *
+ * @param obj {*} A potential object.
+ * @returns {boolean} True if it's an object.
+ */
+var isNonNullObject = exports.isNonNullObject = function isNonNullObject(obj) {
+    return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null;
+};
+var isEmpty = exports.isEmpty = function isEmpty(obj) {
+    for (var key in obj) {
+        return false;
+    }
+    return true;
+};
+var getCount = exports.getCount = function getCount(obj) {
+    var rv = 0;
+    for (var key in obj) {
+        rv++;
+    }
+    return rv;
+};
+var map = exports.map = function map(obj, f, opt_obj) {
+    var res = {};
+    for (var key in obj) {
+        res[key] = f.call(opt_obj, obj[key], key, obj);
+    }
+    return res;
+};
+var findKey = exports.findKey = function findKey(obj, fn, opt_this) {
+    for (var key in obj) {
+        if (fn.call(opt_this, obj[key], key, obj)) {
+            return key;
+        }
+    }
+    return undefined;
+};
+var findValue = exports.findValue = function findValue(obj, fn, opt_this) {
+    var key = findKey(obj, fn, opt_this);
+    return key && obj[key];
+};
+var getAnyKey = exports.getAnyKey = function getAnyKey(obj) {
+    for (var key in obj) {
+        return key;
+    }
+};
+var getValues = exports.getValues = function getValues(obj) {
+    var res = [];
+    var i = 0;
+    for (var key in obj) {
+        res[i++] = obj[key];
+    }
+    return res;
+};
+/**
+ * Tests whether every key/value pair in an object pass the test implemented
+ * by the provided function
+ *
+ * @param {?Object.<K,V>} obj Object to test.
+ * @param {!function(K, V)} fn Function to call for each key and value.
+ * @template K,V
+ */
+var every = exports.every = function every(obj, fn) {
+    for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            if (!fn(key, obj[key])) {
+                return false;
+            }
+        }
+    }
+    return true;
+};
+//# sourceMappingURL=obj.js.map
+
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ValidationPath = exports.Path = undefined;
+
+var _util = __webpack_require__(67);
+
+var _utf = __webpack_require__(98);
+
+/**
+ * An immutable object representing a parsed path.  It's immutable so that you
+ * can pass them around to other functions without worrying about them changing
+ * it.
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var Path = function () {
+    /**
+     * @param {string|Array.<string>} pathOrString Path string to parse,
+     *      or another path, or the raw tokens array
+     * @param {number=} pieceNum
+     */
+    function Path(pathOrString, pieceNum) {
+        if (pieceNum === void 0) {
+            this.pieces_ = pathOrString.split('/');
+            // Remove empty pieces.
+            var copyTo = 0;
+            for (var i = 0; i < this.pieces_.length; i++) {
+                if (this.pieces_[i].length > 0) {
+                    this.pieces_[copyTo] = this.pieces_[i];
+                    copyTo++;
+                }
+            }
+            this.pieces_.length = copyTo;
+            this.pieceNum_ = 0;
+        } else {
+            this.pieces_ = pathOrString;
+            this.pieceNum_ = pieceNum;
+        }
+    }
+    Object.defineProperty(Path, "Empty", {
+        /**
+         * Singleton to represent an empty path
+         *
+         * @const
+         */
+        get: function get() {
+            return new Path('');
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Path.prototype.getFront = function () {
+        if (this.pieceNum_ >= this.pieces_.length) return null;
+        return this.pieces_[this.pieceNum_];
+    };
+    /**
+     * @return {number} The number of segments in this path
+     */
+    Path.prototype.getLength = function () {
+        return this.pieces_.length - this.pieceNum_;
+    };
+    /**
+     * @return {!Path}
+     */
+    Path.prototype.popFront = function () {
+        var pieceNum = this.pieceNum_;
+        if (pieceNum < this.pieces_.length) {
+            pieceNum++;
+        }
+        return new Path(this.pieces_, pieceNum);
+    };
+    /**
+     * @return {?string}
+     */
+    Path.prototype.getBack = function () {
+        if (this.pieceNum_ < this.pieces_.length) return this.pieces_[this.pieces_.length - 1];
+        return null;
+    };
+    Path.prototype.toString = function () {
+        var pathString = '';
+        for (var i = this.pieceNum_; i < this.pieces_.length; i++) {
+            if (this.pieces_[i] !== '') pathString += '/' + this.pieces_[i];
+        }
+        return pathString || '/';
+    };
+    Path.prototype.toUrlEncodedString = function () {
+        var pathString = '';
+        for (var i = this.pieceNum_; i < this.pieces_.length; i++) {
+            if (this.pieces_[i] !== '') pathString += '/' + encodeURIComponent(String(this.pieces_[i]));
+        }
+        return pathString || '/';
+    };
+    /**
+     * Shallow copy of the parts of the path.
+     *
+     * @param {number=} begin
+     * @return {!Array<string>}
+     */
+    Path.prototype.slice = function (begin) {
+        if (begin === void 0) {
+            begin = 0;
+        }
+        return this.pieces_.slice(this.pieceNum_ + begin);
+    };
+    /**
+     * @return {?Path}
+     */
+    Path.prototype.parent = function () {
+        if (this.pieceNum_ >= this.pieces_.length) return null;
+        var pieces = [];
+        for (var i = this.pieceNum_; i < this.pieces_.length - 1; i++) {
+            pieces.push(this.pieces_[i]);
+        }return new Path(pieces, 0);
+    };
+    /**
+     * @param {string|!Path} childPathObj
+     * @return {!Path}
+     */
+    Path.prototype.child = function (childPathObj) {
+        var pieces = [];
+        for (var i = this.pieceNum_; i < this.pieces_.length; i++) {
+            pieces.push(this.pieces_[i]);
+        }if (childPathObj instanceof Path) {
+            for (var i = childPathObj.pieceNum_; i < childPathObj.pieces_.length; i++) {
+                pieces.push(childPathObj.pieces_[i]);
+            }
+        } else {
+            var childPieces = childPathObj.split('/');
+            for (var i = 0; i < childPieces.length; i++) {
+                if (childPieces[i].length > 0) pieces.push(childPieces[i]);
+            }
+        }
+        return new Path(pieces, 0);
+    };
+    /**
+     * @return {boolean} True if there are no segments in this path
+     */
+    Path.prototype.isEmpty = function () {
+        return this.pieceNum_ >= this.pieces_.length;
+    };
+    /**
+     * @param {!Path} outerPath
+     * @param {!Path} innerPath
+     * @return {!Path} The path from outerPath to innerPath
+     */
+    Path.relativePath = function (outerPath, innerPath) {
+        var outer = outerPath.getFront(),
+            inner = innerPath.getFront();
+        if (outer === null) {
+            return innerPath;
+        } else if (outer === inner) {
+            return Path.relativePath(outerPath.popFront(), innerPath.popFront());
+        } else {
+            throw new Error('INTERNAL ERROR: innerPath (' + innerPath + ') is not within ' + 'outerPath (' + outerPath + ')');
+        }
+    };
+    /**
+     * @param {!Path} left
+     * @param {!Path} right
+     * @return {number} -1, 0, 1 if left is less, equal, or greater than the right.
+     */
+    Path.comparePaths = function (left, right) {
+        var leftKeys = left.slice();
+        var rightKeys = right.slice();
+        for (var i = 0; i < leftKeys.length && i < rightKeys.length; i++) {
+            var cmp = (0, _util.nameCompare)(leftKeys[i], rightKeys[i]);
+            if (cmp !== 0) return cmp;
+        }
+        if (leftKeys.length === rightKeys.length) return 0;
+        return leftKeys.length < rightKeys.length ? -1 : 1;
+    };
+    /**
+     *
+     * @param {Path} other
+     * @return {boolean} true if paths are the same.
+     */
+    Path.prototype.equals = function (other) {
+        if (this.getLength() !== other.getLength()) {
+            return false;
+        }
+        for (var i = this.pieceNum_, j = other.pieceNum_; i <= this.pieces_.length; i++, j++) {
+            if (this.pieces_[i] !== other.pieces_[j]) {
+                return false;
+            }
+        }
+        return true;
+    };
+    /**
+     *
+     * @param {!Path} other
+     * @return {boolean} True if this path is a parent (or the same as) other
+     */
+    Path.prototype.contains = function (other) {
+        var i = this.pieceNum_;
+        var j = other.pieceNum_;
+        if (this.getLength() > other.getLength()) {
+            return false;
+        }
+        while (i < this.pieces_.length) {
+            if (this.pieces_[i] !== other.pieces_[j]) {
+                return false;
+            }
+            ++i;
+            ++j;
+        }
+        return true;
+    };
+    return Path;
+}(); // end Path
+exports.Path = Path;
+/**
+ * Dynamic (mutable) path used to count path lengths.
+ *
+ * This class is used to efficiently check paths for valid
+ * length (in UTF8 bytes) and depth (used in path validation).
+ *
+ * Throws Error exception if path is ever invalid.
+ *
+ * The definition of a path always begins with '/'.
+ */
+
+var ValidationPath = function () {
+    /**
+     * @param {!Path} path Initial Path.
+     * @param {string} errorPrefix_ Prefix for any error messages.
+     */
+    function ValidationPath(path, errorPrefix_) {
+        this.errorPrefix_ = errorPrefix_;
+        /** @type {!Array<string>} */
+        this.parts_ = path.slice();
+        /** @type {number} Initialize to number of '/' chars needed in path. */
+        this.byteLength_ = Math.max(1, this.parts_.length);
+        for (var i = 0; i < this.parts_.length; i++) {
+            this.byteLength_ += (0, _utf.stringLength)(this.parts_[i]);
+        }
+        this.checkValid_();
+    }
+    Object.defineProperty(ValidationPath, "MAX_PATH_DEPTH", {
+        /** @const {number} Maximum key depth. */
+        get: function get() {
+            return 32;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ValidationPath, "MAX_PATH_LENGTH_BYTES", {
+        /** @const {number} Maximum number of (UTF8) bytes in a Firebase path. */
+        get: function get() {
+            return 768;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** @param {string} child */
+    ValidationPath.prototype.push = function (child) {
+        // Count the needed '/'
+        if (this.parts_.length > 0) {
+            this.byteLength_ += 1;
+        }
+        this.parts_.push(child);
+        this.byteLength_ += (0, _utf.stringLength)(child);
+        this.checkValid_();
+    };
+    ValidationPath.prototype.pop = function () {
+        var last = this.parts_.pop();
+        this.byteLength_ -= (0, _utf.stringLength)(last);
+        // Un-count the previous '/'
+        if (this.parts_.length > 0) {
+            this.byteLength_ -= 1;
+        }
+    };
+    ValidationPath.prototype.checkValid_ = function () {
+        if (this.byteLength_ > ValidationPath.MAX_PATH_LENGTH_BYTES) {
+            throw new Error(this.errorPrefix_ + 'has a key path longer than ' + ValidationPath.MAX_PATH_LENGTH_BYTES + ' bytes (' + this.byteLength_ + ').');
+        }
+        if (this.parts_.length > ValidationPath.MAX_PATH_DEPTH) {
+            throw new Error(this.errorPrefix_ + 'path specified exceeds the maximum depth that can be written (' + ValidationPath.MAX_PATH_DEPTH + ') or object contains a cycle ' + this.toErrorString());
+        }
+    };
+    /**
+     * String for use in error messages - uses '.' notation for path.
+     *
+     * @return {string}
+     */
+    ValidationPath.prototype.toErrorString = function () {
+        if (this.parts_.length == 0) {
+            return '';
+        }
+        return "in property '" + this.parts_.join('.') + "'";
+    };
+    return ValidationPath;
+}();
+exports.ValidationPath = ValidationPath;
+//# sourceMappingURL=Path.js.map
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.PRIORITY_INDEX = exports.PriorityIndex = undefined;
+exports.setNodeFromJSON = setNodeFromJSON;
+exports.setMaxNode = setMaxNode;
+
+var _Index = __webpack_require__(90);
+
+var _util = __webpack_require__(67);
+
+var _Node = __webpack_require__(72);
+
+var _LeafNode = __webpack_require__(91);
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var nodeFromJSON;
+var MAX_NODE;
+function setNodeFromJSON(val) {
+    nodeFromJSON = val;
+}
+function setMaxNode(val) {
+    MAX_NODE = val;
+}
+/**
+ * @constructor
+ * @extends {Index}
+ * @private
+ */
+var PriorityIndex = function (_super) {
+    __extends(PriorityIndex, _super);
+    function PriorityIndex() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * @inheritDoc
+     */
+    PriorityIndex.prototype.compare = function (a, b) {
+        var aPriority = a.node.getPriority();
+        var bPriority = b.node.getPriority();
+        var indexCmp = aPriority.compareTo(bPriority);
+        if (indexCmp === 0) {
+            return (0, _util.nameCompare)(a.name, b.name);
+        } else {
+            return indexCmp;
+        }
+    };
+    /**
+     * @inheritDoc
+     */
+    PriorityIndex.prototype.isDefinedOn = function (node) {
+        return !node.getPriority().isEmpty();
+    };
+    /**
+     * @inheritDoc
+     */
+    PriorityIndex.prototype.indexedValueChanged = function (oldNode, newNode) {
+        return !oldNode.getPriority().equals(newNode.getPriority());
+    };
+    /**
+     * @inheritDoc
+     */
+    PriorityIndex.prototype.minPost = function () {
+        return _Node.NamedNode.MIN;
+    };
+    /**
+     * @inheritDoc
+     */
+    PriorityIndex.prototype.maxPost = function () {
+        return new _Node.NamedNode(_util.MAX_NAME, new _LeafNode.LeafNode('[PRIORITY-POST]', MAX_NODE));
+    };
+    /**
+     * @param {*} indexValue
+     * @param {string} name
+     * @return {!NamedNode}
+     */
+    PriorityIndex.prototype.makePost = function (indexValue, name) {
+        var priorityNode = nodeFromJSON(indexValue);
+        return new _Node.NamedNode(name, new _LeafNode.LeafNode('[PRIORITY-POST]', priorityNode));
+    };
+    /**
+     * @return {!string} String representation for inclusion in a query spec
+     */
+    PriorityIndex.prototype.toString = function () {
+        return '.priority';
+    };
+    return PriorityIndex;
+}(_Index.Index);
+exports.PriorityIndex = PriorityIndex;
+var PRIORITY_INDEX = exports.PRIORITY_INDEX = new PriorityIndex();
+//# sourceMappingURL=PriorityIndex.js.map
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.MAX_NODE = exports.MaxNode = exports.ChildrenNode = undefined;
+
+var _assert = __webpack_require__(66);
+
+var _util = __webpack_require__(67);
+
+var _SortedMap = __webpack_require__(100);
+
+var _Node = __webpack_require__(72);
+
+var _snap = __webpack_require__(117);
+
+var _PriorityIndex = __webpack_require__(70);
+
+var _KeyIndex = __webpack_require__(85);
+
+var _IndexMap = __webpack_require__(119);
+
+var _LeafNode = __webpack_require__(91);
+
+var _comparators = __webpack_require__(121);
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+// TODO: For memory savings, don't store priorityNode_ if it's empty.
+var EMPTY_NODE;
+/**
+ * ChildrenNode is a class for storing internal nodes in a DataSnapshot
+ * (i.e. nodes with children).  It implements Node and stores the
+ * list of children in the children property, sorted by child name.
+ *
+ * @constructor
+ * @implements {Node}
+ */
+var ChildrenNode = function () {
+    /**
+     *
+     * @param {!SortedMap.<string, !Node>} children_ List of children
+     * of this node..
+     * @param {?Node} priorityNode_ The priority of this node (as a snapshot node).
+     * @param {!IndexMap} indexMap_
+     */
+    function ChildrenNode(children_, priorityNode_, indexMap_) {
+        this.children_ = children_;
+        this.priorityNode_ = priorityNode_;
+        this.indexMap_ = indexMap_;
+        this.lazyHash_ = null;
+        /**
+         * Note: The only reason we allow null priority is for EMPTY_NODE, since we can't use
+         * EMPTY_NODE as the priority of EMPTY_NODE.  We might want to consider making EMPTY_NODE its own
+         * class instead of an empty ChildrenNode.
+         */
+        if (this.priorityNode_) {
+            (0, _snap.validatePriorityNode)(this.priorityNode_);
+        }
+        if (this.children_.isEmpty()) {
+            (0, _assert.assert)(!this.priorityNode_ || this.priorityNode_.isEmpty(), 'An empty node cannot have a priority');
+        }
+    }
+    Object.defineProperty(ChildrenNode, "EMPTY_NODE", {
+        get: function get() {
+            return EMPTY_NODE || (EMPTY_NODE = new ChildrenNode(new _SortedMap.SortedMap(_comparators.NAME_COMPARATOR), null, _IndexMap.IndexMap.Default));
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** @inheritDoc */
+    ChildrenNode.prototype.isLeafNode = function () {
+        return false;
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.getPriority = function () {
+        return this.priorityNode_ || EMPTY_NODE;
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.updatePriority = function (newPriorityNode) {
+        if (this.children_.isEmpty()) {
+            // Don't allow priorities on empty nodes
+            return this;
+        } else {
+            return new ChildrenNode(this.children_, newPriorityNode, this.indexMap_);
+        }
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.getImmediateChild = function (childName) {
+        // Hack to treat priority as a regular child
+        if (childName === '.priority') {
+            return this.getPriority();
+        } else {
+            var child = this.children_.get(childName);
+            return child === null ? EMPTY_NODE : child;
+        }
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.getChild = function (path) {
+        var front = path.getFront();
+        if (front === null) return this;
+        return this.getImmediateChild(front).getChild(path.popFront());
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.hasChild = function (childName) {
+        return this.children_.get(childName) !== null;
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.updateImmediateChild = function (childName, newChildNode) {
+        (0, _assert.assert)(newChildNode, 'We should always be passing snapshot nodes');
+        if (childName === '.priority') {
+            return this.updatePriority(newChildNode);
+        } else {
+            var namedNode = new _Node.NamedNode(childName, newChildNode);
+            var newChildren = void 0,
+                newIndexMap = void 0,
+                newPriority = void 0;
+            if (newChildNode.isEmpty()) {
+                newChildren = this.children_.remove(childName);
+                newIndexMap = this.indexMap_.removeFromIndexes(namedNode, this.children_);
+            } else {
+                newChildren = this.children_.insert(childName, newChildNode);
+                newIndexMap = this.indexMap_.addToIndexes(namedNode, this.children_);
+            }
+            newPriority = newChildren.isEmpty() ? EMPTY_NODE : this.priorityNode_;
+            return new ChildrenNode(newChildren, newPriority, newIndexMap);
+        }
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.updateChild = function (path, newChildNode) {
+        var front = path.getFront();
+        if (front === null) {
+            return newChildNode;
+        } else {
+            (0, _assert.assert)(path.getFront() !== '.priority' || path.getLength() === 1, '.priority must be the last token in a path');
+            var newImmediateChild = this.getImmediateChild(front).updateChild(path.popFront(), newChildNode);
+            return this.updateImmediateChild(front, newImmediateChild);
+        }
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.isEmpty = function () {
+        return this.children_.isEmpty();
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.numChildren = function () {
+        return this.children_.count();
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.val = function (exportFormat) {
+        if (this.isEmpty()) return null;
+        var obj = {};
+        var numKeys = 0,
+            maxKey = 0,
+            allIntegerKeys = true;
+        this.forEachChild(_PriorityIndex.PRIORITY_INDEX, function (key, childNode) {
+            obj[key] = childNode.val(exportFormat);
+            numKeys++;
+            if (allIntegerKeys && ChildrenNode.INTEGER_REGEXP_.test(key)) {
+                maxKey = Math.max(maxKey, Number(key));
+            } else {
+                allIntegerKeys = false;
+            }
+        });
+        if (!exportFormat && allIntegerKeys && maxKey < 2 * numKeys) {
+            // convert to array.
+            var array = [];
+            for (var key in obj) {
+                array[key] = obj[key];
+            }return array;
+        } else {
+            if (exportFormat && !this.getPriority().isEmpty()) {
+                obj['.priority'] = this.getPriority().val();
+            }
+            return obj;
+        }
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.hash = function () {
+        if (this.lazyHash_ === null) {
+            var toHash_1 = '';
+            if (!this.getPriority().isEmpty()) toHash_1 += 'priority:' + (0, _snap.priorityHashText)(this.getPriority().val()) + ':';
+            this.forEachChild(_PriorityIndex.PRIORITY_INDEX, function (key, childNode) {
+                var childHash = childNode.hash();
+                if (childHash !== '') toHash_1 += ':' + key + ':' + childHash;
+            });
+            this.lazyHash_ = toHash_1 === '' ? '' : (0, _util.sha1)(toHash_1);
+        }
+        return this.lazyHash_;
+    };
+    /** @inheritDoc */
+    ChildrenNode.prototype.getPredecessorChildName = function (childName, childNode, index) {
+        var idx = this.resolveIndex_(index);
+        if (idx) {
+            var predecessor = idx.getPredecessorKey(new _Node.NamedNode(childName, childNode));
+            return predecessor ? predecessor.name : null;
+        } else {
+            return this.children_.getPredecessorKey(childName);
+        }
+    };
+    /**
+     * @param {!Index} indexDefinition
+     * @return {?string}
+     */
+    ChildrenNode.prototype.getFirstChildName = function (indexDefinition) {
+        var idx = this.resolveIndex_(indexDefinition);
+        if (idx) {
+            var minKey = idx.minKey();
+            return minKey && minKey.name;
+        } else {
+            return this.children_.minKey();
+        }
+    };
+    /**
+     * @param {!Index} indexDefinition
+     * @return {?NamedNode}
+     */
+    ChildrenNode.prototype.getFirstChild = function (indexDefinition) {
+        var minKey = this.getFirstChildName(indexDefinition);
+        if (minKey) {
+            return new _Node.NamedNode(minKey, this.children_.get(minKey));
+        } else {
+            return null;
+        }
+    };
+    /**
+     * Given an index, return the key name of the largest value we have, according to that index
+     * @param {!Index} indexDefinition
+     * @return {?string}
+     */
+    ChildrenNode.prototype.getLastChildName = function (indexDefinition) {
+        var idx = this.resolveIndex_(indexDefinition);
+        if (idx) {
+            var maxKey = idx.maxKey();
+            return maxKey && maxKey.name;
+        } else {
+            return this.children_.maxKey();
+        }
+    };
+    /**
+     * @param {!Index} indexDefinition
+     * @return {?NamedNode}
+     */
+    ChildrenNode.prototype.getLastChild = function (indexDefinition) {
+        var maxKey = this.getLastChildName(indexDefinition);
+        if (maxKey) {
+            return new _Node.NamedNode(maxKey, this.children_.get(maxKey));
+        } else {
+            return null;
+        }
+    };
+    /**
+     * @inheritDoc
+     */
+    ChildrenNode.prototype.forEachChild = function (index, action) {
+        var idx = this.resolveIndex_(index);
+        if (idx) {
+            return idx.inorderTraversal(function (wrappedNode) {
+                return action(wrappedNode.name, wrappedNode.node);
+            });
+        } else {
+            return this.children_.inorderTraversal(action);
+        }
+    };
+    /**
+     * @param {!Index} indexDefinition
+     * @return {SortedMapIterator}
+     */
+    ChildrenNode.prototype.getIterator = function (indexDefinition) {
+        return this.getIteratorFrom(indexDefinition.minPost(), indexDefinition);
+    };
+    /**
+     *
+     * @param {!NamedNode} startPost
+     * @param {!Index} indexDefinition
+     * @return {!SortedMapIterator}
+     */
+    ChildrenNode.prototype.getIteratorFrom = function (startPost, indexDefinition) {
+        var idx = this.resolveIndex_(indexDefinition);
+        if (idx) {
+            return idx.getIteratorFrom(startPost, function (key) {
+                return key;
+            });
+        } else {
+            var iterator = this.children_.getIteratorFrom(startPost.name, _Node.NamedNode.Wrap);
+            var next = iterator.peek();
+            while (next != null && indexDefinition.compare(next, startPost) < 0) {
+                iterator.getNext();
+                next = iterator.peek();
+            }
+            return iterator;
+        }
+    };
+    /**
+     * @param {!Index} indexDefinition
+     * @return {!SortedMapIterator}
+     */
+    ChildrenNode.prototype.getReverseIterator = function (indexDefinition) {
+        return this.getReverseIteratorFrom(indexDefinition.maxPost(), indexDefinition);
+    };
+    /**
+     * @param {!NamedNode} endPost
+     * @param {!Index} indexDefinition
+     * @return {!SortedMapIterator}
+     */
+    ChildrenNode.prototype.getReverseIteratorFrom = function (endPost, indexDefinition) {
+        var idx = this.resolveIndex_(indexDefinition);
+        if (idx) {
+            return idx.getReverseIteratorFrom(endPost, function (key) {
+                return key;
+            });
+        } else {
+            var iterator = this.children_.getReverseIteratorFrom(endPost.name, _Node.NamedNode.Wrap);
+            var next = iterator.peek();
+            while (next != null && indexDefinition.compare(next, endPost) > 0) {
+                iterator.getNext();
+                next = iterator.peek();
+            }
+            return iterator;
+        }
+    };
+    /**
+     * @inheritDoc
+     */
+    ChildrenNode.prototype.compareTo = function (other) {
+        if (this.isEmpty()) {
+            if (other.isEmpty()) {
+                return 0;
+            } else {
+                return -1;
+            }
+        } else if (other.isLeafNode() || other.isEmpty()) {
+            return 1;
+        } else if (other === MAX_NODE) {
+            return -1;
+        } else {
+            // Must be another node with children.
+            return 0;
+        }
+    };
+    /**
+     * @inheritDoc
+     */
+    ChildrenNode.prototype.withIndex = function (indexDefinition) {
+        if (indexDefinition === _KeyIndex.KEY_INDEX || this.indexMap_.hasIndex(indexDefinition)) {
+            return this;
+        } else {
+            var newIndexMap = this.indexMap_.addIndex(indexDefinition, this.children_);
+            return new ChildrenNode(this.children_, this.priorityNode_, newIndexMap);
+        }
+    };
+    /**
+     * @inheritDoc
+     */
+    ChildrenNode.prototype.isIndexed = function (index) {
+        return index === _KeyIndex.KEY_INDEX || this.indexMap_.hasIndex(index);
+    };
+    /**
+     * @inheritDoc
+     */
+    ChildrenNode.prototype.equals = function (other) {
+        if (other === this) {
+            return true;
+        } else if (other.isLeafNode()) {
+            return false;
+        } else {
+            var otherChildrenNode = other;
+            if (!this.getPriority().equals(otherChildrenNode.getPriority())) {
+                return false;
+            } else if (this.children_.count() === otherChildrenNode.children_.count()) {
+                var thisIter = this.getIterator(_PriorityIndex.PRIORITY_INDEX);
+                var otherIter = otherChildrenNode.getIterator(_PriorityIndex.PRIORITY_INDEX);
+                var thisCurrent = thisIter.getNext();
+                var otherCurrent = otherIter.getNext();
+                while (thisCurrent && otherCurrent) {
+                    if (thisCurrent.name !== otherCurrent.name || !thisCurrent.node.equals(otherCurrent.node)) {
+                        return false;
+                    }
+                    thisCurrent = thisIter.getNext();
+                    otherCurrent = otherIter.getNext();
+                }
+                return thisCurrent === null && otherCurrent === null;
+            } else {
+                return false;
+            }
+        }
+    };
+    /**
+     * Returns a SortedMap ordered by index, or null if the default (by-key) ordering can be used
+     * instead.
+     *
+     * @private
+     * @param {!Index} indexDefinition
+     * @return {?SortedMap.<NamedNode, Node>}
+     */
+    ChildrenNode.prototype.resolveIndex_ = function (indexDefinition) {
+        if (indexDefinition === _KeyIndex.KEY_INDEX) {
+            return null;
+        } else {
+            return this.indexMap_.get(indexDefinition.toString());
+        }
+    };
+    /**
+     * @private
+     * @type {RegExp}
+     */
+    ChildrenNode.INTEGER_REGEXP_ = /^(0|[1-9]\d*)$/;
+    return ChildrenNode;
+}();
+exports.ChildrenNode = ChildrenNode;
+/**
+ * @constructor
+ * @extends {ChildrenNode}
+ * @private
+ */
+
+var MaxNode = function (_super) {
+    __extends(MaxNode, _super);
+    function MaxNode() {
+        return _super.call(this, new _SortedMap.SortedMap(_comparators.NAME_COMPARATOR), ChildrenNode.EMPTY_NODE, _IndexMap.IndexMap.Default) || this;
+    }
+    MaxNode.prototype.compareTo = function (other) {
+        if (other === this) {
+            return 0;
+        } else {
+            return 1;
+        }
+    };
+    MaxNode.prototype.equals = function (other) {
+        // Not that we every compare it, but MAX_NODE is only ever equal to itself
+        return other === this;
+    };
+    MaxNode.prototype.getPriority = function () {
+        return this;
+    };
+    MaxNode.prototype.getImmediateChild = function (childName) {
+        return ChildrenNode.EMPTY_NODE;
+    };
+    MaxNode.prototype.isEmpty = function () {
+        return false;
+    };
+    return MaxNode;
+}(ChildrenNode);
+exports.MaxNode = MaxNode;
+/**
+ * Marker that will sort higher than any other snapshot.
+ * @type {!MAX_NODE}
+ * @const
+ */
+
+var MAX_NODE = exports.MAX_NODE = new MaxNode();
+Object.defineProperties(_Node.NamedNode, {
+    MIN: {
+        value: new _Node.NamedNode(_util.MIN_NAME, ChildrenNode.EMPTY_NODE)
+    },
+    MAX: {
+        value: new _Node.NamedNode(_util.MAX_NAME, MAX_NODE)
+    }
+});
+/**
+ * Reference Extensions
+ */
+_KeyIndex.KeyIndex.__EMPTY_NODE = ChildrenNode.EMPTY_NODE;
+_LeafNode.LeafNode.__childrenNodeConstructor = ChildrenNode;
+(0, _snap.setMaxNode)(MAX_NODE);
+(0, _PriorityIndex.setMaxNode)(MAX_NODE);
+//# sourceMappingURL=ChildrenNode.js.map
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ *
+ * @param {!string} name
+ * @param {!Node} node
+ * @constructor
+ * @struct
+ */
+var NamedNode = function () {
+    function NamedNode(name, node) {
+        this.name = name;
+        this.node = node;
+    }
+    /**
+     *
+     * @param {!string} name
+     * @param {!Node} node
+     * @return {NamedNode}
+     */
+    NamedNode.Wrap = function (name, node) {
+        return new NamedNode(name, node);
+    };
+    return NamedNode;
+}();
+exports.NamedNode = NamedNode;
+//# sourceMappingURL=Node.js.map
+
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.isDef = isDef;
+exports.isJustDef = isJustDef;
+exports.isFunction = isFunction;
+exports.isObject = isObject;
+exports.isNonNullObject = isNonNullObject;
+exports.isNonArrayObject = isNonArrayObject;
+exports.isString = isString;
+exports.isNumber = isNumber;
+exports.isNativeBlob = isNativeBlob;
+exports.isNativeBlobDefined = isNativeBlobDefined;
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @return False if the object is undefined or null, true otherwise.
+ */
+function isDef(p) {
+    return p != null;
+}
+function isJustDef(p) {
+    return p !== void 0;
+}
+function isFunction(p) {
+    return typeof p === 'function';
+}
+function isObject(p) {
+    return (typeof p === 'undefined' ? 'undefined' : _typeof(p)) === 'object';
+}
+function isNonNullObject(p) {
+    return isObject(p) && p !== null;
+}
+function isNonArrayObject(p) {
+    return isObject(p) && !Array.isArray(p);
+}
+function isString(p) {
+    return typeof p === 'string' || p instanceof String;
+}
+function isNumber(p) {
+    return typeof p === 'number' || p instanceof Number;
+}
+function isNativeBlob(p) {
+    return isNativeBlobDefined() && p instanceof Blob;
+}
+function isNativeBlobDefined() {
+    return typeof Blob !== 'undefined';
+}
+//# sourceMappingURL=type.js.map
+
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * Evaluates a JSON string into a javascript object.
+ *
+ * @param {string} str A string containing JSON.
+ * @return {*} The javascript object representing the specified JSON.
+ */
+var jsonEval = exports.jsonEval = function jsonEval(str) {
+  return JSON.parse(str);
+};
+/**
+ * Returns JSON representing a javascript object.
+ * @param {*} data Javascript object to be stringified.
+ * @return {string} The JSON contents of the object.
+ */
+var stringify = exports.stringify = function stringify(data) {
+  return JSON.stringify(data);
+};
+//# sourceMappingURL=json.js.map
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Code = exports.errors = exports.FirebaseStorageError = undefined;
+exports.prependCode = prependCode;
+exports.unknown = unknown;
+exports.objectNotFound = objectNotFound;
+exports.bucketNotFound = bucketNotFound;
+exports.projectNotFound = projectNotFound;
+exports.quotaExceeded = quotaExceeded;
+exports.unauthenticated = unauthenticated;
+exports.unauthorized = unauthorized;
+exports.retryLimitExceeded = retryLimitExceeded;
+exports.invalidChecksum = invalidChecksum;
+exports.canceled = canceled;
+exports.invalidEventName = invalidEventName;
+exports.invalidUrl = invalidUrl;
+exports.invalidDefaultBucket = invalidDefaultBucket;
+exports.noDefaultBucket = noDefaultBucket;
+exports.cannotSliceBlob = cannotSliceBlob;
+exports.serverFileWrongSize = serverFileWrongSize;
+exports.noDownloadURL = noDownloadURL;
+exports.invalidArgument = invalidArgument;
+exports.invalidArgumentCount = invalidArgumentCount;
+exports.appDeleted = appDeleted;
+exports.invalidRootOperation = invalidRootOperation;
+exports.invalidFormat = invalidFormat;
+exports.internalError = internalError;
+
+var _constants = __webpack_require__(94);
+
+var FirebaseStorageError = function () {
+    function FirebaseStorageError(code, message) {
+        this.code_ = prependCode(code);
+        this.message_ = 'Firebase Storage: ' + message;
+        this.serverResponse_ = null;
+        this.name_ = 'FirebaseError';
+    }
+    FirebaseStorageError.prototype.codeProp = function () {
+        return this.code;
+    };
+    FirebaseStorageError.prototype.codeEquals = function (code) {
+        return prependCode(code) === this.codeProp();
+    };
+    FirebaseStorageError.prototype.serverResponseProp = function () {
+        return this.serverResponse_;
+    };
+    FirebaseStorageError.prototype.setServerResponseProp = function (serverResponse) {
+        this.serverResponse_ = serverResponse;
+    };
+    Object.defineProperty(FirebaseStorageError.prototype, "name", {
+        get: function get() {
+            return this.name_;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FirebaseStorageError.prototype, "code", {
+        get: function get() {
+            return this.code_;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FirebaseStorageError.prototype, "message", {
+        get: function get() {
+            return this.message_;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FirebaseStorageError.prototype, "serverResponse", {
+        get: function get() {
+            return this.serverResponse_;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return FirebaseStorageError;
+}(); /**
+     * Copyright 2017 Google Inc.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+exports.FirebaseStorageError = FirebaseStorageError;
+var errors = exports.errors = {};
+var Code = exports.Code = {
+    // Shared between all platforms
+    UNKNOWN: 'unknown',
+    OBJECT_NOT_FOUND: 'object-not-found',
+    BUCKET_NOT_FOUND: 'bucket-not-found',
+    PROJECT_NOT_FOUND: 'project-not-found',
+    QUOTA_EXCEEDED: 'quota-exceeded',
+    UNAUTHENTICATED: 'unauthenticated',
+    UNAUTHORIZED: 'unauthorized',
+    RETRY_LIMIT_EXCEEDED: 'retry-limit-exceeded',
+    INVALID_CHECKSUM: 'invalid-checksum',
+    CANCELED: 'canceled',
+    // JS specific
+    INVALID_EVENT_NAME: 'invalid-event-name',
+    INVALID_URL: 'invalid-url',
+    INVALID_DEFAULT_BUCKET: 'invalid-default-bucket',
+    NO_DEFAULT_BUCKET: 'no-default-bucket',
+    CANNOT_SLICE_BLOB: 'cannot-slice-blob',
+    SERVER_FILE_WRONG_SIZE: 'server-file-wrong-size',
+    NO_DOWNLOAD_URL: 'no-download-url',
+    INVALID_ARGUMENT: 'invalid-argument',
+    INVALID_ARGUMENT_COUNT: 'invalid-argument-count',
+    APP_DELETED: 'app-deleted',
+    INVALID_ROOT_OPERATION: 'invalid-root-operation',
+    INVALID_FORMAT: 'invalid-format',
+    INTERNAL_ERROR: 'internal-error'
+};
+function prependCode(code) {
+    return 'storage/' + code;
+}
+function unknown() {
+    var message = 'An unknown error occurred, please check the error payload for ' + 'server response.';
+    return new FirebaseStorageError(Code.UNKNOWN, message);
+}
+function objectNotFound(path) {
+    return new FirebaseStorageError(Code.OBJECT_NOT_FOUND, "Object '" + path + "' does not exist.");
+}
+function bucketNotFound(bucket) {
+    return new FirebaseStorageError(Code.BUCKET_NOT_FOUND, "Bucket '" + bucket + "' does not exist.");
+}
+function projectNotFound(project) {
+    return new FirebaseStorageError(Code.PROJECT_NOT_FOUND, "Project '" + project + "' does not exist.");
+}
+function quotaExceeded(bucket) {
+    return new FirebaseStorageError(Code.QUOTA_EXCEEDED, "Quota for bucket '" + bucket + "' exceeded, please view quota on " + 'https://firebase.google.com/pricing/.');
+}
+function unauthenticated() {
+    var message = 'User is not authenticated, please authenticate using Firebase ' + 'Authentication and try again.';
+    return new FirebaseStorageError(Code.UNAUTHENTICATED, message);
+}
+function unauthorized(path) {
+    return new FirebaseStorageError(Code.UNAUTHORIZED, "User does not have permission to access '" + path + "'.");
+}
+function retryLimitExceeded() {
+    return new FirebaseStorageError(Code.RETRY_LIMIT_EXCEEDED, 'Max retry time for operation exceeded, please try again.');
+}
+function invalidChecksum(path, checksum, calculated) {
+    return new FirebaseStorageError(Code.INVALID_CHECKSUM, "Uploaded/downloaded object '" + path + "' has checksum '" + checksum + "' which does not match '" + calculated + "'. Please retry the upload/download.");
+}
+function canceled() {
+    return new FirebaseStorageError(Code.CANCELED, 'User canceled the upload/download.');
+}
+function invalidEventName(name) {
+    return new FirebaseStorageError(Code.INVALID_EVENT_NAME, "Invalid event name '" + name + "'.");
+}
+function invalidUrl(url) {
+    return new FirebaseStorageError(Code.INVALID_URL, "Invalid URL '" + url + "'.");
+}
+function invalidDefaultBucket(bucket) {
+    return new FirebaseStorageError(Code.INVALID_DEFAULT_BUCKET, "Invalid default bucket '" + bucket + "'.");
+}
+function noDefaultBucket() {
+    return new FirebaseStorageError(Code.NO_DEFAULT_BUCKET, 'No default bucket ' + "found. Did you set the '" + _constants.configOption + "' property when initializing the app?");
+}
+function cannotSliceBlob() {
+    return new FirebaseStorageError(Code.CANNOT_SLICE_BLOB, 'Cannot slice blob for upload. Please retry the upload.');
+}
+function serverFileWrongSize() {
+    return new FirebaseStorageError(Code.SERVER_FILE_WRONG_SIZE, 'Server recorded incorrect upload file size, please retry the upload.');
+}
+function noDownloadURL() {
+    return new FirebaseStorageError(Code.NO_DOWNLOAD_URL, 'The given file does not have any download URLs.');
+}
+function invalidArgument(index, fnName, message) {
+    return new FirebaseStorageError(Code.INVALID_ARGUMENT, 'Invalid argument in `' + fnName + '` at index ' + index + ': ' + message);
+}
+function invalidArgumentCount(argMin, argMax, fnName, real) {
+    var countPart;
+    var plural;
+    if (argMin === argMax) {
+        countPart = argMin;
+        plural = argMin === 1 ? 'argument' : 'arguments';
+    } else {
+        countPart = 'between ' + argMin + ' and ' + argMax;
+        plural = 'arguments';
+    }
+    return new FirebaseStorageError(Code.INVALID_ARGUMENT_COUNT, 'Invalid argument count in `' + fnName + '`: Expected ' + countPart + ' ' + plural + ', received ' + real + '.');
+}
+function appDeleted() {
+    return new FirebaseStorageError(Code.APP_DELETED, 'The Firebase app was deleted.');
+}
+/**
+ * @param name The name of the operation that was invalid.
+ */
+function invalidRootOperation(name) {
+    return new FirebaseStorageError(Code.INVALID_ROOT_OPERATION, "The operation '" + name + "' cannot be performed on a root reference, create a non-root " + "reference using child, such as .child('file.png').");
+}
+/**
+ * @param format The format that was not valid.
+ * @param message A message describing the format violation.
+ */
+function invalidFormat(format, message) {
+    return new FirebaseStorageError(Code.INVALID_FORMAT, "String does not match format '" + format + "': " + message);
+}
+/**
+ * @param message A message describing the internal error.
+ */
+function internalError(message) {
+    throw new FirebaseStorageError(Code.INTERNAL_ERROR, 'Internal error: ' + message);
+}
+//# sourceMappingURL=error.js.map
+
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+__webpack_require__(149);
+
+var _firebase_app = __webpack_require__(150);
+
+// Export a single instance of firebase app
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+// Import the needed shims
+var firebase = (0, _firebase_app.createFirebaseNamespace)();
+// Import the createFirebaseNamespace function
+exports.default = firebase;
+module.exports = exports['default'];
+//# sourceMappingURL=app.js.map
+
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.attachDummyErrorHandler = exports.Deferred = exports.PromiseImpl = undefined;
+
+var _globalScope = __webpack_require__(111);
+
+var PromiseImpl = exports.PromiseImpl = _globalScope.globalScope.Promise || __webpack_require__(151);
+/**
+ * A deferred promise implementation.
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var Deferred = function () {
+    /** @constructor */
+    function Deferred() {
+        var self = this;
+        this.resolve = null;
+        this.reject = null;
+        this.promise = new PromiseImpl(function (resolve, reject) {
+            self.resolve = resolve;
+            self.reject = reject;
+        });
+    }
+    /**
+     * Our API internals are not promiseified and cannot because our callback APIs have subtle expectations around
+     * invoking promises inline, which Promises are forbidden to do. This method accepts an optional node-style callback
+     * and returns a node-style callback which will resolve or reject the Deferred's promise.
+     * @param {((?function(?(Error)): (?|undefined))| (?function(?(Error),?=): (?|undefined)))=} opt_nodeCallback
+     * @return {!function(?(Error), ?=)}
+     */
+    Deferred.prototype.wrapCallback = function (opt_nodeCallback) {
+        var self = this;
+        /**
+           * @param {?Error} error
+           * @param {?=} opt_value
+           */
+        function meta(error, opt_value) {
+            if (error) {
+                self.reject(error);
+            } else {
+                self.resolve(opt_value);
+            }
+            if (typeof opt_nodeCallback === 'function') {
+                attachDummyErrorHandler(self.promise);
+                // Some of our callbacks don't expect a value and our own tests
+                // assert that the parameter length is 1
+                if (opt_nodeCallback.length === 1) {
+                    opt_nodeCallback(error);
+                } else {
+                    opt_nodeCallback(error, opt_value);
+                }
+            }
+        }
+        return meta;
+    };
+    return Deferred;
+}();
+exports.Deferred = Deferred;
+/**
+ * Chrome (and maybe other browsers) report an Error in the console if you reject a promise
+ * and nobody handles the error. This is normally a good thing, but this will confuse devs who
+ * never intended to use promises in the first place. So in some cases (in particular, if the
+ * developer attached a callback), we should attach a dummy resolver to the promise to suppress
+ * this error.
+ *
+ * Note: We can't do this all the time, since it breaks the Promise spec (though in the obscure
+ * 3.3.3 section related to upgrading non-compliant promises).
+ * @param {!firebase.Promise} promise
+ */
+
+var attachDummyErrorHandler = exports.attachDummyErrorHandler = function attachDummyErrorHandler(promise) {
+    promise.catch(function () {});
+};
+//# sourceMappingURL=promise.js.map
+
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.errorPrefix = errorPrefix;
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * Check to make sure the appropriate number of arguments are provided for a public function.
+ * Throws an error if it fails.
+ *
+ * @param {!string} fnName The function name
+ * @param {!number} minCount The minimum number of arguments to allow for the function call
+ * @param {!number} maxCount The maximum number of argument to allow for the function call
+ * @param {!number} argCount The actual number of arguments provided.
+ */
+var validateArgCount = exports.validateArgCount = function validateArgCount(fnName, minCount, maxCount, argCount) {
+    var argError;
+    if (argCount < minCount) {
+        argError = 'at least ' + minCount;
+    } else if (argCount > maxCount) {
+        argError = maxCount === 0 ? 'none' : 'no more than ' + maxCount;
+    }
+    if (argError) {
+        var error = fnName + ' failed: Was called with ' + argCount + (argCount === 1 ? ' argument.' : ' arguments.') + ' Expects ' + argError + '.';
+        throw new Error(error);
+    }
+};
+/**
+ * Generates a string to prefix an error message about failed argument validation
+ *
+ * @param {!string} fnName The function name
+ * @param {!number} argumentNumber The index of the argument
+ * @param {boolean} optional Whether or not the argument is optional
+ * @return {!string} The prefix to add to the error thrown for validation.
+ */
+function errorPrefix(fnName, argumentNumber, optional) {
+    var argName = '';
+    switch (argumentNumber) {
+        case 1:
+            argName = optional ? 'first' : 'First';
+            break;
+        case 2:
+            argName = optional ? 'second' : 'Second';
+            break;
+        case 3:
+            argName = optional ? 'third' : 'Third';
+            break;
+        case 4:
+            argName = optional ? 'fourth' : 'Fourth';
+            break;
+        default:
+            throw new Error('errorPrefix called with argumentNumber > 4.  Need to update it?');
+    }
+    var error = fnName + ' failed: ';
+    error += argName + ' argument ';
+    return error;
+}
+/**
+ * @param {!string} fnName
+ * @param {!number} argumentNumber
+ * @param {!string} namespace
+ * @param {boolean} optional
+ */
+var validateNamespace = exports.validateNamespace = function validateNamespace(fnName, argumentNumber, namespace, optional) {
+    if (optional && !namespace) return;
+    if (typeof namespace !== 'string') {
+        //TODO: I should do more validation here. We only allow certain chars in namespaces.
+        throw new Error(errorPrefix(fnName, argumentNumber, optional) + 'must be a valid firebase namespace.');
+    }
+};
+var validateCallback = exports.validateCallback = function validateCallback(fnName, argumentNumber, callback, optional) {
+    if (optional && !callback) return;
+    if (typeof callback !== 'function') throw new Error(errorPrefix(fnName, argumentNumber, optional) + 'must be a valid function.');
+};
+var validateContextObject = exports.validateContextObject = function validateContextObject(fnName, argumentNumber, context, optional) {
+    if (optional && !context) return;
+    if ((typeof context === 'undefined' ? 'undefined' : _typeof(context)) !== 'object' || context === null) throw new Error(errorPrefix(fnName, argumentNumber, optional) + 'must be a valid context object.');
+};
+//# sourceMappingURL=validation.js.map
+
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.validateObjectContainsKey = exports.validateObject = exports.validateString = exports.validateBoolean = exports.validateCredential = exports.validateUrl = exports.validateWritablePath = exports.validateRootPathString = exports.validatePathString = exports.validateKey = exports.validateEventType = exports.validatePriority = exports.validateFirebaseMergeDataArg = exports.validateFirebaseMergePaths = exports.validateFirebaseData = exports.validateFirebaseDataArg = exports.isValidPriority = exports.isValidRootPathString = exports.isValidPathString = exports.isValidKey = exports.MAX_LEAF_SIZE_ = exports.INVALID_PATH_REGEX_ = exports.INVALID_KEY_REGEX_ = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
+                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                              * limitations under the License.
+                                                                                                                                                                                                                                                                              */
+
+
+var _Path = __webpack_require__(69);
+
+var _obj = __webpack_require__(68);
+
+var _util = __webpack_require__(67);
+
+var _validation = __webpack_require__(78);
+
+var _utf = __webpack_require__(98);
+
+/**
+ * True for invalid Firebase keys
+ * @type {RegExp}
+ * @private
+ */
+var INVALID_KEY_REGEX_ = exports.INVALID_KEY_REGEX_ = /[\[\].#$\/\u0000-\u001F\u007F]/;
+/**
+ * True for invalid Firebase paths.
+ * Allows '/' in paths.
+ * @type {RegExp}
+ * @private
+ */
+var INVALID_PATH_REGEX_ = exports.INVALID_PATH_REGEX_ = /[\[\].#$\u0000-\u001F\u007F]/;
+/**
+ * Maximum number of characters to allow in leaf value
+ * @type {number}
+ * @private
+ */
+var MAX_LEAF_SIZE_ = exports.MAX_LEAF_SIZE_ = 10 * 1024 * 1024;
+/**
+ * @param {*} key
+ * @return {boolean}
+ */
+var isValidKey = exports.isValidKey = function isValidKey(key) {
+    return typeof key === 'string' && key.length !== 0 && !INVALID_KEY_REGEX_.test(key);
+};
+/**
+ * @param {string} pathString
+ * @return {boolean}
+ */
+var isValidPathString = exports.isValidPathString = function isValidPathString(pathString) {
+    return typeof pathString === 'string' && pathString.length !== 0 && !INVALID_PATH_REGEX_.test(pathString);
+};
+/**
+ * @param {string} pathString
+ * @return {boolean}
+ */
+var isValidRootPathString = exports.isValidRootPathString = function isValidRootPathString(pathString) {
+    if (pathString) {
+        // Allow '/.info/' at the beginning.
+        pathString = pathString.replace(/^\/*\.info(\/|$)/, '/');
+    }
+    return isValidPathString(pathString);
+};
+/**
+ * @param {*} priority
+ * @return {boolean}
+ */
+var isValidPriority = exports.isValidPriority = function isValidPriority(priority) {
+    return priority === null || typeof priority === 'string' || typeof priority === 'number' && !(0, _util.isInvalidJSONNumber)(priority) || priority && (typeof priority === 'undefined' ? 'undefined' : _typeof(priority)) === 'object' && (0, _obj.contains)(priority, '.sv');
+};
+/**
+ * Pre-validate a datum passed as an argument to Firebase function.
+ *
+ * @param {string} fnName
+ * @param {number} argumentNumber
+ * @param {*} data
+ * @param {!Path} path
+ * @param {boolean} optional
+ */
+var validateFirebaseDataArg = exports.validateFirebaseDataArg = function validateFirebaseDataArg(fnName, argumentNumber, data, path, optional) {
+    if (optional && data === undefined) return;
+    validateFirebaseData((0, _validation.errorPrefix)(fnName, argumentNumber, optional), data, path);
+};
+/**
+ * Validate a data object client-side before sending to server.
+ *
+ * @param {string} errorPrefix
+ * @param {*} data
+ * @param {!Path|!ValidationPath} path_
+ */
+var validateFirebaseData = exports.validateFirebaseData = function validateFirebaseData(errorPrefix, data, path_) {
+    var path = path_ instanceof _Path.Path ? new _Path.ValidationPath(path_, errorPrefix) : path_;
+    if (data === undefined) {
+        throw new Error(errorPrefix + 'contains undefined ' + path.toErrorString());
+    }
+    if (typeof data === 'function') {
+        throw new Error(errorPrefix + 'contains a function ' + path.toErrorString() + ' with contents = ' + data.toString());
+    }
+    if ((0, _util.isInvalidJSONNumber)(data)) {
+        throw new Error(errorPrefix + 'contains ' + data.toString() + ' ' + path.toErrorString());
+    }
+    // Check max leaf size, but try to avoid the utf8 conversion if we can.
+    if (typeof data === 'string' && data.length > MAX_LEAF_SIZE_ / 3 && (0, _utf.stringLength)(data) > MAX_LEAF_SIZE_) {
+        throw new Error(errorPrefix + 'contains a string greater than ' + MAX_LEAF_SIZE_ + ' utf8 bytes ' + path.toErrorString() + " ('" + data.substring(0, 50) + "...')");
+    }
+    // TODO = Perf = Consider combining the recursive validation of keys into NodeFromJSON
+    // to save extra walking of large objects.
+    if (data && (typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
+        var hasDotValue_1 = false,
+            hasActualChild_1 = false;
+        (0, _obj.forEach)(data, function (key, value) {
+            if (key === '.value') {
+                hasDotValue_1 = true;
+            } else if (key !== '.priority' && key !== '.sv') {
+                hasActualChild_1 = true;
+                if (!isValidKey(key)) {
+                    throw new Error(errorPrefix + ' contains an invalid key (' + key + ') ' + path.toErrorString() + '.  Keys must be non-empty strings ' + 'and can\'t contain ".", "#", "$", "/", "[", or "]"');
+                }
+            }
+            path.push(key);
+            validateFirebaseData(errorPrefix, value, path);
+            path.pop();
+        });
+        if (hasDotValue_1 && hasActualChild_1) {
+            throw new Error(errorPrefix + ' contains ".value" child ' + path.toErrorString() + ' in addition to actual children.');
+        }
+    }
+};
+/**
+ * Pre-validate paths passed in the firebase function.
+ *
+ * @param {string} errorPrefix
+ * @param {Array<!Path>} mergePaths
+ */
+var validateFirebaseMergePaths = exports.validateFirebaseMergePaths = function validateFirebaseMergePaths(errorPrefix, mergePaths) {
+    var i, curPath;
+    for (i = 0; i < mergePaths.length; i++) {
+        curPath = mergePaths[i];
+        var keys = curPath.slice();
+        for (var j = 0; j < keys.length; j++) {
+            if (keys[j] === '.priority' && j === keys.length - 1) {
+                // .priority is OK
+            } else if (!isValidKey(keys[j])) {
+                throw new Error(errorPrefix + 'contains an invalid key (' + keys[j] + ') in path ' + curPath.toString() + '. Keys must be non-empty strings ' + 'and can\'t contain ".", "#", "$", "/", "[", or "]"');
+            }
+        }
+    }
+    // Check that update keys are not descendants of each other.
+    // We rely on the property that sorting guarantees that ancestors come
+    // right before descendants.
+    mergePaths.sort(_Path.Path.comparePaths);
+    var prevPath = null;
+    for (i = 0; i < mergePaths.length; i++) {
+        curPath = mergePaths[i];
+        if (prevPath !== null && prevPath.contains(curPath)) {
+            throw new Error(errorPrefix + 'contains a path ' + prevPath.toString() + ' that is ancestor of another path ' + curPath.toString());
+        }
+        prevPath = curPath;
+    }
+};
+/**
+ * pre-validate an object passed as an argument to firebase function (
+ * must be an object - e.g. for firebase.update()).
+ *
+ * @param {string} fnName
+ * @param {number} argumentNumber
+ * @param {*} data
+ * @param {!Path} path
+ * @param {boolean} optional
+ */
+var validateFirebaseMergeDataArg = exports.validateFirebaseMergeDataArg = function validateFirebaseMergeDataArg(fnName, argumentNumber, data, path, optional) {
+    if (optional && data === undefined) return;
+    var errorPrefix = (0, _validation.errorPrefix)(fnName, argumentNumber, optional);
+    if (!(data && (typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') || Array.isArray(data)) {
+        throw new Error(errorPrefix + ' must be an object containing the children to replace.');
+    }
+    var mergePaths = [];
+    (0, _obj.forEach)(data, function (key, value) {
+        var curPath = new _Path.Path(key);
+        validateFirebaseData(errorPrefix, value, path.child(curPath));
+        if (curPath.getBack() === '.priority') {
+            if (!isValidPriority(value)) {
+                throw new Error(errorPrefix + "contains an invalid value for '" + curPath.toString() + "', which must be a valid " + 'Firebase priority (a string, finite number, server value, or null).');
+            }
+        }
+        mergePaths.push(curPath);
+    });
+    validateFirebaseMergePaths(errorPrefix, mergePaths);
+};
+var validatePriority = exports.validatePriority = function validatePriority(fnName, argumentNumber, priority, optional) {
+    if (optional && priority === undefined) return;
+    if ((0, _util.isInvalidJSONNumber)(priority)) throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'is ' + priority.toString() + ', but must be a valid Firebase priority (a string, finite number, ' + 'server value, or null).');
+    // Special case to allow importing data with a .sv.
+    if (!isValidPriority(priority)) throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a valid Firebase priority ' + '(a string, finite number, server value, or null).');
+};
+var validateEventType = exports.validateEventType = function validateEventType(fnName, argumentNumber, eventType, optional) {
+    if (optional && eventType === undefined) return;
+    switch (eventType) {
+        case 'value':
+        case 'child_added':
+        case 'child_removed':
+        case 'child_changed':
+        case 'child_moved':
+            break;
+        default:
+            throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a valid event type = "value", "child_added", "child_removed", ' + '"child_changed", or "child_moved".');
+    }
+};
+var validateKey = exports.validateKey = function validateKey(fnName, argumentNumber, key, optional) {
+    if (optional && key === undefined) return;
+    if (!isValidKey(key)) throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'was an invalid key = "' + key + '".  Firebase keys must be non-empty strings and ' + 'can\'t contain ".", "#", "$", "/", "[", or "]").');
+};
+var validatePathString = exports.validatePathString = function validatePathString(fnName, argumentNumber, pathString, optional) {
+    if (optional && pathString === undefined) return;
+    if (!isValidPathString(pathString)) throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'was an invalid path = "' + pathString + '". Paths must be non-empty strings and ' + 'can\'t contain ".", "#", "$", "[", or "]"');
+};
+var validateRootPathString = exports.validateRootPathString = function validateRootPathString(fnName, argumentNumber, pathString, optional) {
+    if (pathString) {
+        // Allow '/.info/' at the beginning.
+        pathString = pathString.replace(/^\/*\.info(\/|$)/, '/');
+    }
+    validatePathString(fnName, argumentNumber, pathString, optional);
+};
+var validateWritablePath = exports.validateWritablePath = function validateWritablePath(fnName, path) {
+    if (path.getFront() === '.info') {
+        throw new Error(fnName + " failed = Can't modify data under /.info/");
+    }
+};
+var validateUrl = exports.validateUrl = function validateUrl(fnName, argumentNumber, parsedUrl) {
+    // TODO = Validate server better.
+    var pathString = parsedUrl.path.toString();
+    if (!(typeof parsedUrl.repoInfo.host === 'string') || parsedUrl.repoInfo.host.length === 0 || !isValidKey(parsedUrl.repoInfo.namespace) || pathString.length !== 0 && !isValidRootPathString(pathString)) {
+        throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, false) + 'must be a valid firebase URL and ' + 'the path can\'t contain ".", "#", "$", "[", or "]".');
+    }
+};
+var validateCredential = exports.validateCredential = function validateCredential(fnName, argumentNumber, cred, optional) {
+    if (optional && cred === undefined) return;
+    if (!(typeof cred === 'string')) throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a valid credential (a string).');
+};
+var validateBoolean = exports.validateBoolean = function validateBoolean(fnName, argumentNumber, bool, optional) {
+    if (optional && bool === undefined) return;
+    if (typeof bool !== 'boolean') throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a boolean.');
+};
+var validateString = exports.validateString = function validateString(fnName, argumentNumber, string, optional) {
+    if (optional && string === undefined) return;
+    if (!(typeof string === 'string')) {
+        throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a valid string.');
+    }
+};
+var validateObject = exports.validateObject = function validateObject(fnName, argumentNumber, obj, optional) {
+    if (optional && obj === undefined) return;
+    if (!(obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object') || obj === null) {
+        throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must be a valid object.');
+    }
+};
+var validateObjectContainsKey = exports.validateObjectContainsKey = function validateObjectContainsKey(fnName, argumentNumber, obj, key, optional, opt_type) {
+    var objectContainsKey = obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && (0, _obj.contains)(obj, key);
+    if (!objectContainsKey) {
+        if (optional) {
+            return;
+        } else {
+            throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must contain the key "' + key + '"');
+        }
+    }
+    if (opt_type) {
+        var val = (0, _obj.safeGet)(obj, key);
+        if (opt_type === 'number' && !(typeof val === 'number') || opt_type === 'string' && !(typeof val === 'string') || opt_type === 'boolean' && !(typeof val === 'boolean') || opt_type === 'function' && !(typeof val === 'function') || opt_type === 'object' && !((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object') && val) {
+            if (optional) {
+                throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'contains invalid value for key "' + key + '" (must be of type "' + opt_type + '")');
+            } else {
+                throw new Error((0, _validation.errorPrefix)(fnName, argumentNumber, optional) + 'must contain the key "' + key + '" with type "' + opt_type + '"');
+            }
+        }
+    }
+};
+//# sourceMappingURL=validation.js.map
+
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.OperationSource = exports.OperationType = undefined;
+
+var _assert = __webpack_require__(66);
+
+/**
+ *
+ * @enum
+ */
+var OperationType = exports.OperationType = undefined; /**
+                                                       * Copyright 2017 Google Inc.
+                                                       *
+                                                       * Licensed under the Apache License, Version 2.0 (the "License");
+                                                       * you may not use this file except in compliance with the License.
+                                                       * You may obtain a copy of the License at
+                                                       *
+                                                       *   http://www.apache.org/licenses/LICENSE-2.0
+                                                       *
+                                                       * Unless required by applicable law or agreed to in writing, software
+                                                       * distributed under the License is distributed on an "AS IS" BASIS,
+                                                       * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                       * See the License for the specific language governing permissions and
+                                                       * limitations under the License.
+                                                       */
+
+(function (OperationType) {
+  OperationType[OperationType["OVERWRITE"] = 0] = "OVERWRITE";
+  OperationType[OperationType["MERGE"] = 1] = "MERGE";
+  OperationType[OperationType["ACK_USER_WRITE"] = 2] = "ACK_USER_WRITE";
+  OperationType[OperationType["LISTEN_COMPLETE"] = 3] = "LISTEN_COMPLETE";
+})(OperationType || (exports.OperationType = OperationType = {}));
+/**
+ * @param {boolean} fromUser
+ * @param {boolean} fromServer
+ * @param {?string} queryId
+ * @param {boolean} tagged
+ * @constructor
+ */
+var OperationSource = function () {
+  function OperationSource(fromUser, fromServer, queryId, tagged) {
+    this.fromUser = fromUser;
+    this.fromServer = fromServer;
+    this.queryId = queryId;
+    this.tagged = tagged;
+    (0, _assert.assert)(!tagged || fromServer, 'Tagged queries must be from server.');
+  }
+  /**
+   * @const
+   * @type {!OperationSource}
+   */
+  OperationSource.User = new OperationSource(
+  /*fromUser=*/true, false, null,
+  /*tagged=*/false);
+  /**
+   * @const
+   * @type {!OperationSource}
+   */
+  OperationSource.Server = new OperationSource(false,
+  /*fromServer=*/true, null,
+  /*tagged=*/false);
+  /**
+   * @param {string} queryId
+   * @return {!OperationSource}
+   */
+  OperationSource.forServerTaggedQuery = function (queryId) {
+    return new OperationSource(false,
+    /*fromServer=*/true, queryId,
+    /*tagged=*/true);
+  };
+  return OperationSource;
+}();
+exports.OperationSource = OperationSource;
+//# sourceMappingURL=Operation.js.map
+
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.make = make;
+exports.resolve = resolve;
+exports.reject = reject;
+
+var _promise = __webpack_require__(77);
+
+function make(resolver) {
+  return new _promise.PromiseImpl(resolver);
+}
+/**
+ * @template T
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Implements the promise abstraction interface for external
+ * (public SDK) packaging, which just passes through to the firebase-app impl.
+ */
+/**
+ * @template T
+ * @param {function((function(T): void),
+ *                  (function(!Error): void))} resolver
+ */
+function resolve(value) {
+  return _promise.PromiseImpl.resolve(value);
+}
+function reject(error) {
+  return _promise.PromiseImpl.reject(error);
+}
+//# sourceMappingURL=promise_external.js.map
+
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.isNodeSdk = exports.isReactNative = exports.isMobileCordova = exports.getUA = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
+                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                              * limitations under the License.
+                                                                                                                                                                                                                                                                              */
+
+
+var _constants = __webpack_require__(87);
+
+/**
+ * Returns navigator.userAgent string or '' if it's not defined.
+ * @return {string} user agent string
+ */
+var getUA = exports.getUA = function getUA() {
+    if (typeof navigator !== 'undefined' && typeof navigator['userAgent'] === 'string') {
+        return navigator['userAgent'];
+    } else {
+        return '';
+    }
+};
+/**
+ * Detect Cordova / PhoneGap / Ionic frameworks on a mobile device.
+ *
+ * Deliberately does not rely on checking `file://` URLs (as this fails PhoneGap in the Ripple emulator) nor
+ * Cordova `onDeviceReady`, which would normally wait for a callback.
+ *
+ * @return {boolean} isMobileCordova
+ */
+var isMobileCordova = exports.isMobileCordova = function isMobileCordova() {
+    return typeof window !== 'undefined' && !!(window['cordova'] || window['phonegap'] || window['PhoneGap']) && /ios|iphone|ipod|ipad|android|blackberry|iemobile/i.test(getUA());
+};
+/**
+ * Detect React Native.
+ *
+ * @return {boolean} True if ReactNative environment is detected.
+ */
+var isReactNative = exports.isReactNative = function isReactNative() {
+    return (typeof navigator === 'undefined' ? 'undefined' : _typeof(navigator)) === 'object' && navigator['product'] === 'ReactNative';
+};
+/**
+ * Detect Node.js.
+ *
+ * @return {boolean} True if Node.js environment is detected.
+ */
+var isNodeSdk = exports.isNodeSdk = function isNodeSdk() {
+    return _constants.CONSTANTS.NODE_CLIENT === true || _constants.CONSTANTS.NODE_ADMIN === true;
+};
+//# sourceMappingURL=environment.js.map
+
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @constructor
+ * @struct
+ * @param {!string} type The event type
+ * @param {!Node} snapshotNode The data
+ * @param {string=} childName The name for this child, if it's a child event
+ * @param {Node=} oldSnap Used for intermediate processing of child changed events
+ * @param {string=} prevName The name for the previous child, if applicable
+ */
+var Change = function () {
+    function Change(type, snapshotNode, childName, oldSnap, prevName) {
+        this.type = type;
+        this.snapshotNode = snapshotNode;
+        this.childName = childName;
+        this.oldSnap = oldSnap;
+        this.prevName = prevName;
+    }
+    /**
+     * @param {!Node} snapshot
+     * @return {!Change}
+     */
+    Change.valueChange = function (snapshot) {
+        return new Change(Change.VALUE, snapshot);
+    };
+    /**
+     * @param {string} childKey
+     * @param {!Node} snapshot
+     * @return {!Change}
+     */
+    Change.childAddedChange = function (childKey, snapshot) {
+        return new Change(Change.CHILD_ADDED, snapshot, childKey);
+    };
+    /**
+     * @param {string} childKey
+     * @param {!Node} snapshot
+     * @return {!Change}
+     */
+    Change.childRemovedChange = function (childKey, snapshot) {
+        return new Change(Change.CHILD_REMOVED, snapshot, childKey);
+    };
+    /**
+     * @param {string} childKey
+     * @param {!Node} newSnapshot
+     * @param {!Node} oldSnapshot
+     * @return {!Change}
+     */
+    Change.childChangedChange = function (childKey, newSnapshot, oldSnapshot) {
+        return new Change(Change.CHILD_CHANGED, newSnapshot, childKey, oldSnapshot);
+    };
+    /**
+     * @param {string} childKey
+     * @param {!Node} snapshot
+     * @return {!Change}
+     */
+    Change.childMovedChange = function (childKey, snapshot) {
+        return new Change(Change.CHILD_MOVED, snapshot, childKey);
+    };
+    //event types
+    /** Event type for a child added */
+    Change.CHILD_ADDED = 'child_added';
+    /** Event type for a child removed */
+    Change.CHILD_REMOVED = 'child_removed';
+    /** Event type for a child changed */
+    Change.CHILD_CHANGED = 'child_changed';
+    /** Event type for a child moved */
+    Change.CHILD_MOVED = 'child_moved';
+    /** Event type for a value change */
+    Change.VALUE = 'value';
+    return Change;
+}();
+exports.Change = Change;
+//# sourceMappingURL=Change.js.map
+
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.contains = contains;
+exports.forEach = forEach;
+exports.clone = clone;
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Contains methods for working with objects.
+ */
+function contains(obj, prop) {
+    return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+function forEach(obj, f) {
+    for (var key in obj) {
+        if (contains(obj, key)) {
+            f(key, obj[key]);
+        }
+    }
+}
+function clone(obj) {
+    if (obj == null) {
+        return {};
+    }
+    var c = {};
+    forEach(obj, function (key, val) {
+        c[key] = val;
+    });
+    return c;
+}
+//# sourceMappingURL=object.js.map
+
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.KEY_INDEX = exports.KeyIndex = undefined;
+
+var _Index = __webpack_require__(90);
+
+var _Node = __webpack_require__(72);
+
+var _util = __webpack_require__(67);
+
+var _assert = __webpack_require__(66);
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var __EMPTY_NODE;
+var KeyIndex = function (_super) {
+    __extends(KeyIndex, _super);
+    function KeyIndex() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(KeyIndex, "__EMPTY_NODE", {
+        get: function get() {
+            return __EMPTY_NODE;
+        },
+        set: function set(val) {
+            __EMPTY_NODE = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @inheritDoc
+     */
+    KeyIndex.prototype.compare = function (a, b) {
+        return (0, _util.nameCompare)(a.name, b.name);
+    };
+    /**
+     * @inheritDoc
+     */
+    KeyIndex.prototype.isDefinedOn = function (node) {
+        // We could probably return true here (since every node has a key), but it's never called
+        // so just leaving unimplemented for now.
+        throw (0, _assert.assertionError)('KeyIndex.isDefinedOn not expected to be called.');
+    };
+    /**
+     * @inheritDoc
+     */
+    KeyIndex.prototype.indexedValueChanged = function (oldNode, newNode) {
+        return false; // The key for a node never changes.
+    };
+    /**
+     * @inheritDoc
+     */
+    KeyIndex.prototype.minPost = function () {
+        return _Node.NamedNode.MIN;
+    };
+    /**
+     * @inheritDoc
+     */
+    KeyIndex.prototype.maxPost = function () {
+        // TODO: This should really be created once and cached in a static property, but
+        // NamedNode isn't defined yet, so I can't use it in a static.  Bleh.
+        return new _Node.NamedNode(_util.MAX_NAME, __EMPTY_NODE);
+    };
+    /**
+     * @param {*} indexValue
+     * @param {string} name
+     * @return {!NamedNode}
+     */
+    KeyIndex.prototype.makePost = function (indexValue, name) {
+        (0, _assert.assert)(typeof indexValue === 'string', 'KeyIndex indexValue must always be a string.');
+        // We just use empty node, but it'll never be compared, since our comparator only looks at name.
+        return new _Node.NamedNode(indexValue, __EMPTY_NODE);
+    };
+    /**
+     * @return {!string} String representation for inclusion in a query spec
+     */
+    KeyIndex.prototype.toString = function () {
+        return '.key';
+    };
+    return KeyIndex;
+}(_Index.Index);
+exports.KeyIndex = KeyIndex;
+var KEY_INDEX = exports.KEY_INDEX = new KeyIndex();
+//# sourceMappingURL=KeyIndex.js.map
+
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
+                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                              * limitations under the License.
+                                                                                                                                                                                                                                                                              */
+
+
+exports.nodeFromJSON = nodeFromJSON;
+
+var _ChildrenNode = __webpack_require__(71);
+
+var _LeafNode = __webpack_require__(91);
+
+var _Node = __webpack_require__(72);
+
+var _obj = __webpack_require__(68);
+
+var _assert = __webpack_require__(66);
+
+var _childSet = __webpack_require__(120);
+
+var _comparators = __webpack_require__(121);
+
+var _IndexMap = __webpack_require__(119);
+
+var _PriorityIndex = __webpack_require__(70);
+
+var USE_HINZE = true;
+/**
+ * Constructs a snapshot node representing the passed JSON and returns it.
+ * @param {*} json JSON to create a node for.
+ * @param {?string|?number=} priority Optional priority to use.  This will be ignored if the
+ * passed JSON contains a .priority property.
+ * @return {!Node}
+ */
+function nodeFromJSON(json, priority) {
+    if (priority === void 0) {
+        priority = null;
+    }
+    if (json === null) {
+        return _ChildrenNode.ChildrenNode.EMPTY_NODE;
+    }
+    if ((typeof json === 'undefined' ? 'undefined' : _typeof(json)) === 'object' && '.priority' in json) {
+        priority = json['.priority'];
+    }
+    (0, _assert.assert)(priority === null || typeof priority === 'string' || typeof priority === 'number' || (typeof priority === 'undefined' ? 'undefined' : _typeof(priority)) === 'object' && '.sv' in priority, 'Invalid priority type found: ' + (typeof priority === 'undefined' ? 'undefined' : _typeof(priority)));
+    if ((typeof json === 'undefined' ? 'undefined' : _typeof(json)) === 'object' && '.value' in json && json['.value'] !== null) {
+        json = json['.value'];
+    }
+    // Valid leaf nodes include non-objects or server-value wrapper objects
+    if ((typeof json === 'undefined' ? 'undefined' : _typeof(json)) !== 'object' || '.sv' in json) {
+        var jsonLeaf = json;
+        return new _LeafNode.LeafNode(jsonLeaf, nodeFromJSON(priority));
+    }
+    if (!(json instanceof Array) && USE_HINZE) {
+        var children_1 = [];
+        var childrenHavePriority_1 = false;
+        var hinzeJsonObj_1 = json;
+        (0, _obj.forEach)(hinzeJsonObj_1, function (key, child) {
+            if (typeof key !== 'string' || key.substring(0, 1) !== '.') {
+                // Ignore metadata nodes
+                var childNode = nodeFromJSON(hinzeJsonObj_1[key]);
+                if (!childNode.isEmpty()) {
+                    childrenHavePriority_1 = childrenHavePriority_1 || !childNode.getPriority().isEmpty();
+                    children_1.push(new _Node.NamedNode(key, childNode));
+                }
+            }
+        });
+        if (children_1.length == 0) {
+            return _ChildrenNode.ChildrenNode.EMPTY_NODE;
+        }
+        var childSet = (0, _childSet.buildChildSet)(children_1, _comparators.NAME_ONLY_COMPARATOR, function (namedNode) {
+            return namedNode.name;
+        }, _comparators.NAME_COMPARATOR);
+        if (childrenHavePriority_1) {
+            var sortedChildSet = (0, _childSet.buildChildSet)(children_1, _PriorityIndex.PRIORITY_INDEX.getCompare());
+            return new _ChildrenNode.ChildrenNode(childSet, nodeFromJSON(priority), new _IndexMap.IndexMap({ '.priority': sortedChildSet }, { '.priority': _PriorityIndex.PRIORITY_INDEX }));
+        } else {
+            return new _ChildrenNode.ChildrenNode(childSet, nodeFromJSON(priority), _IndexMap.IndexMap.Default);
+        }
+    } else {
+        var node_1 = _ChildrenNode.ChildrenNode.EMPTY_NODE;
+        var jsonObj_1 = json;
+        (0, _obj.forEach)(jsonObj_1, function (key, childData) {
+            if ((0, _obj.contains)(jsonObj_1, key)) {
+                if (key.substring(0, 1) !== '.') {
+                    // ignore metadata nodes.
+                    var childNode = nodeFromJSON(childData);
+                    if (childNode.isLeafNode() || !childNode.isEmpty()) node_1 = node_1.updateImmediateChild(key, childNode);
+                }
+            }
+        });
+        return node_1.updatePriority(nodeFromJSON(priority));
+    }
+}
+(0, _PriorityIndex.setNodeFromJSON)(nodeFromJSON);
+//# sourceMappingURL=nodeFromJSON.js.map
+
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Firebase constants.  Some of these (@defines) can be overridden at compile-time.
+ */
+var CONSTANTS = exports.CONSTANTS = {
+  /**
+   * @define {boolean} Whether this is the client Node.js SDK.
+   */
+  NODE_CLIENT: false,
+  /**
+   * @define {boolean} Whether this is the Admin Node.js SDK.
+   */
+  NODE_ADMIN: false,
+  /**
+   * Firebase SDK Version
+   */
+  SDK_VERSION: '4.3.1'
+};
+//# sourceMappingURL=constants.js.map
+
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.SessionStorage = exports.PersistentStorage = undefined;
+
+var _DOMStorageWrapper = __webpack_require__(159);
+
+var _MemoryStorage = __webpack_require__(160);
+
+/**
+* Helper to create a DOMStorageWrapper or else fall back to MemoryStorage.
+* TODO: Once MemoryStorage and DOMStorageWrapper have a shared interface this method annotation should change
+* to reflect this type
+*
+* @param {string} domStorageName Name of the underlying storage object
+*   (e.g. 'localStorage' or 'sessionStorage').
+* @return {?} Turning off type information until a common interface is defined.
+*/
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var createStoragefor = function createStoragefor(domStorageName) {
+    try {
+        // NOTE: just accessing "localStorage" or "window['localStorage']" may throw a security exception,
+        // so it must be inside the try/catch.
+        if (typeof window !== 'undefined' && typeof window[domStorageName] !== 'undefined') {
+            // Need to test cache. Just because it's here doesn't mean it works
+            var domStorage = window[domStorageName];
+            domStorage.setItem('firebase:sentinel', 'cache');
+            domStorage.removeItem('firebase:sentinel');
+            return new _DOMStorageWrapper.DOMStorageWrapper(domStorage);
+        }
+    } catch (e) {}
+    // Failed to create wrapper.  Just return in-memory storage.
+    // TODO: log?
+    return new _MemoryStorage.MemoryStorage();
+};
+/** A storage object that lasts across sessions */
+var PersistentStorage = exports.PersistentStorage = createStoragefor('localStorage');
+/** A storage object that only lasts one session */
+var SessionStorage = exports.SessionStorage = createStoragefor('sessionStorage');
+//# sourceMappingURL=storage.js.map
+
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var PROTOCOL_VERSION = exports.PROTOCOL_VERSION = '5';
+var VERSION_PARAM = exports.VERSION_PARAM = 'v';
+var TRANSPORT_SESSION_PARAM = exports.TRANSPORT_SESSION_PARAM = 's';
+var REFERER_PARAM = exports.REFERER_PARAM = 'r';
+var FORGE_REF = exports.FORGE_REF = 'f';
+var FORGE_DOMAIN = exports.FORGE_DOMAIN = 'firebaseio.com';
+var LAST_SESSION_PARAM = exports.LAST_SESSION_PARAM = 'ls';
+var WEBSOCKET = exports.WEBSOCKET = 'websocket';
+var LONG_POLLING = exports.LONG_POLLING = 'long_polling';
+//# sourceMappingURL=Constants.js.map
+
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Index = undefined;
+
+var _Node = __webpack_require__(72);
+
+var _util = __webpack_require__(67);
+
+/**
+ *
+ * @constructor
+ */
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+var Index = function () {
+  function Index() {}
+  /**
+   * @return {function(!NamedNode, !NamedNode):number} A standalone comparison function for
+   * this index
+   */
+  Index.prototype.getCompare = function () {
+    return this.compare.bind(this);
+  };
+  /**
+   * Given a before and after value for a node, determine if the indexed value has changed. Even if they are different,
+   * it's possible that the changes are isolated to parts of the snapshot that are not indexed.
+   *
+   * @param {!Node} oldNode
+   * @param {!Node} newNode
+   * @return {boolean} True if the portion of the snapshot being indexed changed between oldNode and newNode
+   */
+  Index.prototype.indexedValueChanged = function (oldNode, newNode) {
+    var oldWrapped = new _Node.NamedNode(_util.MIN_NAME, oldNode);
+    var newWrapped = new _Node.NamedNode(_util.MIN_NAME, newNode);
+    return this.compare(oldWrapped, newWrapped) !== 0;
+  };
+  /**
+   * @return {!NamedNode} a node wrapper that will sort equal to or less than
+   * any other node wrapper, using this index
+   */
+  Index.prototype.minPost = function () {
+    return _Node.NamedNode.MIN;
+  };
+  return Index;
+}();
+exports.Index = Index;
+//# sourceMappingURL=Index.js.map
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LeafNode = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
+                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                              * limitations under the License.
+                                                                                                                                                                                                                                                                              */
+
+
+var _assert = __webpack_require__(66);
+
+var _util = __webpack_require__(67);
+
+var _snap = __webpack_require__(117);
+
+var __childrenNodeConstructor;
+/**
+ * LeafNode is a class for storing leaf nodes in a DataSnapshot.  It
+ * implements Node and stores the value of the node (a string,
+ * number, or boolean) accessible via getValue().
+ */
+var LeafNode = function () {
+    /**
+     * @implements {Node}
+     * @param {!(string|number|boolean|Object)} value_ The value to store in this leaf node.
+     *                                         The object type is possible in the event of a deferred value
+     * @param {!Node=} priorityNode_ The priority of this node.
+     */
+    function LeafNode(value_, priorityNode_) {
+        if (priorityNode_ === void 0) {
+            priorityNode_ = LeafNode.__childrenNodeConstructor.EMPTY_NODE;
+        }
+        this.value_ = value_;
+        this.priorityNode_ = priorityNode_;
+        this.lazyHash_ = null;
+        (0, _assert.assert)(this.value_ !== undefined && this.value_ !== null, "LeafNode shouldn't be created with null/undefined value.");
+        (0, _snap.validatePriorityNode)(this.priorityNode_);
+    }
+    Object.defineProperty(LeafNode, "__childrenNodeConstructor", {
+        get: function get() {
+            return __childrenNodeConstructor;
+        },
+        set: function set(val) {
+            __childrenNodeConstructor = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** @inheritDoc */
+    LeafNode.prototype.isLeafNode = function () {
+        return true;
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.getPriority = function () {
+        return this.priorityNode_;
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.updatePriority = function (newPriorityNode) {
+        return new LeafNode(this.value_, newPriorityNode);
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.getImmediateChild = function (childName) {
+        // Hack to treat priority as a regular child
+        if (childName === '.priority') {
+            return this.priorityNode_;
+        } else {
+            return LeafNode.__childrenNodeConstructor.EMPTY_NODE;
+        }
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.getChild = function (path) {
+        if (path.isEmpty()) {
+            return this;
+        } else if (path.getFront() === '.priority') {
+            return this.priorityNode_;
+        } else {
+            return LeafNode.__childrenNodeConstructor.EMPTY_NODE;
+        }
+    };
+    /**
+     * @inheritDoc
+     */
+    LeafNode.prototype.hasChild = function () {
+        return false;
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.getPredecessorChildName = function (childName, childNode) {
+        return null;
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.updateImmediateChild = function (childName, newChildNode) {
+        if (childName === '.priority') {
+            return this.updatePriority(newChildNode);
+        } else if (newChildNode.isEmpty() && childName !== '.priority') {
+            return this;
+        } else {
+            return LeafNode.__childrenNodeConstructor.EMPTY_NODE.updateImmediateChild(childName, newChildNode).updatePriority(this.priorityNode_);
+        }
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.updateChild = function (path, newChildNode) {
+        var front = path.getFront();
+        if (front === null) {
+            return newChildNode;
+        } else if (newChildNode.isEmpty() && front !== '.priority') {
+            return this;
+        } else {
+            (0, _assert.assert)(front !== '.priority' || path.getLength() === 1, '.priority must be the last token in a path');
+            return this.updateImmediateChild(front, LeafNode.__childrenNodeConstructor.EMPTY_NODE.updateChild(path.popFront(), newChildNode));
+        }
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.isEmpty = function () {
+        return false;
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.numChildren = function () {
+        return 0;
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.forEachChild = function (index, action) {
+        return false;
+    };
+    /**
+     * @inheritDoc
+     */
+    LeafNode.prototype.val = function (exportFormat) {
+        if (exportFormat && !this.getPriority().isEmpty()) return {
+            '.value': this.getValue(),
+            '.priority': this.getPriority().val()
+        };else return this.getValue();
+    };
+    /** @inheritDoc */
+    LeafNode.prototype.hash = function () {
+        if (this.lazyHash_ === null) {
+            var toHash = '';
+            if (!this.priorityNode_.isEmpty()) toHash += 'priority:' + (0, _snap.priorityHashText)(this.priorityNode_.val()) + ':';
+            var type = _typeof(this.value_);
+            toHash += type + ':';
+            if (type === 'number') {
+                toHash += (0, _util.doubleToIEEE754String)(this.value_);
+            } else {
+                toHash += this.value_;
+            }
+            this.lazyHash_ = (0, _util.sha1)(toHash);
+        }
+        return this.lazyHash_;
+    };
+    /**
+     * Returns the value of the leaf node.
+     * @return {Object|string|number|boolean} The value of the node.
+     */
+    LeafNode.prototype.getValue = function () {
+        return this.value_;
+    };
+    /**
+     * @inheritDoc
+     */
+    LeafNode.prototype.compareTo = function (other) {
+        if (other === LeafNode.__childrenNodeConstructor.EMPTY_NODE) {
+            return 1;
+        } else if (other instanceof LeafNode.__childrenNodeConstructor) {
+            return -1;
+        } else {
+            (0, _assert.assert)(other.isLeafNode(), 'Unknown node type');
+            return this.compareToLeafNode_(other);
+        }
+    };
+    /**
+     * Comparison specifically for two leaf nodes
+     * @param {!LeafNode} otherLeaf
+     * @return {!number}
+     * @private
+     */
+    LeafNode.prototype.compareToLeafNode_ = function (otherLeaf) {
+        var otherLeafType = _typeof(otherLeaf.value_);
+        var thisLeafType = _typeof(this.value_);
+        var otherIndex = LeafNode.VALUE_TYPE_ORDER.indexOf(otherLeafType);
+        var thisIndex = LeafNode.VALUE_TYPE_ORDER.indexOf(thisLeafType);
+        (0, _assert.assert)(otherIndex >= 0, 'Unknown leaf type: ' + otherLeafType);
+        (0, _assert.assert)(thisIndex >= 0, 'Unknown leaf type: ' + thisLeafType);
+        if (otherIndex === thisIndex) {
+            // Same type, compare values
+            if (thisLeafType === 'object') {
+                // Deferred value nodes are all equal, but we should also never get to this point...
+                return 0;
+            } else {
+                // Note that this works because true > false, all others are number or string comparisons
+                if (this.value_ < otherLeaf.value_) {
+                    return -1;
+                } else if (this.value_ === otherLeaf.value_) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        } else {
+            return thisIndex - otherIndex;
+        }
+    };
+    /**
+     * @inheritDoc
+     */
+    LeafNode.prototype.withIndex = function () {
+        return this;
+    };
+    /**
+     * @inheritDoc
+     */
+    LeafNode.prototype.isIndexed = function () {
+        return true;
+    };
+    /**
+     * @inheritDoc
+     */
+    LeafNode.prototype.equals = function (other) {
+        /**
+         * @inheritDoc
+         */
+        if (other === this) {
+            return true;
+        } else if (other.isLeafNode()) {
+            var otherLeaf = other;
+            return this.value_ === otherLeaf.value_ && this.priorityNode_.equals(otherLeaf.priorityNode_);
+        } else {
+            return false;
+        }
+    };
+    /**
+     * The sort order for comparing leaf nodes of different types. If two leaf nodes have
+     * the same type, the comparison falls back to their value
+     * @type {Array.<!string>}
+     * @const
+     */
+    LeafNode.VALUE_TYPE_ORDER = ['object', 'boolean', 'number', 'string'];
+    return LeafNode;
+}();
+exports.LeafNode = LeafNode;
+//# sourceMappingURL=LeafNode.js.map
+
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Repo = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
+                                                                                                                                                                                                                                                                              * Copyright 2017 Google Inc.
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                              * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                              * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              *   http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                              *
+                                                                                                                                                                                                                                                                              * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                              * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                              * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                              * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                              * limitations under the License.
+                                                                                                                                                                                                                                                                              */
+
+
+var _ServerValues = __webpack_require__(124);
+
+var _nodeFromJSON = __webpack_require__(86);
+
+var _Path = __webpack_require__(69);
+
+var _SparseSnapshotTree = __webpack_require__(125);
+
+var _SyncTree = __webpack_require__(166);
+
+var _SnapshotHolder = __webpack_require__(177);
+
+var _json = __webpack_require__(74);
+
+var _util = __webpack_require__(67);
+
+var _obj = __webpack_require__(68);
+
+var _AuthTokenProvider = __webpack_require__(178);
+
+var _StatsManager = __webpack_require__(103);
+
+var _StatsReporter = __webpack_require__(180);
+
+var _StatsListener = __webpack_require__(130);
+
+var _EventQueue = __webpack_require__(181);
+
+var _PersistentConnection = __webpack_require__(131);
+
+var _ReadonlyRestClient = __webpack_require__(187);
+
+var _Database = __webpack_require__(113);
+
+var INTERRUPT_REASON = 'repo_interrupt';
+/**
+ * A connection to a single data repository.
+ */
+var Repo = function () {
+    /**
+     * @param {!RepoInfo} repoInfo_
+     * @param {boolean} forceRestClient
+     * @param {!FirebaseApp} app
+     */
+    function Repo(repoInfo_, forceRestClient, app) {
+        var _this = this;
+        this.repoInfo_ = repoInfo_;
+        this.app = app;
+        this.dataUpdateCount = 0;
+        this.statsListener_ = null;
+        this.eventQueue_ = new _EventQueue.EventQueue();
+        this.nextWriteId_ = 1;
+        this.interceptServerDataCallback_ = null;
+        // A list of data pieces and paths to be set when this client disconnects.
+        this.onDisconnect_ = new _SparseSnapshotTree.SparseSnapshotTree();
+        /**
+         * TODO: This should be @private but it's used by test_access.js and internal.js
+         * @type {?PersistentConnection}
+         */
+        this.persistentConnection_ = null;
+        /** @type {!AuthTokenProvider} */
+        var authTokenProvider = new _AuthTokenProvider.AuthTokenProvider(app);
+        this.stats_ = _StatsManager.StatsManager.getCollection(repoInfo_);
+        if (forceRestClient || (0, _util.beingCrawled)()) {
+            this.server_ = new _ReadonlyRestClient.ReadonlyRestClient(this.repoInfo_, this.onDataUpdate_.bind(this), authTokenProvider);
+            // Minor hack: Fire onConnect immediately, since there's no actual connection.
+            setTimeout(this.onConnectStatus_.bind(this, true), 0);
+        } else {
+            var authOverride = app.options['databaseAuthVariableOverride'];
+            // Validate authOverride
+            if (typeof authOverride !== 'undefined' && authOverride !== null) {
+                if ((typeof authOverride === 'undefined' ? 'undefined' : _typeof(authOverride)) !== 'object') {
+                    throw new Error('Only objects are supported for option databaseAuthVariableOverride');
+                }
+                try {
+                    (0, _json.stringify)(authOverride);
+                } catch (e) {
+                    throw new Error('Invalid authOverride provided: ' + e);
+                }
+            }
+            this.persistentConnection_ = new _PersistentConnection.PersistentConnection(this.repoInfo_, this.onDataUpdate_.bind(this), this.onConnectStatus_.bind(this), this.onServerInfoUpdate_.bind(this), authTokenProvider, authOverride);
+            this.server_ = this.persistentConnection_;
+        }
+        authTokenProvider.addTokenChangeListener(function (token) {
+            _this.server_.refreshAuthToken(token);
+        });
+        // In the case of multiple Repos for the same repoInfo (i.e. there are multiple Firebase.Contexts being used),
+        // we only want to create one StatsReporter.  As such, we'll report stats over the first Repo created.
+        this.statsReporter_ = _StatsManager.StatsManager.getOrCreateReporter(repoInfo_, function () {
+            return new _StatsReporter.StatsReporter(_this.stats_, _this.server_);
+        });
+        this.transactions_init_();
+        // Used for .info.
+        this.infoData_ = new _SnapshotHolder.SnapshotHolder();
+        this.infoSyncTree_ = new _SyncTree.SyncTree({
+            startListening: function startListening(query, tag, currentHashFn, onComplete) {
+                var infoEvents = [];
+                var node = _this.infoData_.getNode(query.path);
+                // This is possibly a hack, but we have different semantics for .info endpoints. We don't raise null events
+                // on initial data...
+                if (!node.isEmpty()) {
+                    infoEvents = _this.infoSyncTree_.applyServerOverwrite(query.path, node);
+                    setTimeout(function () {
+                        onComplete('ok');
+                    }, 0);
+                }
+                return infoEvents;
+            },
+            stopListening: function stopListening() {}
+        });
+        this.updateInfo_('connected', false);
+        this.serverSyncTree_ = new _SyncTree.SyncTree({
+            startListening: function startListening(query, tag, currentHashFn, onComplete) {
+                _this.server_.listen(query, currentHashFn, tag, function (status, data) {
+                    var events = onComplete(status, data);
+                    _this.eventQueue_.raiseEventsForChangedPath(query.path, events);
+                });
+                // No synchronous events for network-backed sync trees
+                return [];
+            },
+            stopListening: function stopListening(query, tag) {
+                _this.server_.unlisten(query, tag);
+            }
+        });
+    }
+    /**
+     * @return {string}  The URL corresponding to the root of this Firebase.
+     */
+    Repo.prototype.toString = function () {
+        return (this.repoInfo_.secure ? 'https://' : 'http://') + this.repoInfo_.host;
+    };
+    /**
+     * @return {!string} The namespace represented by the repo.
+     */
+    Repo.prototype.name = function () {
+        return this.repoInfo_.namespace;
+    };
+    /**
+     * @return {!number} The time in milliseconds, taking the server offset into account if we have one.
+     */
+    Repo.prototype.serverTime = function () {
+        var offsetNode = this.infoData_.getNode(new _Path.Path('.info/serverTimeOffset'));
+        var offset = offsetNode.val() || 0;
+        return new Date().getTime() + offset;
+    };
+    /**
+     * Generate ServerValues using some variables from the repo object.
+     * @return {!Object}
+     */
+    Repo.prototype.generateServerValues = function () {
+        return (0, _ServerValues.generateWithValues)({
+            timestamp: this.serverTime()
+        });
+    };
+    /**
+     * Called by realtime when we get new messages from the server.
+     *
+     * @private
+     * @param {string} pathString
+     * @param {*} data
+     * @param {boolean} isMerge
+     * @param {?number} tag
+     */
+    Repo.prototype.onDataUpdate_ = function (pathString, data, isMerge, tag) {
+        // For testing.
+        this.dataUpdateCount++;
+        var path = new _Path.Path(pathString);
+        data = this.interceptServerDataCallback_ ? this.interceptServerDataCallback_(pathString, data) : data;
+        var events = [];
+        if (tag) {
+            if (isMerge) {
+                var taggedChildren = (0, _obj.map)(data, function (raw) {
+                    return (0, _nodeFromJSON.nodeFromJSON)(raw);
+                });
+                events = this.serverSyncTree_.applyTaggedQueryMerge(path, taggedChildren, tag);
+            } else {
+                var taggedSnap = (0, _nodeFromJSON.nodeFromJSON)(data);
+                events = this.serverSyncTree_.applyTaggedQueryOverwrite(path, taggedSnap, tag);
+            }
+        } else if (isMerge) {
+            var changedChildren = (0, _obj.map)(data, function (raw) {
+                return (0, _nodeFromJSON.nodeFromJSON)(raw);
+            });
+            events = this.serverSyncTree_.applyServerMerge(path, changedChildren);
+        } else {
+            var snap = (0, _nodeFromJSON.nodeFromJSON)(data);
+            events = this.serverSyncTree_.applyServerOverwrite(path, snap);
+        }
+        var affectedPath = path;
+        if (events.length > 0) {
+            // Since we have a listener outstanding for each transaction, receiving any events
+            // is a proxy for some change having occurred.
+            affectedPath = this.rerunTransactions_(path);
+        }
+        this.eventQueue_.raiseEventsForChangedPath(affectedPath, events);
+    };
+    /**
+     * TODO: This should be @private but it's used by test_access.js and internal.js
+     * @param {?function(!string, *):*} callback
+     * @private
+     */
+    Repo.prototype.interceptServerData_ = function (callback) {
+        this.interceptServerDataCallback_ = callback;
+    };
+    /**
+     * @param {!boolean} connectStatus
+     * @private
+     */
+    Repo.prototype.onConnectStatus_ = function (connectStatus) {
+        this.updateInfo_('connected', connectStatus);
+        if (connectStatus === false) {
+            this.runOnDisconnectEvents_();
+        }
+    };
+    /**
+     * @param {!Object} updates
+     * @private
+     */
+    Repo.prototype.onServerInfoUpdate_ = function (updates) {
+        var _this = this;
+        (0, _util.each)(updates, function (value, key) {
+            _this.updateInfo_(key, value);
+        });
+    };
+    /**
+     *
+     * @param {!string} pathString
+     * @param {*} value
+     * @private
+     */
+    Repo.prototype.updateInfo_ = function (pathString, value) {
+        var path = new _Path.Path('/.info/' + pathString);
+        var newNode = (0, _nodeFromJSON.nodeFromJSON)(value);
+        this.infoData_.updateSnapshot(path, newNode);
+        var events = this.infoSyncTree_.applyServerOverwrite(path, newNode);
+        this.eventQueue_.raiseEventsForChangedPath(path, events);
+    };
+    /**
+     * @return {!number}
+     * @private
+     */
+    Repo.prototype.getNextWriteId_ = function () {
+        return this.nextWriteId_++;
+    };
+    /**
+     * @param {!Path} path
+     * @param {*} newVal
+     * @param {number|string|null} newPriority
+     * @param {?function(?Error, *=)} onComplete
+     */
+    Repo.prototype.setWithPriority = function (path, newVal, newPriority, onComplete) {
+        var _this = this;
+        this.log_('set', {
+            path: path.toString(),
+            value: newVal,
+            priority: newPriority
+        });
+        // TODO: Optimize this behavior to either (a) store flag to skip resolving where possible and / or
+        // (b) store unresolved paths on JSON parse
+        var serverValues = this.generateServerValues();
+        var newNodeUnresolved = (0, _nodeFromJSON.nodeFromJSON)(newVal, newPriority);
+        var newNode = (0, _ServerValues.resolveDeferredValueSnapshot)(newNodeUnresolved, serverValues);
+        var writeId = this.getNextWriteId_();
+        var events = this.serverSyncTree_.applyUserOverwrite(path, newNode, writeId, true);
+        this.eventQueue_.queueEvents(events);
+        this.server_.put(path.toString(), newNodeUnresolved.val( /*export=*/true), function (status, errorReason) {
+            var success = status === 'ok';
+            if (!success) {
+                (0, _util.warn)('set at ' + path + ' failed: ' + status);
+            }
+            var clearEvents = _this.serverSyncTree_.ackUserWrite(writeId, !success);
+            _this.eventQueue_.raiseEventsForChangedPath(path, clearEvents);
+            _this.callOnCompleteCallback(onComplete, status, errorReason);
+        });
+        var affectedPath = this.abortTransactions_(path);
+        this.rerunTransactions_(affectedPath);
+        // We queued the events above, so just flush the queue here
+        this.eventQueue_.raiseEventsForChangedPath(affectedPath, []);
+    };
+    /**
+     * @param {!Path} path
+     * @param {!Object} childrenToMerge
+     * @param {?function(?Error, *=)} onComplete
+     */
+    Repo.prototype.update = function (path, childrenToMerge, onComplete) {
+        var _this = this;
+        this.log_('update', { path: path.toString(), value: childrenToMerge });
+        // Start with our existing data and merge each child into it.
+        var empty = true;
+        var serverValues = this.generateServerValues();
+        var changedChildren = {};
+        (0, _obj.forEach)(childrenToMerge, function (changedKey, changedValue) {
+            empty = false;
+            var newNodeUnresolved = (0, _nodeFromJSON.nodeFromJSON)(changedValue);
+            changedChildren[changedKey] = (0, _ServerValues.resolveDeferredValueSnapshot)(newNodeUnresolved, serverValues);
+        });
+        if (!empty) {
+            var writeId_1 = this.getNextWriteId_();
+            var events = this.serverSyncTree_.applyUserMerge(path, changedChildren, writeId_1);
+            this.eventQueue_.queueEvents(events);
+            this.server_.merge(path.toString(), childrenToMerge, function (status, errorReason) {
+                var success = status === 'ok';
+                if (!success) {
+                    (0, _util.warn)('update at ' + path + ' failed: ' + status);
+                }
+                var clearEvents = _this.serverSyncTree_.ackUserWrite(writeId_1, !success);
+                var affectedPath = clearEvents.length > 0 ? _this.rerunTransactions_(path) : path;
+                _this.eventQueue_.raiseEventsForChangedPath(affectedPath, clearEvents);
+                _this.callOnCompleteCallback(onComplete, status, errorReason);
+            });
+            (0, _obj.forEach)(childrenToMerge, function (changedPath) {
+                var affectedPath = _this.abortTransactions_(path.child(changedPath));
+                _this.rerunTransactions_(affectedPath);
+            });
+            // We queued the events above, so just flush the queue here
+            this.eventQueue_.raiseEventsForChangedPath(path, []);
+        } else {
+            (0, _util.log)("update() called with empty data.  Don't do anything.");
+            this.callOnCompleteCallback(onComplete, 'ok');
+        }
+    };
+    /**
+     * Applies all of the changes stored up in the onDisconnect_ tree.
+     * @private
+     */
+    Repo.prototype.runOnDisconnectEvents_ = function () {
+        var _this = this;
+        this.log_('onDisconnectEvents');
+        var serverValues = this.generateServerValues();
+        var resolvedOnDisconnectTree = (0, _ServerValues.resolveDeferredValueTree)(this.onDisconnect_, serverValues);
+        var events = [];
+        resolvedOnDisconnectTree.forEachTree(_Path.Path.Empty, function (path, snap) {
+            events = events.concat(_this.serverSyncTree_.applyServerOverwrite(path, snap));
+            var affectedPath = _this.abortTransactions_(path);
+            _this.rerunTransactions_(affectedPath);
+        });
+        this.onDisconnect_ = new _SparseSnapshotTree.SparseSnapshotTree();
+        this.eventQueue_.raiseEventsForChangedPath(_Path.Path.Empty, events);
+    };
+    /**
+     * @param {!Path} path
+     * @param {?function(?Error, *=)} onComplete
+     */
+    Repo.prototype.onDisconnectCancel = function (path, onComplete) {
+        var _this = this;
+        this.server_.onDisconnectCancel(path.toString(), function (status, errorReason) {
+            if (status === 'ok') {
+                _this.onDisconnect_.forget(path);
+            }
+            _this.callOnCompleteCallback(onComplete, status, errorReason);
+        });
+    };
+    /**
+     * @param {!Path} path
+     * @param {*} value
+     * @param {?function(?Error, *=)} onComplete
+     */
+    Repo.prototype.onDisconnectSet = function (path, value, onComplete) {
+        var _this = this;
+        var newNode = (0, _nodeFromJSON.nodeFromJSON)(value);
+        this.server_.onDisconnectPut(path.toString(), newNode.val( /*export=*/true), function (status, errorReason) {
+            if (status === 'ok') {
+                _this.onDisconnect_.remember(path, newNode);
+            }
+            _this.callOnCompleteCallback(onComplete, status, errorReason);
+        });
+    };
+    /**
+     * @param {!Path} path
+     * @param {*} value
+     * @param {*} priority
+     * @param {?function(?Error, *=)} onComplete
+     */
+    Repo.prototype.onDisconnectSetWithPriority = function (path, value, priority, onComplete) {
+        var _this = this;
+        var newNode = (0, _nodeFromJSON.nodeFromJSON)(value, priority);
+        this.server_.onDisconnectPut(path.toString(), newNode.val( /*export=*/true), function (status, errorReason) {
+            if (status === 'ok') {
+                _this.onDisconnect_.remember(path, newNode);
+            }
+            _this.callOnCompleteCallback(onComplete, status, errorReason);
+        });
+    };
+    /**
+     * @param {!Path} path
+     * @param {*} childrenToMerge
+     * @param {?function(?Error, *=)} onComplete
+     */
+    Repo.prototype.onDisconnectUpdate = function (path, childrenToMerge, onComplete) {
+        var _this = this;
+        if ((0, _obj.isEmpty)(childrenToMerge)) {
+            (0, _util.log)("onDisconnect().update() called with empty data.  Don't do anything.");
+            this.callOnCompleteCallback(onComplete, 'ok');
+            return;
+        }
+        this.server_.onDisconnectMerge(path.toString(), childrenToMerge, function (status, errorReason) {
+            if (status === 'ok') {
+                (0, _obj.forEach)(childrenToMerge, function (childName, childNode) {
+                    var newChildNode = (0, _nodeFromJSON.nodeFromJSON)(childNode);
+                    _this.onDisconnect_.remember(path.child(childName), newChildNode);
+                });
+            }
+            _this.callOnCompleteCallback(onComplete, status, errorReason);
+        });
+    };
+    /**
+     * @param {!Query} query
+     * @param {!EventRegistration} eventRegistration
+     */
+    Repo.prototype.addEventCallbackForQuery = function (query, eventRegistration) {
+        var events;
+        if (query.path.getFront() === '.info') {
+            events = this.infoSyncTree_.addEventRegistration(query, eventRegistration);
+        } else {
+            events = this.serverSyncTree_.addEventRegistration(query, eventRegistration);
+        }
+        this.eventQueue_.raiseEventsAtPath(query.path, events);
+    };
+    /**
+     * @param {!Query} query
+     * @param {?EventRegistration} eventRegistration
+     */
+    Repo.prototype.removeEventCallbackForQuery = function (query, eventRegistration) {
+        // These are guaranteed not to raise events, since we're not passing in a cancelError. However, we can future-proof
+        // a little bit by handling the return values anyways.
+        var events;
+        if (query.path.getFront() === '.info') {
+            events = this.infoSyncTree_.removeEventRegistration(query, eventRegistration);
+        } else {
+            events = this.serverSyncTree_.removeEventRegistration(query, eventRegistration);
+        }
+        this.eventQueue_.raiseEventsAtPath(query.path, events);
+    };
+    Repo.prototype.interrupt = function () {
+        if (this.persistentConnection_) {
+            this.persistentConnection_.interrupt(INTERRUPT_REASON);
+        }
+    };
+    Repo.prototype.resume = function () {
+        if (this.persistentConnection_) {
+            this.persistentConnection_.resume(INTERRUPT_REASON);
+        }
+    };
+    Repo.prototype.stats = function (showDelta) {
+        if (showDelta === void 0) {
+            showDelta = false;
+        }
+        if (typeof console === 'undefined') return;
+        var stats;
+        if (showDelta) {
+            if (!this.statsListener_) this.statsListener_ = new _StatsListener.StatsListener(this.stats_);
+            stats = this.statsListener_.get();
+        } else {
+            stats = this.stats_.get();
+        }
+        var longestName = Object.keys(stats).reduce(function (previousValue, currentValue) {
+            return Math.max(currentValue.length, previousValue);
+        }, 0);
+        (0, _obj.forEach)(stats, function (stat, value) {
+            // pad stat names to be the same length (plus 2 extra spaces).
+            for (var i = stat.length; i < longestName + 2; i++) {
+                stat += ' ';
+            }console.log(stat + value);
+        });
+    };
+    Repo.prototype.statsIncrementCounter = function (metric) {
+        this.stats_.incrementCounter(metric);
+        this.statsReporter_.includeStat(metric);
+    };
+    /**
+     * @param {...*} var_args
+     * @private
+     */
+    Repo.prototype.log_ = function () {
+        var var_args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            var_args[_i] = arguments[_i];
+        }
+        var prefix = '';
+        if (this.persistentConnection_) {
+            prefix = this.persistentConnection_.id + ':';
+        }
+        _util.log.apply(void 0, [prefix].concat(var_args));
+    };
+    /**
+     * @param {?function(?Error, *=)} callback
+     * @param {!string} status
+     * @param {?string=} errorReason
+     */
+    Repo.prototype.callOnCompleteCallback = function (callback, status, errorReason) {
+        if (callback) {
+            (0, _util.exceptionGuard)(function () {
+                if (status == 'ok') {
+                    callback(null);
+                } else {
+                    var code = (status || 'error').toUpperCase();
+                    var message = code;
+                    if (errorReason) message += ': ' + errorReason;
+                    var error = new Error(message);
+                    error.code = code;
+                    callback(error);
+                }
+            });
+        }
+    };
+    Object.defineProperty(Repo.prototype, "database", {
+        get: function get() {
+            return this.__database || (this.__database = new _Database.Database(this));
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Repo;
+}();
+exports.Repo = Repo;
+//# sourceMappingURL=Repo.js.map
+
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * A cache node only stores complete children. Additionally it holds a flag whether the node can be considered fully
+ * initialized in the sense that we know at one point in time this represented a valid state of the world, e.g.
+ * initialized with data from the server, or a complete overwrite by the client. The filtered flag also tracks
+ * whether a node potentially had children removed due to a filter.
+ */
+var CacheNode = function () {
+    /**
+     * @param {!Node} node_
+     * @param {boolean} fullyInitialized_
+     * @param {boolean} filtered_
+     */
+    function CacheNode(node_, fullyInitialized_, filtered_) {
+        this.node_ = node_;
+        this.fullyInitialized_ = fullyInitialized_;
+        this.filtered_ = filtered_;
+    }
+    /**
+     * Returns whether this node was fully initialized with either server data or a complete overwrite by the client
+     * @return {boolean}
+     */
+    CacheNode.prototype.isFullyInitialized = function () {
+        return this.fullyInitialized_;
+    };
+    /**
+     * Returns whether this node is potentially missing children due to a filter applied to the node
+     * @return {boolean}
+     */
+    CacheNode.prototype.isFiltered = function () {
+        return this.filtered_;
+    };
+    /**
+     * @param {!Path} path
+     * @return {boolean}
+     */
+    CacheNode.prototype.isCompleteForPath = function (path) {
+        if (path.isEmpty()) {
+            return this.isFullyInitialized() && !this.filtered_;
+        }
+        var childKey = path.getFront();
+        return this.isCompleteForChild(childKey);
+    };
+    /**
+     * @param {!string} key
+     * @return {boolean}
+     */
+    CacheNode.prototype.isCompleteForChild = function (key) {
+        return this.isFullyInitialized() && !this.filtered_ || this.node_.hasChild(key);
+    };
+    /**
+     * @return {!Node}
+     */
+    CacheNode.prototype.getNode = function () {
+        return this.node_;
+    };
+    return CacheNode;
+}();
+exports.CacheNode = CacheNode;
+//# sourceMappingURL=CacheNode.js.map
+
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setDomainBase = setDomainBase;
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+ * @fileoverview Constants used in the Firebase Storage library.
+ */
+/**
+ * Domain and scheme for API calls.
+ */
+var domainBase = exports.domainBase = 'https://firebasestorage.googleapis.com';
+/**
+ * Domain and scheme for object downloads.
+ */
+var downloadBase = exports.downloadBase = 'https://firebasestorage.googleapis.com';
+/**
+ * Base URL for non-upload calls to the API.
+ */
+var apiBaseUrl = exports.apiBaseUrl = '/v0';
+/**
+ * Base URL for upload calls to the API.
+ */
+var apiUploadBaseUrl = exports.apiUploadBaseUrl = '/v0';
+function setDomainBase(domainBase) {
+  domainBase = domainBase;
+}
+var configOption = exports.configOption = 'storageBucket';
+/**
+ * 1 minute
+ */
+var shortMaxOperationRetryTime = exports.shortMaxOperationRetryTime = 1 * 60 * 1000;
+/**
+ * 2 minutes
+ */
+var defaultMaxOperationRetryTime = exports.defaultMaxOperationRetryTime = 2 * 60 * 1000;
+/**
+ * 10 minutes
+ */
+var defaultMaxUploadRetryTime = exports.defaultMaxUploadRetryTime = 10 * 60 * 100;
+/**
+ * This is the value of Number.MIN_SAFE_INTEGER, which is not well supported
+ * enough for us to use it directly.
+ */
+var minSafeInteger = exports.minSafeInteger = -9007199254740991;
+//# sourceMappingURL=constants.js.map
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Location = undefined;
+
+var _error = __webpack_require__(75);
+
+var errorsExports = _interopRequireWildcard(_error);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/**
+ * @struct
+ */
+var Location = function () {
+    function Location(bucket, path) {
+        this.bucket = bucket;
+        this.path_ = path;
+    }
+    Object.defineProperty(Location.prototype, "path", {
+        get: function get() {
+            return this.path_;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Location.prototype.fullServerUrl = function () {
+        var encode = encodeURIComponent;
+        return '/b/' + encode(this.bucket) + '/o/' + encode(this.path);
+    };
+    Location.prototype.bucketOnlyServerUrl = function () {
+        var encode = encodeURIComponent;
+        return '/b/' + encode(this.bucket) + '/o';
+    };
+    Location.makeFromBucketSpec = function (bucketString) {
+        var bucketLocation;
+        try {
+            bucketLocation = Location.makeFromUrl(bucketString);
+        } catch (e) {
+            // Not valid URL, use as-is. This lets you put bare bucket names in
+            // config.
+            return new Location(bucketString, '');
+        }
+        if (bucketLocation.path === '') {
+            return bucketLocation;
+        } else {
+            throw errorsExports.invalidDefaultBucket(bucketString);
+        }
+    };
+    Location.makeFromUrl = function (url) {
+        var location = null;
+        var bucketDomain = '([A-Za-z0-9.\\-]+)';
+        function gsModify(loc) {
+            if (loc.path.charAt(loc.path.length - 1) === '/') {
+                loc.path_ = loc.path_.slice(0, -1);
+            }
+        }
+        var gsPath = '(/(.*))?$';
+        var path = '(/([^?#]*).*)?$';
+        var gsRegex = new RegExp('^gs://' + bucketDomain + gsPath, 'i');
+        var gsIndices = { bucket: 1, path: 3 };
+        function httpModify(loc) {
+            loc.path_ = decodeURIComponent(loc.path);
+        }
+        var version = 'v[A-Za-z0-9_]+';
+        var httpRegex = new RegExp('^https?://firebasestorage\\.googleapis\\.com/' + version + '/b/' + bucketDomain + '/o' + path, 'i');
+        var httpIndices = { bucket: 1, path: 3 };
+        var groups = [{ regex: gsRegex, indices: gsIndices, postModify: gsModify }, { regex: httpRegex, indices: httpIndices, postModify: httpModify }];
+        for (var i = 0; i < groups.length; i++) {
+            var group = groups[i];
+            var captures = group.regex.exec(url);
+            if (captures) {
+                var bucketValue = captures[group.indices.bucket];
+                var pathValue = captures[group.indices.path];
+                if (!pathValue) {
+                    pathValue = '';
+                }
+                location = new Location(bucketValue, pathValue);
+                group.postModify(location);
+                break;
+            }
+        }
+        if (location == null) {
+            throw errorsExports.invalidUrl(url);
+        }
+        return location;
+    };
+    return Location;
+}(); /**
+     * Copyright 2017 Google Inc.
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+/**
+ * @fileoverview Functionality related to the parsing/composition of bucket/
+ * object location.
+ */
+exports.Location = Location;
+//# sourceMappingURL=location.js.map
+
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*! @license Firebase v4.3.1
+Build: rev-b4fe95f
+Terms: https://firebase.google.com/terms/ */
+
+/**
+* Copyright 2017 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var CODES = {
+    AVAILABLE_IN_WINDOW: 'only-available-in-window',
+    AVAILABLE_IN_SW: 'only-available-in-sw',
+    SHOULD_BE_INHERITED: 'should-be-overriden',
+    BAD_SENDER_ID: 'bad-sender-id',
+    INCORRECT_GCM_SENDER_ID: 'incorrect-gcm-sender-id',
+    PERMISSION_DEFAULT: 'permission-default',
+    PERMISSION_BLOCKED: 'permission-blocked',
+    UNSUPPORTED_BROWSER: 'unsupported-browser',
+    NOTIFICATIONS_BLOCKED: 'notifications-blocked',
+    FAILED_DEFAULT_REGISTRATION: 'failed-serviceworker-registration',
+    SW_REGISTRATION_EXPECTED: 'sw-registration-expected',
+    GET_SUBSCRIPTION_FAILED: 'get-subscription-failed',
+    INVALID_SAVED_TOKEN: 'invalid-saved-token',
+    SW_REG_REDUNDANT: 'sw-reg-redundant',
+    TOKEN_SUBSCRIBE_FAILED: 'token-subscribe-failed',
+    TOKEN_SUBSCRIBE_NO_TOKEN: 'token-subscribe-no-token',
+    TOKEN_SUBSCRIBE_NO_PUSH_SET: 'token-subscribe-no-push-set',
+    USE_SW_BEFORE_GET_TOKEN: 'use-sw-before-get-token',
+    INVALID_DELETE_TOKEN: 'invalid-delete-token',
+    DELETE_TOKEN_NOT_FOUND: 'delete-token-not-found',
+    DELETE_SCOPE_NOT_FOUND: 'delete-scope-not-found',
+    BG_HANDLER_FUNCTION_EXPECTED: 'bg-handler-function-expected',
+    NO_WINDOW_CLIENT_TO_MSG: 'no-window-client-to-msg',
+    UNABLE_TO_RESUBSCRIBE: 'unable-to-resubscribe',
+    NO_FCM_TOKEN_FOR_RESUBSCRIBE: 'no-fcm-token-for-resubscribe',
+    FAILED_TO_DELETE_TOKEN: 'failed-to-delete-token',
+    NO_SW_IN_REG: 'no-sw-in-reg',
+    BAD_SCOPE: 'bad-scope',
+    BAD_VAPID_KEY: 'bad-vapid-key',
+    BAD_SUBSCRIPTION: 'bad-subscription',
+    BAD_TOKEN: 'bad-token',
+    BAD_PUSH_SET: 'bad-push-set',
+    FAILED_DELETE_VAPID_KEY: 'failed-delete-vapid-key'
+};
+var ERROR_MAP = (_a = {}, _a[CODES.AVAILABLE_IN_WINDOW] = 'This method is available in a Window context.', _a[CODES.AVAILABLE_IN_SW] = 'This method is available in a service worker ' + 'context.', _a[CODES.SHOULD_BE_INHERITED] = 'This method should be overriden by ' + 'extended classes.', _a[CODES.BAD_SENDER_ID] = "Please ensure that 'messagingSenderId' is set " + 'correctly in the options passed into firebase.initializeApp().', _a[CODES.PERMISSION_DEFAULT] = 'The required permissions were not granted and ' + 'dismissed instead.', _a[CODES.PERMISSION_BLOCKED] = 'The required permissions were not granted and ' + 'blocked instead.', _a[CODES.UNSUPPORTED_BROWSER] = "This browser doesn't support the API's " + 'required to use the firebase SDK.', _a[CODES.NOTIFICATIONS_BLOCKED] = 'Notifications have been blocked.', _a[CODES.FAILED_DEFAULT_REGISTRATION] = 'We are unable to register the ' + 'default service worker. {$browserErrorMessage}', _a[CODES.SW_REGISTRATION_EXPECTED] = 'A service worker registration was the ' + 'expected input.', _a[CODES.GET_SUBSCRIPTION_FAILED] = 'There was an error when trying to get ' + 'any existing Push Subscriptions.', _a[CODES.INVALID_SAVED_TOKEN] = 'Unable to access details of the saved token.', _a[CODES.SW_REG_REDUNDANT] = 'The service worker being used for push was made ' + 'redundant.', _a[CODES.TOKEN_SUBSCRIBE_FAILED] = 'A problem occured while subscribing the ' + 'user to FCM: {$message}', _a[CODES.TOKEN_SUBSCRIBE_NO_TOKEN] = 'FCM returned no token when subscribing ' + 'the user to push.', _a[CODES.TOKEN_SUBSCRIBE_NO_PUSH_SET] = 'FCM returned an invalid response ' + 'when getting an FCM token.', _a[CODES.USE_SW_BEFORE_GET_TOKEN] = 'You must call useServiceWorker() before ' + 'calling getToken() to ensure your service worker is used.', _a[CODES.INVALID_DELETE_TOKEN] = 'You must pass a valid token into ' + 'deleteToken(), i.e. the token from getToken().', _a[CODES.DELETE_TOKEN_NOT_FOUND] = 'The deletion attempt for token could not ' + 'be performed as the token was not found.', _a[CODES.DELETE_SCOPE_NOT_FOUND] = 'The deletion attempt for service worker ' + 'scope could not be performed as the scope was not found.', _a[CODES.BG_HANDLER_FUNCTION_EXPECTED] = 'The input to ' + 'setBackgroundMessageHandler() must be a function.', _a[CODES.NO_WINDOW_CLIENT_TO_MSG] = 'An attempt was made to message a ' + 'non-existant window client.', _a[CODES.UNABLE_TO_RESUBSCRIBE] = 'There was an error while re-subscribing ' + 'the FCM token for push messaging. Will have to resubscribe the ' + 'user on next visit. {$message}', _a[CODES.NO_FCM_TOKEN_FOR_RESUBSCRIBE] = 'Could not find an FCM token ' + 'and as a result, unable to resubscribe. Will have to resubscribe the ' + 'user on next visit.', _a[CODES.FAILED_TO_DELETE_TOKEN] = 'Unable to delete the currently saved token.', _a[CODES.NO_SW_IN_REG] = 'Even though the service worker registration was ' + 'successful, there was a problem accessing the service worker itself.', _a[CODES.INCORRECT_GCM_SENDER_ID] = "Please change your web app manifest's " + "'gcm_sender_id' value to '103953800507' to use Firebase messaging.", _a[CODES.BAD_SCOPE] = 'The service worker scope must be a string with at ' + 'least one character.', _a[CODES.BAD_VAPID_KEY] = 'The public VAPID key must be a string with at ' + 'least one character.', _a[CODES.BAD_SUBSCRIPTION] = 'The subscription must be a valid ' + 'PushSubscription.', _a[CODES.BAD_TOKEN] = 'The FCM Token used for storage / lookup was not ' + 'a valid token string.', _a[CODES.BAD_PUSH_SET] = 'The FCM push set used for storage / lookup was not ' + 'not a valid push set string.', _a[CODES.FAILED_DELETE_VAPID_KEY] = 'The VAPID key could not be deleted.', _a);
+exports.default = {
+    codes: CODES,
+    map: ERROR_MAP
+};
+
+var _a;
+module.exports = exports['default'];
+//# sourceMappingURL=errors.js.map
+
+
+/***/ }),
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15400,7 +16205,7 @@ exports.ErrorFactory = ErrorFactory;
 
 
 /***/ }),
-/* 38 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15415,7 +16220,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.stringLength = exports.stringToByteArray = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
 // Code originally came from goog.crypt.stringToUtf8ByteArray, but for some reason they
 // automatically replaced '\r\n' with '\n', and they didn't handle surrogate pairs,
@@ -15503,7 +16308,7 @@ var stringLength = exports.stringLength = function stringLength(str) {
 
 
 /***/ }),
-/* 39 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15518,29 +16323,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Reference = undefined;
 
-var _onDisconnect = __webpack_require__(152);
+var _onDisconnect = __webpack_require__(161);
 
-var _TransactionResult = __webpack_require__(153);
+var _TransactionResult = __webpack_require__(162);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _NextPushId = __webpack_require__(154);
+var _NextPushId = __webpack_require__(163);
 
-var _Query = __webpack_require__(61);
+var _Query = __webpack_require__(116);
 
-var _Repo = __webpack_require__(30);
+var _Repo = __webpack_require__(92);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _QueryParams = __webpack_require__(180);
+var _QueryParams = __webpack_require__(189);
 
-var _validation = __webpack_require__(14);
+var _validation = __webpack_require__(79);
 
-var _validation2 = __webpack_require__(13);
+var _validation2 = __webpack_require__(78);
 
-var _promise = __webpack_require__(12);
+var _promise = __webpack_require__(77);
 
-var _SyncPoint = __webpack_require__(73);
+var _SyncPoint = __webpack_require__(128);
 
 /**
 * Copyright 2017 Google Inc.
@@ -15829,7 +16634,7 @@ _SyncPoint.SyncPoint.__referenceConstructor = Reference;
 
 
 /***/ }),
-/* 40 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16468,7 +17273,7 @@ exports.SortedMap = SortedMap;
 
 
 /***/ }),
-/* 41 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16483,13 +17288,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ImmutableTree = undefined;
 
-var _SortedMap = __webpack_require__(40);
+var _SortedMap = __webpack_require__(100);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
 /**
 * Copyright 2017 Google Inc.
@@ -16827,7 +17632,7 @@ exports.ImmutableTree = ImmutableTree;
 
 
 /***/ }),
-/* 42 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16842,13 +17647,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.IndexedFilter = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _Change = __webpack_require__(20);
+var _Change = __webpack_require__(83);
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
 /**
  * Doesn't really filter nodes but applies an index to the node and keeps track of any changes
@@ -16973,7 +17778,7 @@ exports.IndexedFilter = IndexedFilter;
 
 
 /***/ }),
-/* 43 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16988,7 +17793,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.StatsManager = undefined;
 
-var _StatsCollection = __webpack_require__(170);
+var _StatsCollection = __webpack_require__(179);
 
 var StatsManager = function () {
     function StatsManager() {}
@@ -17029,7 +17834,7 @@ exports.StatsManager = StatsManager;
 
 
 /***/ }),
-/* 44 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17044,17 +17849,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RepoManager = undefined;
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _Repo = __webpack_require__(30);
+var _Repo = __webpack_require__(92);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _parser = __webpack_require__(59);
+var _parser = __webpack_require__(114);
 
-var _validation = __webpack_require__(14);
+var _validation = __webpack_require__(79);
 
-__webpack_require__(182);
+__webpack_require__(191);
 
 /** @const {string} */
 /**
@@ -17170,7 +17975,7 @@ exports.RepoManager = RepoManager;
 
 
 /***/ }),
-/* 45 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17192,7 +17997,7 @@ exports.base64Bytes_ = base64Bytes_;
 exports.dataURLBytes_ = dataURLBytes_;
 exports.dataURLContentType_ = dataURLContentType_;
 
-var _error = __webpack_require__(10);
+var _error = __webpack_require__(75);
 
 var errorsExports = _interopRequireWildcard(_error);
 
@@ -17376,7 +18181,7 @@ function endsWith(s, end) {
 
 
 /***/ }),
-/* 46 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17399,15 +18204,15 @@ exports.nonNegativeNumberSpec = nonNegativeNumberSpec;
 exports.looseObjectSpec = looseObjectSpec;
 exports.nullFunctionSpec = nullFunctionSpec;
 
-var _error = __webpack_require__(10);
+var _error = __webpack_require__(75);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(47);
+var _metadata = __webpack_require__(107);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
@@ -17542,7 +18347,7 @@ function nullFunctionSpec(opt_optional) {
 
 
 /***/ }),
-/* 47 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17565,21 +18370,21 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(189);
+var _json = __webpack_require__(198);
 
 var json = _interopRequireWildcard(_json);
 
-var _location = __webpack_require__(33);
+var _location = __webpack_require__(95);
 
-var _path = __webpack_require__(86);
+var _path = __webpack_require__(141);
 
 var path = _interopRequireWildcard(_path);
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(48);
+var _url = __webpack_require__(108);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -17755,7 +18560,7 @@ function metadataValidator(p) {
 
 
 /***/ }),
-/* 48 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17773,11 +18578,11 @@ exports.makeDownloadUrl = makeDownloadUrl;
 exports.makeUploadUrl = makeUploadUrl;
 exports.makeQueryString = makeQueryString;
 
-var _constants = __webpack_require__(32);
+var _constants = __webpack_require__(94);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _object = __webpack_require__(21);
+var _object = __webpack_require__(84);
 
 var object = _interopRequireWildcard(_object);
 
@@ -17825,7 +18630,7 @@ function makeQueryString(params) {
 
 
 /***/ }),
-/* 49 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17885,12 +18690,7 @@ function remove(array, elem) {
 
 
 /***/ }),
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17909,7 +18709,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 exports.createSubscribe = createSubscribe;
 exports.async = async;
 
-var _promise = __webpack_require__(12);
+var _promise = __webpack_require__(77);
 
 /**
  * Helper to make a Subscribe function (just like Promise helps make a
@@ -18119,7 +18919,7 @@ function noop() {
 
 
 /***/ }),
-/* 56 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18162,10 +18962,10 @@ if (typeof global !== 'undefined') {
 var globalScope = exports.globalScope = scope;
 //# sourceMappingURL=globalScope.js.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 57 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18253,7 +19053,7 @@ function patchProperty(obj, prop, value) {
 
 
 /***/ }),
-/* 58 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18268,23 +19068,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DatabaseInternals = exports.Database = undefined;
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _parser = __webpack_require__(59);
+var _parser = __webpack_require__(114);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _promise = __webpack_require__(12);
+var _promise = __webpack_require__(77);
 
-var _Reference = __webpack_require__(39);
+var _Reference = __webpack_require__(99);
 
-var _Repo = __webpack_require__(30);
+var _Repo = __webpack_require__(92);
 
-var _RepoManager = __webpack_require__(44);
+var _RepoManager = __webpack_require__(104);
 
-var _validation = __webpack_require__(13);
+var _validation = __webpack_require__(78);
 
-var _validation2 = __webpack_require__(14);
+var _validation2 = __webpack_require__(79);
 
 /**
  * Class representing a firebase database.
@@ -18405,7 +19205,7 @@ exports.DatabaseInternals = DatabaseInternals;
 
 
 /***/ }),
-/* 59 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18420,11 +19220,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.parseURL = exports.parseRepoInfo = undefined;
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _RepoInfo = __webpack_require__(60);
+var _RepoInfo = __webpack_require__(115);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
 /**
  * @param {!string} pathString
@@ -18542,7 +19342,7 @@ var parseURL = exports.parseURL = function parseURL(dataURL) {
 
 
 /***/ }),
-/* 60 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18574,13 +19374,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                                                                                                                                                                                                                                                                               */
 
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _storage = __webpack_require__(26);
+var _storage = __webpack_require__(88);
 
-var _Constants = __webpack_require__(27);
+var _Constants = __webpack_require__(89);
 
 /**
  * A class that holds metadata about a Repo object
@@ -18672,7 +19472,7 @@ exports.RepoInfo = RepoInfo;
 
 
 /***/ }),
-/* 61 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18704,27 +19504,27 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                                                                                                                                                                                                                                                                               */
 
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _KeyIndex = __webpack_require__(22);
+var _KeyIndex = __webpack_require__(85);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
-var _ValueIndex = __webpack_require__(63);
+var _ValueIndex = __webpack_require__(118);
 
-var _PathIndex = __webpack_require__(67);
+var _PathIndex = __webpack_require__(122);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _validation = __webpack_require__(14);
+var _validation = __webpack_require__(79);
 
-var _validation2 = __webpack_require__(13);
+var _validation2 = __webpack_require__(78);
 
-var _EventRegistration = __webpack_require__(155);
+var _EventRegistration = __webpack_require__(164);
 
-var _promise = __webpack_require__(12);
+var _promise = __webpack_require__(77);
 
 var __referenceConstructor;
 /**
@@ -19176,7 +19976,7 @@ exports.Query = Query;
 
 
 /***/ }),
-/* 62 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19210,11 +20010,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 exports.setMaxNode = setMaxNode;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
 var MAX_NODE;
 function setMaxNode(val) {
@@ -19246,7 +20046,7 @@ var validatePriorityNode = exports.validatePriorityNode = function validatePrior
 
 
 /***/ }),
-/* 63 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19261,13 +20061,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.VALUE_INDEX = exports.ValueIndex = undefined;
 
-var _Index = __webpack_require__(28);
+var _Index = __webpack_require__(90);
 
-var _Node = __webpack_require__(7);
+var _Node = __webpack_require__(72);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _nodeFromJSON = __webpack_require__(23);
+var _nodeFromJSON = __webpack_require__(86);
 
 /**
 * Copyright 2017 Google Inc.
@@ -19369,7 +20169,7 @@ var VALUE_INDEX = exports.VALUE_INDEX = new ValueIndex();
 
 
 /***/ }),
-/* 64 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19384,17 +20184,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.IndexMap = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _childSet = __webpack_require__(65);
+var _childSet = __webpack_require__(120);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _Node = __webpack_require__(7);
+var _Node = __webpack_require__(72);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
-var _KeyIndex = __webpack_require__(22);
+var _KeyIndex = __webpack_require__(85);
 
 /**
 * Copyright 2017 Google Inc.
@@ -19561,7 +20361,7 @@ exports.IndexMap = IndexMap;
 
 
 /***/ }),
-/* 65 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19576,7 +20376,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.buildChildSet = undefined;
 
-var _SortedMap = __webpack_require__(40);
+var _SortedMap = __webpack_require__(100);
 
 /**
 * Copyright 2017 Google Inc.
@@ -19704,7 +20504,7 @@ var buildChildSet = exports.buildChildSet = function buildChildSet(childList, cm
 
 
 /***/ }),
-/* 66 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19720,7 +20520,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.NAME_ONLY_COMPARATOR = NAME_ONLY_COMPARATOR;
 exports.NAME_COMPARATOR = NAME_COMPARATOR;
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
 function NAME_ONLY_COMPARATOR(left, right) {
     return (0, _util.nameCompare)(left.name, right.name);
@@ -19746,7 +20546,7 @@ function NAME_COMPARATOR(left, right) {
 
 
 /***/ }),
-/* 67 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19761,17 +20561,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PathIndex = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _Index = __webpack_require__(28);
+var _Index = __webpack_require__(90);
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
-var _Node = __webpack_require__(7);
+var _Node = __webpack_require__(72);
 
-var _nodeFromJSON = __webpack_require__(23);
+var _nodeFromJSON = __webpack_require__(86);
 
 /**
 * Copyright 2017 Google Inc.
@@ -19873,7 +20673,7 @@ exports.PathIndex = PathIndex;
 
 
 /***/ }),
-/* 68 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19888,13 +20688,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DataSnapshot = undefined;
 
-var _validation = __webpack_require__(13);
+var _validation = __webpack_require__(78);
 
-var _validation2 = __webpack_require__(14);
+var _validation2 = __webpack_require__(79);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
 /**
  * Class representing a firebase data snapshot.  It wraps a SnapshotNode and
@@ -20061,7 +20861,7 @@ exports.DataSnapshot = DataSnapshot;
 
 
 /***/ }),
-/* 69 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20093,17 +20893,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                                                                                                                                                                                                                                                                               */
 
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _SparseSnapshotTree = __webpack_require__(70);
+var _SparseSnapshotTree = __webpack_require__(125);
 
-var _LeafNode = __webpack_require__(29);
+var _LeafNode = __webpack_require__(91);
 
-var _nodeFromJSON = __webpack_require__(23);
+var _nodeFromJSON = __webpack_require__(86);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
 /**
  * Generate placeholders for deferred values.
@@ -20183,7 +20983,7 @@ var resolveDeferredValueSnapshot = exports.resolveDeferredValueSnapshot = functi
 
 
 /***/ }),
-/* 70 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20198,11 +20998,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SparseSnapshotTree = undefined;
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
-var _CountedSet = __webpack_require__(71);
+var _CountedSet = __webpack_require__(126);
 
 /**
  * Helper class to store a sparse set of snapshots.
@@ -20365,7 +21165,7 @@ exports.SparseSnapshotTree = SparseSnapshotTree;
 
 
 /***/ }),
-/* 71 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20380,7 +21180,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CountedSet = undefined;
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
 /**
  * Implements a set with a count of elements.
@@ -20478,7 +21278,7 @@ exports.CountedSet = CountedSet;
 
 
 /***/ }),
-/* 72 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20493,9 +21293,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Overwrite = undefined;
 
-var _Operation = __webpack_require__(15);
+var _Operation = __webpack_require__(80);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
 /**
  * @param {!OperationSource} source
@@ -20541,7 +21341,7 @@ exports.Overwrite = Overwrite;
 
 
 /***/ }),
-/* 73 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20556,17 +21356,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SyncPoint = undefined;
 
-var _CacheNode = __webpack_require__(31);
+var _CacheNode = __webpack_require__(93);
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _ViewCache = __webpack_require__(74);
+var _ViewCache = __webpack_require__(129);
 
-var _View = __webpack_require__(161);
+var _View = __webpack_require__(170);
 
 /**
 * Copyright 2017 Google Inc.
@@ -20795,7 +21595,7 @@ exports.SyncPoint = SyncPoint;
 
 
 /***/ }),
-/* 74 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20810,9 +21610,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ViewCache = undefined;
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
-var _CacheNode = __webpack_require__(31);
+var _CacheNode = __webpack_require__(93);
 
 /**
  * Stores the data we have cached for a view.
@@ -20904,7 +21704,7 @@ exports.ViewCache = ViewCache;
 
 
 /***/ }),
-/* 75 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20919,7 +21719,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.StatsListener = undefined;
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
 /**
  * Returns the delta from the previous call to get stats.
@@ -20964,7 +21764,7 @@ exports.StatsListener = StatsListener;
 
 
 /***/ }),
-/* 76 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20981,33 +21781,33 @@ exports.PersistentConnection = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _app = __webpack_require__(11);
+var _app = __webpack_require__(76);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _json = __webpack_require__(9);
+var _json = __webpack_require__(74);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _VisibilityMonitor = __webpack_require__(173);
+var _VisibilityMonitor = __webpack_require__(182);
 
-var _OnlineMonitor = __webpack_require__(174);
+var _OnlineMonitor = __webpack_require__(183);
 
-var _jwt = __webpack_require__(175);
+var _jwt = __webpack_require__(184);
 
-var _Connection = __webpack_require__(78);
+var _Connection = __webpack_require__(133);
 
-var _constants = __webpack_require__(25);
+var _constants = __webpack_require__(87);
 
-var _environment = __webpack_require__(19);
+var _environment = __webpack_require__(82);
 
-var _ServerActions = __webpack_require__(81);
+var _ServerActions = __webpack_require__(136);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21763,7 +22563,7 @@ exports.PersistentConnection = PersistentConnection;
 
 
 /***/ }),
-/* 77 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21778,7 +22578,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.EventEmitter = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
 /**
  * Base class to be used if you want to emit events. Call the constructor with
@@ -21856,7 +22656,7 @@ exports.EventEmitter = EventEmitter;
 
 
 /***/ }),
-/* 78 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21871,13 +22671,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Connection = undefined;
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _storage = __webpack_require__(26);
+var _storage = __webpack_require__(88);
 
-var _Constants = __webpack_require__(27);
+var _Constants = __webpack_require__(89);
 
-var _TransportManager = __webpack_require__(176);
+var _TransportManager = __webpack_require__(185);
 
 // Abort upgrade attempt if it takes longer than 60s.
 /**
@@ -22338,7 +23138,7 @@ exports.Connection = Connection;
 
 
 /***/ }),
-/* 79 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22353,19 +23153,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FirebaseIFrameScriptHolder = exports.BrowserPollConnection = exports.FIREBASE_LONGPOLL_DISCONN_FRAME_REQUEST_PARAM = exports.FIREBASE_LONGPOLL_DISCONN_FRAME_PARAM = exports.FIREBASE_LONGPOLL_DATA_PARAM = exports.FIREBASE_LONGPOLL_SEGMENTS_IN_PACKET = exports.FIREBASE_LONGPOLL_SEGMENT_NUM_PARAM = exports.FIREBASE_LONGPOLL_CALLBACK_ID_PARAM = exports.FIREBASE_LONGPOLL_SERIAL_PARAM = exports.FIREBASE_LONGPOLL_PW_PARAM = exports.FIREBASE_LONGPOLL_ID_PARAM = exports.FIREBASE_LONGPOLL_DATA_CB_NAME = exports.FIREBASE_LONGPOLL_COMMAND_CB_NAME = exports.FIREBASE_LONGPOLL_CLOSE_COMMAND = exports.FIREBASE_LONGPOLL_START_PARAM = undefined;
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _CountedSet = __webpack_require__(71);
+var _CountedSet = __webpack_require__(126);
 
-var _StatsManager = __webpack_require__(43);
+var _StatsManager = __webpack_require__(103);
 
-var _PacketReceiver = __webpack_require__(177);
+var _PacketReceiver = __webpack_require__(186);
 
-var _Constants = __webpack_require__(27);
+var _Constants = __webpack_require__(89);
 
-var _json = __webpack_require__(9);
+var _json = __webpack_require__(74);
 
-var _environment = __webpack_require__(19);
+var _environment = __webpack_require__(82);
 
 // URL query parameters associated with longpolling
 var FIREBASE_LONGPOLL_START_PARAM = exports.FIREBASE_LONGPOLL_START_PARAM = 'start'; /**
@@ -22944,7 +23744,7 @@ exports.FirebaseIFrameScriptHolder = FirebaseIFrameScriptHolder;
 
 
 /***/ }),
-/* 80 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22960,25 +23760,25 @@ Object.defineProperty(exports, "__esModule", {
 exports.WebSocketConnection = undefined;
 exports.setWebSocketImpl = setWebSocketImpl;
 
-var _app = __webpack_require__(11);
+var _app = __webpack_require__(76);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _StatsManager = __webpack_require__(43);
+var _StatsManager = __webpack_require__(103);
 
-var _Constants = __webpack_require__(27);
+var _Constants = __webpack_require__(89);
 
-var _constants = __webpack_require__(25);
+var _constants = __webpack_require__(87);
 
-var _storage = __webpack_require__(26);
+var _storage = __webpack_require__(88);
 
-var _json = __webpack_require__(9);
+var _json = __webpack_require__(74);
 
-var _environment = __webpack_require__(19);
+var _environment = __webpack_require__(82);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23307,10 +24107,10 @@ var WebSocketConnection = function () {
 exports.WebSocketConnection = WebSocketConnection;
 //# sourceMappingURL=WebSocketConnection.js.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
-/* 81 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23393,7 +24193,7 @@ exports.ServerActions = ServerActions;
 
 
 /***/ }),
-/* 82 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23408,13 +24208,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RangedFilter = undefined;
 
-var _IndexedFilter = __webpack_require__(42);
+var _IndexedFilter = __webpack_require__(102);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
-var _Node = __webpack_require__(7);
+var _Node = __webpack_require__(72);
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
 /**
  * Filters nodes by range and uses an IndexFilter to track any changes after filtering the node
@@ -23552,7 +24352,7 @@ exports.RangedFilter = RangedFilter;
 
 
 /***/ }),
-/* 83 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23629,7 +24429,7 @@ function taskStateFromInternalTaskState(state) {
 
 
 /***/ }),
-/* 84 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23670,7 +24470,7 @@ var ErrorCode = exports.ErrorCode = undefined;
 
 
 /***/ }),
-/* 85 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23685,43 +24485,43 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Reference = undefined;
 
-var _args = __webpack_require__(46);
+var _args = __webpack_require__(106);
 
 var args = _interopRequireWildcard(_args);
 
-var _blob = __webpack_require__(87);
+var _blob = __webpack_require__(142);
 
-var _error = __webpack_require__(10);
+var _error = __webpack_require__(75);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _location = __webpack_require__(33);
+var _location = __webpack_require__(95);
 
-var _metadata = __webpack_require__(47);
+var _metadata = __webpack_require__(107);
 
 var metadata = _interopRequireWildcard(_metadata);
 
-var _object = __webpack_require__(21);
+var _object = __webpack_require__(84);
 
 var object = _interopRequireWildcard(_object);
 
-var _path = __webpack_require__(86);
+var _path = __webpack_require__(141);
 
 var path = _interopRequireWildcard(_path);
 
-var _requests = __webpack_require__(88);
+var _requests = __webpack_require__(143);
 
 var requests = _interopRequireWildcard(_requests);
 
-var _string = __webpack_require__(45);
+var _string = __webpack_require__(105);
 
 var fbsString = _interopRequireWildcard(_string);
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(192);
+var _task = __webpack_require__(201);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -23952,7 +24752,7 @@ exports.Reference = Reference;
 
 
 /***/ }),
-/* 86 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24028,7 +24828,7 @@ function lastComponent(path) {
 
 
 /***/ }),
-/* 87 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24043,15 +24843,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FbsBlob = undefined;
 
-var _fs = __webpack_require__(190);
+var _fs = __webpack_require__(199);
 
 var fs = _interopRequireWildcard(_fs);
 
-var _string = __webpack_require__(45);
+var _string = __webpack_require__(105);
 
 var string = _interopRequireWildcard(_string);
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
@@ -24176,7 +24976,7 @@ exports.FbsBlob = FbsBlob;
 
 
 /***/ }),
-/* 88 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24205,31 +25005,31 @@ exports.createResumableUpload = createResumableUpload;
 exports.getResumableUploadStatus = getResumableUploadStatus;
 exports.continueResumableUpload = continueResumableUpload;
 
-var _array = __webpack_require__(49);
+var _array = __webpack_require__(109);
 
 var array = _interopRequireWildcard(_array);
 
-var _blob = __webpack_require__(87);
+var _blob = __webpack_require__(142);
 
-var _error = __webpack_require__(10);
+var _error = __webpack_require__(75);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _metadata = __webpack_require__(47);
+var _metadata = __webpack_require__(107);
 
 var MetadataUtils = _interopRequireWildcard(_metadata);
 
-var _object = __webpack_require__(21);
+var _object = __webpack_require__(84);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(191);
+var _requestinfo = __webpack_require__(200);
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(48);
+var _url = __webpack_require__(108);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
@@ -24536,7 +25336,7 @@ function continueResumableUpload(location, authWrapper, url, blob, chunkSize, ma
 
 
 /***/ }),
-/* 89 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24565,17 +25365,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _errors = __webpack_require__(37);
+var _errors = __webpack_require__(97);
 
-var _errors2 = __webpack_require__(34);
+var _errors2 = __webpack_require__(96);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(204);
+var _tokenManager = __webpack_require__(213);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
-var _notificationPermission = __webpack_require__(91);
+var _notificationPermission = __webpack_require__(146);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
@@ -24730,7 +25530,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 90 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24773,7 +25573,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 91 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24811,7 +25611,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 92 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24866,634 +25666,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */,
-/* 133 */,
-/* 134 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(135);
-
-
-/***/ }),
-/* 135 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire__ = __webpack_require__(136);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuefire___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuefire__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Welcome_vue__ = __webpack_require__(137);
-
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuefire___default.a);
-
-new __WEBPACK_IMPORTED_MODULE_0_vue___default.a(__WEBPACK_IMPORTED_MODULE_2__components_Welcome_vue__["a" /* default */]).$mount('#app');
-
-/***/ }),
-/* 136 */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(true)
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["VueFire"] = factory();
-	else
-		root["VueFire"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
-/******/ 		};
-
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-
-
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ function(module, exports) {
-
-	var Vue // late binding
-
-	/**
-	 * Returns the key of a Firebase snapshot across SDK versions.
-	 *
-	 * @param {FirebaseSnapshot} snapshot
-	 * @return {string|null}
-	 */
-	function _getKey (snapshot) {
-	  return typeof snapshot.key === 'function'
-	    ? snapshot.key()
-	    : snapshot.key
-	}
-
-	/**
-	 * Returns the original reference of a Firebase reference or query across SDK versions.
-	 *
-	 * @param {FirebaseReference|FirebaseQuery} refOrQuery
-	 * @return {FirebaseReference}
-	 */
-	function _getRef (refOrQuery) {
-	  if (typeof refOrQuery.ref === 'function') {
-	    refOrQuery = refOrQuery.ref()
-	  } else if (typeof refOrQuery.ref === 'object') {
-	    refOrQuery = refOrQuery.ref
-	  }
-
-	  return refOrQuery
-	}
-
-	/**
-	 * Check if a value is an object.
-	 *
-	 * @param {*} val
-	 * @return {boolean}
-	 */
-	function isObject (val) {
-	  return Object.prototype.toString.call(val) === '[object Object]'
-	}
-
-	/**
-	 * Convert firebase snapshot into a bindable data record.
-	 *
-	 * @param {FirebaseSnapshot} snapshot
-	 * @return {Object}
-	 */
-	function createRecord (snapshot) {
-	  var value = snapshot.val()
-	  var res = isObject(value)
-	    ? value
-	    : { '.value': value }
-	  res['.key'] = _getKey(snapshot)
-	  return res
-	}
-
-	/**
-	 * Find the index for an object with given key.
-	 *
-	 * @param {array} array
-	 * @param {string} key
-	 * @return {number}
-	 */
-	function indexForKey (array, key) {
-	  for (var i = 0; i < array.length; i++) {
-	    if (array[i]['.key'] === key) {
-	      return i
-	    }
-	  }
-	  /* istanbul ignore next */
-	  return -1
-	}
-
-	/**
-	 * Bind a firebase data source to a key on a vm.
-	 *
-	 * @param {Vue} vm
-	 * @param {string} key
-	 * @param {object} source
-	 */
-	function bind (vm, key, source) {
-	  var asObject = false
-	  var cancelCallback = null
-	  var readyCallback = null
-	  // check { source, asArray, cancelCallback } syntax
-	  if (isObject(source) && source.hasOwnProperty('source')) {
-	    asObject = source.asObject
-	    cancelCallback = source.cancelCallback
-	    readyCallback = source.readyCallback
-	    source = source.source
-	  }
-	  if (!isObject(source)) {
-	    throw new Error('VueFire: invalid Firebase binding source.')
-	  }
-	  var ref = _getRef(source)
-	  vm.$firebaseRefs[key] = ref
-	  vm._firebaseSources[key] = source
-	  // bind based on initial value type
-	  if (asObject) {
-	    bindAsObject(vm, key, source, cancelCallback)
-	  } else {
-	    bindAsArray(vm, key, source, cancelCallback)
-	  }
-	  if (readyCallback) {
-	    source.once('value', readyCallback.bind(vm))
-	  }
-	}
-
-	/**
-	 * Define a reactive property in a given vm if it's not defined
-	 * yet
-	 *
-	 * @param {Vue} vm
-	 * @param {string} key
-	 * @param {*} val
-	 */
-	function defineReactive (vm, key, val) {
-	  if (key in vm) {
-	    vm[key] = val
-	  } else {
-	    Vue.util.defineReactive(vm, key, val)
-	  }
-	}
-
-	/**
-	 * Bind a firebase data source to a key on a vm as an Array.
-	 *
-	 * @param {Vue} vm
-	 * @param {string} key
-	 * @param {object} source
-	 * @param {function|null} cancelCallback
-	 */
-	function bindAsArray (vm, key, source, cancelCallback) {
-	  var array = []
-	  defineReactive(vm, key, array)
-
-	  var onAdd = source.on('child_added', function (snapshot, prevKey) {
-	    var index = prevKey ? indexForKey(array, prevKey) + 1 : 0
-	    array.splice(index, 0, createRecord(snapshot))
-	  }, cancelCallback)
-
-	  var onRemove = source.on('child_removed', function (snapshot) {
-	    var index = indexForKey(array, _getKey(snapshot))
-	    array.splice(index, 1)
-	  }, cancelCallback)
-
-	  var onChange = source.on('child_changed', function (snapshot) {
-	    var index = indexForKey(array, _getKey(snapshot))
-	    array.splice(index, 1, createRecord(snapshot))
-	  }, cancelCallback)
-
-	  var onMove = source.on('child_moved', function (snapshot, prevKey) {
-	    var index = indexForKey(array, _getKey(snapshot))
-	    var record = array.splice(index, 1)[0]
-	    var newIndex = prevKey ? indexForKey(array, prevKey) + 1 : 0
-	    array.splice(newIndex, 0, record)
-	  }, cancelCallback)
-
-	  vm._firebaseListeners[key] = {
-	    child_added: onAdd,
-	    child_removed: onRemove,
-	    child_changed: onChange,
-	    child_moved: onMove
-	  }
-	}
-
-	/**
-	 * Bind a firebase data source to a key on a vm as an Object.
-	 *
-	 * @param {Vue} vm
-	 * @param {string} key
-	 * @param {Object} source
-	 * @param {function|null} cancelCallback
-	 */
-	function bindAsObject (vm, key, source, cancelCallback) {
-	  defineReactive(vm, key, {})
-	  var cb = source.on('value', function (snapshot) {
-	    vm[key] = createRecord(snapshot)
-	  }, cancelCallback)
-	  vm._firebaseListeners[key] = { value: cb }
-	}
-
-	/**
-	 * Unbind a firebase-bound key from a vm.
-	 *
-	 * @param {Vue} vm
-	 * @param {string} key
-	 */
-	function unbind (vm, key) {
-	  var source = vm._firebaseSources && vm._firebaseSources[key]
-	  if (!source) {
-	    throw new Error(
-	      'VueFire: unbind failed: "' + key + '" is not bound to ' +
-	      'a Firebase reference.'
-	    )
-	  }
-	  var listeners = vm._firebaseListeners[key]
-	  for (var event in listeners) {
-	    source.off(event, listeners[event])
-	  }
-	  vm[key] = null
-	  vm.$firebaseRefs[key] = null
-	  vm._firebaseSources[key] = null
-	  vm._firebaseListeners[key] = null
-	}
-
-	/**
-	 * Ensure the related bookkeeping variables on an instance.
-	 *
-	 * @param {Vue} vm
-	 */
-	function ensureRefs (vm) {
-	  if (!vm.$firebaseRefs) {
-	    vm.$firebaseRefs = Object.create(null)
-	    vm._firebaseSources = Object.create(null)
-	    vm._firebaseListeners = Object.create(null)
-	  }
-	}
-
-	var init = function () {
-	  var bindings = this.$options.firebase
-	  if (typeof bindings === 'function') bindings = bindings.call(this)
-	  if (!bindings) return
-	  ensureRefs(this)
-	  for (var key in bindings) {
-	    bind(this, key, bindings[key])
-	  }
-	}
-
-	var VueFireMixin = {
-	  created: init, // 1.x and 2.x
-	  beforeDestroy: function () {
-	    if (!this.$firebaseRefs) return
-	    for (var key in this.$firebaseRefs) {
-	      if (this.$firebaseRefs[key]) {
-	        this.$unbind(key)
-	      }
-	    }
-	    this.$firebaseRefs = null
-	    this._firebaseSources = null
-	    this._firebaseListeners = null
-	  }
-	}
-
-	/**
-	 * Install function passed to Vue.use() in manual installation.
-	 *
-	 * @param {function} _Vue
-	 */
-	function install (_Vue) {
-	  Vue = _Vue
-	  Vue.mixin(VueFireMixin)
-
-	  // use object-based merge strategy
-	  // TODO This makes impossible to merge functions
-	  var mergeStrats = Vue.config.optionMergeStrategies
-	  mergeStrats.firebase = mergeStrats.methods
-
-	  // extend instance methods
-	  Vue.prototype.$bindAsObject = function (key, source, cancelCallback, readyCallback) {
-	    ensureRefs(this)
-	    bind(this, key, {
-	      source: source,
-	      asObject: true,
-	      cancelCallback: cancelCallback,
-	      readyCallback: readyCallback
-	    })
-	  }
-
-	  Vue.prototype.$bindAsArray = function (key, source, cancelCallback, readyCallback) {
-	    ensureRefs(this)
-	    bind(this, key, {
-	      source: source,
-	      cancelCallback: cancelCallback,
-	      readyCallback: readyCallback
-	    })
-	  }
-
-	  Vue.prototype.$unbind = function (key) {
-	    unbind(this, key)
-	  }
-	}
-
-	// auto install
-	/* istanbul ignore if */
-	if (typeof window !== 'undefined' && window.Vue) {
-	  install(window.Vue)
-	}
-
-	module.exports = install
-
-
-/***/ }
-/******/ ])
-});
-;
-
-/***/ }),
-/* 137 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_node_modules_vue_loader_lib_selector_type_script_index_0_Welcome_vue__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_196e559e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Welcome_vue__ = __webpack_require__(208);
-var disposed = false
-var normalizeComponent = __webpack_require__(18)
-/* script */
-
-/* template */
-
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_node_modules_vue_loader_lib_selector_type_script_index_0_Welcome_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_196e559e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Welcome_vue__["a" /* default */],
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/Welcome.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Welcome.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-196e559e", Component.options)
-  } else {
-    hotAPI.reload("data-v-196e559e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 138 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_toastr__ = __webpack_require__(217);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_toastr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_toastr__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-var config = {
-  apiKey: "AIzaSyAfigVQQr7AJ62FSsfDkwrwK55JwT--3l4",
-  authDomain: "faster-items.firebaseapp.com",
-  databaseURL: "https://faster-items.firebaseio.com",
-  projectId: "faster-items",
-  storageBucket: "faster-items.appspot.com",
-  messagingSenderId: "88753616585"
-};
-
-var app = __WEBPACK_IMPORTED_MODULE_0_firebase___default.a.initializeApp(config);
-var db = app.database();
-var bookingsRef = db.ref('bookings');
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  name: 'Welcome',
-  firebase: {
-    bookings: bookingsRef
-  },
-  data: function data() {
-    return {
-      message: 'Hi hell Vue, What kind o magic is this!',
-      items: [],
-      edit: false,
-      newBook: {
-        nombre: '',
-        fecha: '',
-        hora: '00:00'
-      },
-      booking: null
-    };
-  },
-
-  methods: {
-    addBook: function addBook(book) {
-      if (this.edit == true) {
-        console.log(this.newBook);
-        var key = this.newBook['.key'];
-        bookingsRef.child(key).child('nombre').set(this.newBook.nombre);
-        bookingsRef.child(key).child('fecha').set(this.newBook.fecha);
-        bookingsRef.child(key).child('hora').set(this.newBook.hora);
-      } else {
-        bookingsRef.push(this.newBook, function (error) {
-          if (!error) {
-            __WEBPACK_IMPORTED_MODULE_1_toastr___default.a.success("Booking added Successfuly!");
-          }
-        });
-      }
-      this.clearForm();
-    },
-    clearForm: function clearForm() {
-      this.newBook = {
-        nombre: '',
-        fecha: '',
-        hora: ''
-      };
-      this.edit = false;
-    },
-
-    editBook: function editBook(book) {
-      console.log("edit book:", book);
-      this.edit = true;
-      this.newBook = book;
-    },
-    removeBook: function removeBook(book) {
-      bookingsRef.child(book['.key']).remove(function (error) {
-        if (!error) {
-          // removed!
-          __WEBPACK_IMPORTED_MODULE_1_toastr___default.a.success('Booking removed Successfuly');
-        }
-      });
-    },
-    add: function add() {
-      console.log("!ddd");
-      this.items.push({ value: "" });
-    }
-  }
-});
-
-/***/ }),
-/* 139 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25507,17 +25680,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _app = __webpack_require__(11);
+var _app = __webpack_require__(76);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(145);
+__webpack_require__(154);
 
-__webpack_require__(146);
+__webpack_require__(155);
 
-__webpack_require__(186);
+__webpack_require__(195);
 
-__webpack_require__(202);
+__webpack_require__(211);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25543,7 +25716,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 140 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25639,7 +25812,7 @@ if (!Array.prototype.find) {
 
 
 /***/ }),
-/* 141 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25654,13 +25827,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createFirebaseNamespace = createFirebaseNamespace;
 
-var _subscribe = __webpack_require__(55);
+var _subscribe = __webpack_require__(110);
 
-var _errors = __webpack_require__(37);
+var _errors = __webpack_require__(97);
 
-var _promise = __webpack_require__(12);
+var _promise = __webpack_require__(77);
 
-var _deep_copy = __webpack_require__(57);
+var _deep_copy = __webpack_require__(112);
 
 /**
 * Copyright 2017 Google Inc.
@@ -26024,7 +26197,7 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 142 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -26261,10 +26434,10 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(143).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(152).setImmediate))
 
 /***/ }),
-/* 143 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -26317,13 +26490,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(144);
+__webpack_require__(153);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 144 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -26513,17 +26686,17 @@ exports.clearImmediate = clearImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(24)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(18)))
 
 /***/ }),
-/* 145 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v4.3.1
 Build: rev-b4fe95f
 Terms: https://firebase.google.com/terms/ */
 
-var firebase = __webpack_require__(11);
+var firebase = __webpack_require__(76);
 (function(){(function(){var h,aa=aa||{},k=this,ba=function(a){return void 0!==a},m=function(a){return"string"==typeof a},ca=function(a){return"boolean"==typeof a},da=function(a){return"number"==typeof a},ea=function(){},fa=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&
 !a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},ha=function(a){return null===a},ia=function(a){return"array"==fa(a)},ja=function(a){var b=fa(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==fa(a)},q=function(a){var b=
 typeof a;return"object"==b&&null!=a||"function"==b},ka=function(a,b,c){return a.call.apply(a.bind,arguments)},la=function(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},r=function(a,b,c){r=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ka:la;return r.apply(null,
@@ -26818,10 +26991,10 @@ Z(Lg,"credential",Ng,[V("verificationId"),V("verificationCode")]);Y(Lg.prototype
 (function(){if("undefined"!==typeof firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService){var a={Auth:T,Error:O};Z(a,"EmailAuthProvider",Gg,[]);Z(a,"FacebookAuthProvider",vg,[]);Z(a,"GithubAuthProvider",xg,[]);Z(a,"GoogleAuthProvider",zg,[]);Z(a,"TwitterAuthProvider",Bg,[]);Z(a,"OAuthProvider",P,[V("providerId")]);Z(a,"PhoneAuthProvider",Lg,[Tk()]);Z(a,"RecaptchaVerifier",ii,[X(V(),Sk(),"recaptchaContainer"),W("recaptchaParameters",!0),Uk()]);firebase.INTERNAL.registerService("auth",function(a,
 c){a=new T(a);c({INTERNAL:{getUid:r(a.getUid,a),getToken:r(a.Cf,a),addAuthTokenListener:r(a.hf,a),removeAuthTokenListener:r(a.gg,a)}});return a},a,function(a,c){if("create"===a)try{c.auth()}catch(d){}});firebase.INTERNAL.extendNamespace({User:S})}else throw Error("Cannot find the firebase namespace; be sure to include firebase-app.js before this library.");})();}).call(this);
 }).call(typeof global !== undefined ? global : typeof self !== undefined ? self : typeof window !== undefined ? window : {});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 146 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26859,29 +27032,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerDatabase = registerDatabase;
 
-var _app = __webpack_require__(11);
+var _app = __webpack_require__(76);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _Database = __webpack_require__(58);
+var _Database = __webpack_require__(113);
 
-var _Query = __webpack_require__(61);
+var _Query = __webpack_require__(116);
 
-var _Reference = __webpack_require__(39);
+var _Reference = __webpack_require__(99);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _RepoManager = __webpack_require__(44);
+var _RepoManager = __webpack_require__(104);
 
-var _internal = __webpack_require__(184);
+var _internal = __webpack_require__(193);
 
 var INTERNAL = _interopRequireWildcard(_internal);
 
-var _test_access = __webpack_require__(185);
+var _test_access = __webpack_require__(194);
 
 var TEST_ACCESS = _interopRequireWildcard(_test_access);
 
-var _environment = __webpack_require__(19);
+var _environment = __webpack_require__(82);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -26926,7 +27099,7 @@ registerDatabase(_app2.default);
 
 
 /***/ }),
-/* 147 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26941,7 +27114,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.base64 = undefined;
 
-var _globalScope = __webpack_require__(56);
+var _globalScope = __webpack_require__(111);
 
 var stringToByteArray = function stringToByteArray(str) {
     var output = [],
@@ -27192,7 +27365,7 @@ var base64 = exports.base64 = {
 
 
 /***/ }),
-/* 148 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27207,7 +27380,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Sha1 = undefined;
 
-var _hash = __webpack_require__(149);
+var _hash = __webpack_require__(158);
 
 /**
 * Copyright 2017 Google Inc.
@@ -27480,7 +27653,7 @@ exports.Sha1 = Sha1;
 
 
 /***/ }),
-/* 149 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27548,7 +27721,7 @@ exports.Hash = Hash;
 
 
 /***/ }),
-/* 150 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27563,7 +27736,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DOMStorageWrapper = undefined;
 
-var _json = __webpack_require__(9);
+var _json = __webpack_require__(74);
 
 /**
  * Wraps a DOM Storage object and:
@@ -27644,7 +27817,7 @@ exports.DOMStorageWrapper = DOMStorageWrapper;
 
 
 /***/ }),
-/* 151 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27659,7 +27832,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MemoryStorage = undefined;
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
 /**
  * An in-memory storage implementation that matches the API of DOMStorageWrapper
@@ -27709,7 +27882,7 @@ exports.MemoryStorage = MemoryStorage;
 
 
 /***/ }),
-/* 152 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27724,13 +27897,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.OnDisconnect = undefined;
 
-var _validation = __webpack_require__(13);
+var _validation = __webpack_require__(78);
 
-var _validation2 = __webpack_require__(14);
+var _validation2 = __webpack_require__(79);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _promise = __webpack_require__(12);
+var _promise = __webpack_require__(77);
 
 /**
  * @constructor
@@ -27841,7 +28014,7 @@ exports.OnDisconnect = OnDisconnect;
 
 
 /***/ }),
-/* 153 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27856,7 +28029,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TransactionResult = undefined;
 
-var _validation = __webpack_require__(13);
+var _validation = __webpack_require__(78);
 
 var TransactionResult = function () {
     /**
@@ -27897,7 +28070,7 @@ exports.TransactionResult = TransactionResult;
 
 
 /***/ }),
-/* 154 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27912,7 +28085,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.nextPushId = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
 /**
  * Fancy ID generator that creates 20-character string identifiers with the
@@ -27989,7 +28162,7 @@ var nextPushId = exports.nextPushId = function () {
 
 
 /***/ }),
-/* 155 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28004,13 +28177,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ChildEventRegistration = exports.ValueEventRegistration = undefined;
 
-var _DataSnapshot = __webpack_require__(68);
+var _DataSnapshot = __webpack_require__(123);
 
-var _Event = __webpack_require__(156);
+var _Event = __webpack_require__(165);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
 /**
  * Represents registration for 'value' events.
@@ -28214,7 +28387,7 @@ exports.ChildEventRegistration = ChildEventRegistration;
 
 
 /***/ }),
-/* 156 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28229,7 +28402,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CancelEvent = exports.DataEvent = undefined;
 
-var _json = __webpack_require__(9);
+var _json = __webpack_require__(74);
 
 /**
  * Encapsulates the data needed to raise an event
@@ -28337,7 +28510,7 @@ exports.CancelEvent = CancelEvent;
 
 
 /***/ }),
-/* 157 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28352,31 +28525,31 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SyncTree = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _AckUserWrite = __webpack_require__(158);
+var _AckUserWrite = __webpack_require__(167);
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _ImmutableTree = __webpack_require__(41);
+var _ImmutableTree = __webpack_require__(101);
 
-var _ListenComplete = __webpack_require__(159);
+var _ListenComplete = __webpack_require__(168);
 
-var _Merge = __webpack_require__(160);
+var _Merge = __webpack_require__(169);
 
-var _Operation = __webpack_require__(15);
+var _Operation = __webpack_require__(80);
 
-var _Overwrite = __webpack_require__(72);
+var _Overwrite = __webpack_require__(127);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _SyncPoint = __webpack_require__(73);
+var _SyncPoint = __webpack_require__(128);
 
-var _WriteTree = __webpack_require__(166);
+var _WriteTree = __webpack_require__(175);
 
 /**
  * SyncTree is the central class for managing event callback registration, data caching, views
@@ -29051,7 +29224,7 @@ exports.SyncTree = SyncTree;
 
 
 /***/ }),
-/* 158 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29066,11 +29239,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.AckUserWrite = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _Operation = __webpack_require__(15);
+var _Operation = __webpack_require__(80);
 
 var AckUserWrite = function () {
     /**
@@ -29128,7 +29301,7 @@ exports.AckUserWrite = AckUserWrite;
 
 
 /***/ }),
-/* 159 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29143,9 +29316,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ListenComplete = undefined;
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _Operation = __webpack_require__(15);
+var _Operation = __webpack_require__(80);
 
 /**
  * @param {!OperationSource} source
@@ -29189,7 +29362,7 @@ exports.ListenComplete = ListenComplete;
 
 
 /***/ }),
-/* 160 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29204,13 +29377,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Merge = undefined;
 
-var _Operation = __webpack_require__(15);
+var _Operation = __webpack_require__(80);
 
-var _Overwrite = __webpack_require__(72);
+var _Overwrite = __webpack_require__(127);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
 /**
  * @param {!OperationSource} source
@@ -29279,7 +29452,7 @@ exports.Merge = Merge;
 
 
 /***/ }),
-/* 161 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29294,25 +29467,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.View = undefined;
 
-var _IndexedFilter = __webpack_require__(42);
+var _IndexedFilter = __webpack_require__(102);
 
-var _ViewProcessor = __webpack_require__(162);
+var _ViewProcessor = __webpack_require__(171);
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
-var _CacheNode = __webpack_require__(31);
+var _CacheNode = __webpack_require__(93);
 
-var _ViewCache = __webpack_require__(74);
+var _ViewCache = __webpack_require__(129);
 
-var _EventGenerator = __webpack_require__(165);
+var _EventGenerator = __webpack_require__(174);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _Operation = __webpack_require__(15);
+var _Operation = __webpack_require__(80);
 
-var _Change = __webpack_require__(20);
+var _Change = __webpack_require__(83);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
 /**
  * A view represents a specific location and query that has 1 or more event registrations.
@@ -29505,7 +29678,7 @@ exports.View = View;
 
 
 /***/ }),
-/* 162 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29520,23 +29693,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ViewProcessor = exports.ProcessorResult = undefined;
 
-var _Operation = __webpack_require__(15);
+var _Operation = __webpack_require__(80);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _ChildChangeAccumulator = __webpack_require__(163);
+var _ChildChangeAccumulator = __webpack_require__(172);
 
-var _Change = __webpack_require__(20);
+var _Change = __webpack_require__(83);
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
-var _KeyIndex = __webpack_require__(22);
+var _KeyIndex = __webpack_require__(85);
 
-var _ImmutableTree = __webpack_require__(41);
+var _ImmutableTree = __webpack_require__(101);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _CompleteChildSource = __webpack_require__(164);
+var _CompleteChildSource = __webpack_require__(173);
 
 /**
  * @constructor
@@ -30041,7 +30214,7 @@ exports.ViewProcessor = ViewProcessor;
 
 
 /***/ }),
-/* 163 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30056,11 +30229,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ChildChangeAccumulator = undefined;
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _Change = __webpack_require__(20);
+var _Change = __webpack_require__(83);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
 /**
  * @constructor
@@ -30124,7 +30297,7 @@ exports.ChildChangeAccumulator = ChildChangeAccumulator;
 
 
 /***/ }),
-/* 164 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30139,7 +30312,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WriteTreeCompleteChildSource = exports.NO_COMPLETE_CHILD_SOURCE = exports.NoCompleteChildSource_ = undefined;
 
-var _CacheNode = __webpack_require__(31);
+var _CacheNode = __webpack_require__(93);
 
 /**
  * An implementation of CompleteChildSource that never returns any additional children
@@ -30238,7 +30411,7 @@ exports.WriteTreeCompleteChildSource = WriteTreeCompleteChildSource;
 
 
 /***/ }),
-/* 165 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30253,11 +30426,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.EventGenerator = undefined;
 
-var _Node = __webpack_require__(7);
+var _Node = __webpack_require__(72);
 
-var _Change = __webpack_require__(20);
+var _Change = __webpack_require__(83);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
 /**
  * An EventGenerator is used to convert "raw" changes (Change) as computed by the
@@ -30385,7 +30558,7 @@ exports.EventGenerator = EventGenerator;
 
 
 /***/ }),
-/* 166 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30400,17 +30573,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WriteTreeRef = exports.WriteTree = undefined;
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _CompoundWrite = __webpack_require__(167);
+var _CompoundWrite = __webpack_require__(176);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
 /**
  * WriteTree tracks all pending user-initiated writes and has methods to calculate the result of merging them
@@ -31001,7 +31174,7 @@ exports.WriteTreeRef = WriteTreeRef;
 
 
 /***/ }),
-/* 167 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31016,17 +31189,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CompoundWrite = undefined;
 
-var _ImmutableTree = __webpack_require__(41);
+var _ImmutableTree = __webpack_require__(101);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _Node = __webpack_require__(7);
+var _Node = __webpack_require__(72);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
 /**
  * This class holds a collection of writes that can be applied to nodes in unison. It abstracts away the logic with
@@ -31228,7 +31401,7 @@ exports.CompoundWrite = CompoundWrite;
 
 
 /***/ }),
-/* 168 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31243,7 +31416,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SnapshotHolder = undefined;
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
 /**
  * Mutable object which basically just stores a reference to the "latest" immutable snapshot.
@@ -31281,7 +31454,7 @@ exports.SnapshotHolder = SnapshotHolder;
 
 
 /***/ }),
-/* 169 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31296,7 +31469,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.AuthTokenProvider = undefined;
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
 /**
  * Abstraction around FirebaseApp's token fetching capabilities.
@@ -31366,7 +31539,7 @@ exports.AuthTokenProvider = AuthTokenProvider;
 
 
 /***/ }),
-/* 170 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31381,9 +31554,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.StatsCollection = undefined;
 
-var _deep_copy = __webpack_require__(57);
+var _deep_copy = __webpack_require__(112);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
 /**
  * Tracks a collection of stats.
@@ -31426,7 +31599,7 @@ exports.StatsCollection = StatsCollection;
 
 
 /***/ }),
-/* 171 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31441,11 +31614,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.StatsReporter = undefined;
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _StatsListener = __webpack_require__(75);
+var _StatsListener = __webpack_require__(130);
 
 // Assuming some apps may have a short amount of time on page, and a bulk of firebase operations probably
 // happen on page load, we try to report our first set of stats pretty quickly, but we wait at least 10
@@ -31511,7 +31684,7 @@ exports.StatsReporter = StatsReporter;
 
 
 /***/ }),
-/* 172 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31526,7 +31699,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.EventList = exports.EventQueue = undefined;
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
 /**
  * The event queue serves a few purposes:
@@ -31698,7 +31871,7 @@ exports.EventList = EventList;
 
 
 /***/ }),
-/* 173 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31713,9 +31886,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.VisibilityMonitor = undefined;
 
-var _EventEmitter = __webpack_require__(77);
+var _EventEmitter = __webpack_require__(132);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
 /**
 * Copyright 2017 Google Inc.
@@ -31808,7 +31981,7 @@ exports.VisibilityMonitor = VisibilityMonitor;
 
 
 /***/ }),
-/* 174 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31823,11 +31996,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.OnlineMonitor = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _EventEmitter = __webpack_require__(77);
+var _EventEmitter = __webpack_require__(132);
 
-var _environment = __webpack_require__(19);
+var _environment = __webpack_require__(82);
 
 /**
 * Copyright 2017 Google Inc.
@@ -31919,7 +32092,7 @@ exports.OnlineMonitor = OnlineMonitor;
 
 
 /***/ }),
-/* 175 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31951,9 +32124,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                                                                                                                                                                                                                                                                               */
 
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _json = __webpack_require__(9);
+var _json = __webpack_require__(74);
 
 /**
  * Decodes a Firebase auth. token into constituent parts.
@@ -32067,7 +32240,7 @@ var isAdmin = exports.isAdmin = function isAdmin(token) {
 
 
 /***/ }),
-/* 176 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32082,11 +32255,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TransportManager = undefined;
 
-var _BrowserPollConnection = __webpack_require__(79);
+var _BrowserPollConnection = __webpack_require__(134);
 
-var _WebSocketConnection = __webpack_require__(80);
+var _WebSocketConnection = __webpack_require__(135);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
 /**
  * Currently simplistic, this class manages what transport a Connection should use at various stages of its
@@ -32179,7 +32352,7 @@ exports.TransportManager = TransportManager;
 
 
 /***/ }),
-/* 177 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32194,7 +32367,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PacketReceiver = undefined;
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
 /**
  * This class ensures the packets from the server arrive in order
@@ -32279,7 +32452,7 @@ exports.PacketReceiver = PacketReceiver;
 
 
 /***/ }),
-/* 178 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32294,17 +32467,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ReadonlyRestClient = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _json = __webpack_require__(9);
+var _json = __webpack_require__(74);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _util2 = __webpack_require__(179);
+var _util2 = __webpack_require__(188);
 
-var _ServerActions = __webpack_require__(81);
+var _ServerActions = __webpack_require__(136);
 
 /**
 * Copyright 2017 Google Inc.
@@ -32480,7 +32653,7 @@ exports.ReadonlyRestClient = ReadonlyRestClient;
 
 
 /***/ }),
-/* 179 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32495,7 +32668,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.querystringDecode = exports.querystring = undefined;
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
 /**
  * Returns a querystring-formatted string (e.g. &arg=val&arg2=val2) from a params
@@ -32554,7 +32727,7 @@ var querystringDecode = exports.querystringDecode = function querystringDecode(q
 
 
 /***/ }),
-/* 180 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32569,25 +32742,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.QueryParams = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _KeyIndex = __webpack_require__(22);
+var _KeyIndex = __webpack_require__(85);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
-var _ValueIndex = __webpack_require__(63);
+var _ValueIndex = __webpack_require__(118);
 
-var _PathIndex = __webpack_require__(67);
+var _PathIndex = __webpack_require__(122);
 
-var _IndexedFilter = __webpack_require__(42);
+var _IndexedFilter = __webpack_require__(102);
 
-var _LimitedFilter = __webpack_require__(181);
+var _LimitedFilter = __webpack_require__(190);
 
-var _RangedFilter = __webpack_require__(82);
+var _RangedFilter = __webpack_require__(137);
 
-var _json = __webpack_require__(9);
+var _json = __webpack_require__(74);
 
 /**
  * This class is an immutable-from-the-public-api struct containing a set of query parameters defining a
@@ -32973,7 +33146,7 @@ exports.QueryParams = QueryParams;
 
 
 /***/ }),
-/* 181 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32988,15 +33161,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LimitedFilter = undefined;
 
-var _RangedFilter = __webpack_require__(82);
+var _RangedFilter = __webpack_require__(137);
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
-var _Node = __webpack_require__(7);
+var _Node = __webpack_require__(72);
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _Change = __webpack_require__(20);
+var _Change = __webpack_require__(83);
 
 /**
  * Applies a limit and a range to a node and uses RangedFilter to do the heavy lifting where possible
@@ -33227,7 +33400,7 @@ exports.LimitedFilter = LimitedFilter;
 
 
 /***/ }),
-/* 182 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33259,31 +33432,31 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                                                                                                                                                                                                                                                                               */
 
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _Reference = __webpack_require__(39);
+var _Reference = __webpack_require__(99);
 
-var _DataSnapshot = __webpack_require__(68);
+var _DataSnapshot = __webpack_require__(123);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _Tree = __webpack_require__(183);
+var _Tree = __webpack_require__(192);
 
-var _PriorityIndex = __webpack_require__(4);
+var _PriorityIndex = __webpack_require__(70);
 
-var _util = __webpack_require__(1);
+var _util = __webpack_require__(67);
 
-var _ServerValues = __webpack_require__(69);
+var _ServerValues = __webpack_require__(124);
 
-var _validation = __webpack_require__(14);
+var _validation = __webpack_require__(79);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
-var _nodeFromJSON = __webpack_require__(23);
+var _nodeFromJSON = __webpack_require__(86);
 
-var _ChildrenNode = __webpack_require__(5);
+var _ChildrenNode = __webpack_require__(71);
 
-var _Repo = __webpack_require__(30);
+var _Repo = __webpack_require__(92);
 
 // TODO: This is pretty messy.  Ideally, a lot of this would move into FirebaseData, or a transaction-specific
 // component used by FirebaseData, but it has ties to user callbacks (transaction update and onComplete) as well
@@ -33804,7 +33977,7 @@ _Repo.Repo.prototype.abortTransactionsOnNode_ = function (node) {
 
 
 /***/ }),
-/* 183 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33819,11 +33992,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Tree = exports.TreeNode = undefined;
 
-var _assert = __webpack_require__(0);
+var _assert = __webpack_require__(66);
 
-var _Path = __webpack_require__(3);
+var _Path = __webpack_require__(69);
 
-var _obj = __webpack_require__(2);
+var _obj = __webpack_require__(68);
 
 /**
  * Node in a Tree.
@@ -34047,7 +34220,7 @@ exports.Tree = Tree;
 
 
 /***/ }),
-/* 184 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34062,9 +34235,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.interceptServerData = exports.dataUpdateCount = exports.statsIncrementCounter = exports.stats = exports.setSecurityDebugCallback = exports.isWebSocketsAvailable = exports.forceWebSockets = exports.forceLongPolling = undefined;
 
-var _WebSocketConnection = __webpack_require__(80);
+var _WebSocketConnection = __webpack_require__(135);
 
-var _BrowserPollConnection = __webpack_require__(79);
+var _BrowserPollConnection = __webpack_require__(134);
 
 /**
  * INTERNAL methods for internal-use only (tests, etc.).
@@ -34118,7 +34291,7 @@ var interceptServerData = exports.interceptServerData = function interceptServer
 
 
 /***/ }),
-/* 185 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34133,13 +34306,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.forceRestClient = exports.listens = exports.queryIdentifier = exports.ConnectionTarget = exports.hijackHash = exports.RealTimeConnection = exports.DataConnection = undefined;
 
-var _RepoInfo = __webpack_require__(60);
+var _RepoInfo = __webpack_require__(115);
 
-var _PersistentConnection = __webpack_require__(76);
+var _PersistentConnection = __webpack_require__(131);
 
-var _RepoManager = __webpack_require__(44);
+var _RepoManager = __webpack_require__(104);
 
-var _Connection = __webpack_require__(78);
+var _Connection = __webpack_require__(133);
 
 /**
 * Copyright 2017 Google Inc.
@@ -34219,7 +34392,7 @@ var forceRestClient = exports.forceRestClient = function forceRestClient(_forceR
 
 
 /***/ }),
-/* 186 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34234,17 +34407,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerStorage = registerStorage;
 
-var _string = __webpack_require__(45);
+var _string = __webpack_require__(105);
 
-var _taskenums = __webpack_require__(83);
+var _taskenums = __webpack_require__(138);
 
-var _xhriopool = __webpack_require__(187);
+var _xhriopool = __webpack_require__(196);
 
-var _reference = __webpack_require__(85);
+var _reference = __webpack_require__(140);
 
-var _service = __webpack_require__(196);
+var _service = __webpack_require__(205);
 
-var _app = __webpack_require__(11);
+var _app = __webpack_require__(76);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -34290,7 +34463,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 187 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34305,7 +34478,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.XhrIoPool = undefined;
 
-var _xhrio_network = __webpack_require__(188);
+var _xhrio_network = __webpack_require__(197);
 
 /**
  * Factory-like class for creating XhrIo instances.
@@ -34336,7 +34509,7 @@ exports.XhrIoPool = XhrIoPool;
 
 
 /***/ }),
-/* 188 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34351,23 +34524,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.NetworkXhrIo = undefined;
 
-var _error = __webpack_require__(10);
+var _error = __webpack_require__(75);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _object = __webpack_require__(21);
+var _object = __webpack_require__(84);
 
 var object = _interopRequireWildcard(_object);
 
-var _promise_external = __webpack_require__(16);
+var _promise_external = __webpack_require__(81);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
-var _xhrio = __webpack_require__(84);
+var _xhrio = __webpack_require__(139);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
@@ -34501,7 +34674,7 @@ exports.NetworkXhrIo = NetworkXhrIo;
 
 
 /***/ }),
-/* 189 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34516,7 +34689,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.jsonObjectOrNull = jsonObjectOrNull;
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
@@ -34557,7 +34730,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 190 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34573,7 +34746,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.getBlob = getBlob;
 exports.sliceBlob = sliceBlob;
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
@@ -34637,7 +34810,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 191 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34683,7 +34856,7 @@ exports.RequestInfo = RequestInfo;
 
 
 /***/ }),
-/* 192 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34698,37 +34871,37 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.UploadTask = undefined;
 
-var _taskenums = __webpack_require__(83);
+var _taskenums = __webpack_require__(138);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(193);
+var _observer = __webpack_require__(202);
 
-var _tasksnapshot = __webpack_require__(194);
+var _tasksnapshot = __webpack_require__(203);
 
-var _args = __webpack_require__(46);
+var _args = __webpack_require__(106);
 
 var fbsArgs = _interopRequireWildcard(_args);
 
-var _array = __webpack_require__(49);
+var _array = __webpack_require__(109);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(195);
+var _async = __webpack_require__(204);
 
-var _error = __webpack_require__(10);
+var _error = __webpack_require__(75);
 
 var errors = _interopRequireWildcard(_error);
 
-var _promise_external = __webpack_require__(16);
+var _promise_external = __webpack_require__(81);
 
 var fbsPromiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requests = __webpack_require__(88);
+var _requests = __webpack_require__(143);
 
 var fbsRequests = _interopRequireWildcard(_requests);
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var typeUtils = _interopRequireWildcard(_type);
 
@@ -35265,7 +35438,7 @@ exports.UploadTask = UploadTask;
 
 
 /***/ }),
-/* 193 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35280,7 +35453,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Observer = undefined;
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
@@ -35324,7 +35497,7 @@ exports.Observer = Observer;
 
 
 /***/ }),
-/* 194 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35369,7 +35542,7 @@ exports.UploadTaskSnapshot = UploadTaskSnapshot;
 
 
 /***/ }),
-/* 195 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35384,7 +35557,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.async = async;
 
-var _promise_external = __webpack_require__(16);
+var _promise_external = __webpack_require__(81);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -35427,7 +35600,7 @@ function async(f) {
 
 
 /***/ }),
-/* 196 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35442,23 +35615,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ServiceInternals = exports.Service = undefined;
 
-var _args = __webpack_require__(46);
+var _args = __webpack_require__(106);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(197);
+var _authwrapper = __webpack_require__(206);
 
-var _location = __webpack_require__(33);
+var _location = __webpack_require__(95);
 
-var _promise_external = __webpack_require__(16);
+var _promise_external = __webpack_require__(81);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(200);
+var _request = __webpack_require__(209);
 
 var RequestExports = _interopRequireWildcard(_request);
 
-var _reference = __webpack_require__(85);
+var _reference = __webpack_require__(140);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -35602,7 +35775,7 @@ exports.ServiceInternals = ServiceInternals;
 
 
 /***/ }),
-/* 197 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35617,25 +35790,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.AuthWrapper = undefined;
 
-var _constants = __webpack_require__(32);
+var _constants = __webpack_require__(94);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _error2 = __webpack_require__(10);
+var _error2 = __webpack_require__(75);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(198);
+var _failrequest = __webpack_require__(207);
 
-var _location = __webpack_require__(33);
+var _location = __webpack_require__(95);
 
-var _promise_external = __webpack_require__(16);
+var _promise_external = __webpack_require__(81);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(199);
+var _requestmap = __webpack_require__(208);
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
@@ -35751,7 +35924,7 @@ exports.AuthWrapper = AuthWrapper;
 
 
 /***/ }),
-/* 198 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35766,7 +35939,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FailRequest = undefined;
 
-var _promise_external = __webpack_require__(16);
+var _promise_external = __webpack_require__(81);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
@@ -35798,7 +35971,7 @@ exports.FailRequest = FailRequest;
 
 
 /***/ }),
-/* 199 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35813,11 +35986,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RequestMap = undefined;
 
-var _object = __webpack_require__(21);
+var _object = __webpack_require__(84);
 
 var object = _interopRequireWildcard(_object);
 
-var _constants = __webpack_require__(32);
+var _constants = __webpack_require__(94);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -35879,7 +36052,7 @@ exports.RequestMap = RequestMap;
 
 
 /***/ }),
-/* 200 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35897,39 +36070,39 @@ exports.addAuthHeader_ = addAuthHeader_;
 exports.addVersionHeader_ = addVersionHeader_;
 exports.makeRequest = makeRequest;
 
-var _array = __webpack_require__(49);
+var _array = __webpack_require__(109);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(201);
+var _backoff = __webpack_require__(210);
 
 var backoff = _interopRequireWildcard(_backoff);
 
-var _error = __webpack_require__(10);
+var _error = __webpack_require__(75);
 
 var errorsExports = _interopRequireWildcard(_error);
 
-var _object = __webpack_require__(21);
+var _object = __webpack_require__(84);
 
 var object = _interopRequireWildcard(_object);
 
-var _promise_external = __webpack_require__(16);
+var _promise_external = __webpack_require__(81);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _type = __webpack_require__(8);
+var _type = __webpack_require__(73);
 
 var type = _interopRequireWildcard(_type);
 
-var _url = __webpack_require__(48);
+var _url = __webpack_require__(108);
 
 var UrlUtils = _interopRequireWildcard(_url);
 
-var _xhrio = __webpack_require__(84);
+var _xhrio = __webpack_require__(139);
 
 var XhrIoExports = _interopRequireWildcard(_xhrio);
 
-var _app = __webpack_require__(11);
+var _app = __webpack_require__(76);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -36138,7 +36311,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 201 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36270,7 +36443,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 202 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36300,15 +36473,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(203);
+var _windowController = __webpack_require__(212);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(207);
+var _swController = __webpack_require__(216);
 
 var _swController2 = _interopRequireDefault(_swController);
 
-var _app = __webpack_require__(11);
+var _app = __webpack_require__(76);
 
 var _app2 = _interopRequireDefault(_app);
 
@@ -36334,7 +36507,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 203 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36363,27 +36536,27 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _controllerInterface = __webpack_require__(89);
+var _controllerInterface = __webpack_require__(144);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(34);
+var _errors = __webpack_require__(96);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(92);
+var _workerPageMessage = __webpack_require__(147);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(206);
+var _defaultSw = __webpack_require__(215);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
-var _notificationPermission = __webpack_require__(91);
+var _notificationPermission = __webpack_require__(146);
 
 var _notificationPermission2 = _interopRequireDefault(_notificationPermission);
 
-var _subscribe = __webpack_require__(55);
+var _subscribe = __webpack_require__(110);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36698,7 +36871,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 204 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36727,17 +36900,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _errors = __webpack_require__(37);
+var _errors = __webpack_require__(97);
 
-var _errors2 = __webpack_require__(34);
+var _errors2 = __webpack_require__(96);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(205);
+var _arrayBufferToBase = __webpack_require__(214);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
-var _fcmDetails = __webpack_require__(90);
+var _fcmDetails = __webpack_require__(145);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -37075,7 +37248,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 205 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37119,7 +37292,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 206 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37156,7 +37329,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 207 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37187,19 +37360,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _controllerInterface = __webpack_require__(89);
+var _controllerInterface = __webpack_require__(144);
 
 var _controllerInterface2 = _interopRequireDefault(_controllerInterface);
 
-var _errors = __webpack_require__(34);
+var _errors = __webpack_require__(96);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _workerPageMessage = __webpack_require__(92);
+var _workerPageMessage = __webpack_require__(147);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _fcmDetails = __webpack_require__(90);
+var _fcmDetails = __webpack_require__(145);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
@@ -37497,218 +37670,6 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 208 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "container"
-  }, [_vm._v("\n  Dashboard Message: "), _c('strong', [_vm._v(_vm._s(_vm.message))]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.message),
-      expression: "message"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "name": ""
-    },
-    domProps: {
-      "value": (_vm.message)
-    },
-    on: {
-      "keyup": _vm.add,
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.message = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _vm._l((_vm.items), function(item) {
-    return _c('div', {
-      staticClass: "row"
-    }, [_c('div', {}, [_vm._v("\n      " + _vm._s(_vm.message) + _vm._s(item.value) + "\n    ")])])
-  }), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('table', {
-    staticClass: "table table-striped"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.bookings), function(book) {
-    return _c('tr', [_c('td', [_c('span', {
-      on: {
-        "click": function($event) {
-          _vm.editBook(book)
-        }
-      }
-    }, [_vm._v(_vm._s(book.nombre))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(book.hora))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(book.fecha))]), _vm._v(" "), _c('td', [_c('span', {
-      staticClass: "glyphicon glyphicon-trash",
-      attrs: {
-        "aria-hidden": "true"
-      },
-      on: {
-        "click": function($event) {
-          _vm.removeBook(book)
-        }
-      }
-    })])])
-  }))]), _vm._v(" "), _c('span', {
-    staticClass: "btn btn-xs btn-primary",
-    on: {
-      "click": function($event) {
-        _vm.clearForm()
-      }
-    }
-  }, [_vm._v(" Add Booking")])]), _vm._v(" "), _c('div', {
-    staticClass: "panel panel-default"
-  }, [_vm._m(1), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('form', {
-    staticClass: "form-inline",
-    attrs: {
-      "id": "form"
-    },
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.addBook($event)
-      }
-    }
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "bookTitle"
-    }
-  }, [_vm._v("Nombre:")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.newBook.nombre),
-      expression: "newBook.nombre"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "id": "bookTitle"
-    },
-    domProps: {
-      "value": (_vm.newBook.nombre)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.newBook.nombre = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "bookAuthor"
-    }
-  }, [_vm._v("Fecha:")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.newBook.fecha),
-      expression: "newBook.fecha"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "date",
-      "id": "bookAuthor"
-    },
-    domProps: {
-      "value": (_vm.newBook.fecha)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.newBook.fecha = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "bookUrl"
-    }
-  }, [_vm._v("Hora:")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.newBook.hora),
-      expression: "newBook.hora"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "time",
-      "id": "bookUrl"
-    },
-    domProps: {
-      "value": (_vm.newBook.hora)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.newBook.hora = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (!_vm.edit),
-      expression: "!edit"
-    }],
-    staticClass: "btn btn-primary",
-    attrs: {
-      "type": "submit",
-      "value": "Add Booking"
-    }
-  }), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.edit),
-      expression: "edit"
-    }],
-    staticClass: "btn btn-primary",
-    attrs: {
-      "type": "submit",
-      "value": "Edit Booking"
-    }
-  })])])])], 2)
-}
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Nombre")]), _vm._v(" "), _c('th', [_vm._v("Hora")]), _vm._v(" "), _c('th', [_vm._v("Fecha")])])])
-},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "panel-heading"
-  }, [_c('h3', {
-    staticClass: "panel-title"
-  }, [_vm._v("Add New Book")])])
-}]
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-196e559e", esExports)
-  }
-}
-
-/***/ }),
-/* 209 */,
-/* 210 */,
-/* 211 */,
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */,
-/* 216 */,
 /* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
