@@ -25461,10 +25461,7 @@ var bookingsRef = db.ref('bookings');
           }
         });
       }
-      this.newBook.nombre = '';
-      this.newBook.fecha = '';
-      this.newBook.hora = '00:00';
-      this.edit = false;
+      this.clearForm();
     },
     clearForm: function clearForm() {
       this.newBook = {
